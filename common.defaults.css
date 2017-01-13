@@ -107,6 +107,7 @@ option:disabled {
   /*background: #C5D7E1;*/
   background: #606465;
   color: #fff;
+  padding-right: 16px;
 }
 .cm-table tr:nth-child(even) {
   background: #eee;
