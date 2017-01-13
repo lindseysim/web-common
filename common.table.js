@@ -1,9 +1,6 @@
-
-// START IIFE (Immediately-Invoked Function Expression) Constructor
 !function(root, factory) {
 	// CommonJS-based (e.g. NodeJS) API
 	if(typeof module === "object" && module.exports) {
-		// jquery required -- check if this is loaded outside of dependency managers
 		module.exports = factory(require("jquery"));
 	// AMD-based (e.g. RequireJS) API
 	} else if(typeof define === "function" && define.amd) {
@@ -14,6 +11,12 @@
 	}
 }(this, function($) {
 	
+	/**
+	 * Create table element and CommonTable handler.
+	 * @param {String} [tableId] - Optional table ID.
+	 * @param {String} [tableClass] - Optional table class.
+	 * @param {String|jQuery} [container] - Optional container to append table to.
+	 */
 	function CommonTable(tableId, tableClass, container) {
 		this.tableData    = null;
 		this.hdrGroups    = [];
@@ -27,13 +30,40 @@
 		return this;
 	};
 	
-	
+	/**
+	 * Append table to container element.
+	 * @param {String|jQuery} container - Container select or jQuery DOM element.
+	 */
 	CommonTable.prototype.appendTo = function(container) {
 		this.tableElement.appendTo(container);
 		return this;
 	};
 	
 	
+	/**
+	 * Prepend table to container element.
+	 * @param {String|jQuery} container - Container select or jQuery DOM element.
+	 */
+	CommonTable.prototype.prependTo = function(container) {
+		this.tableElement.prependTo(container);
+		return this;
+	};
+	
+	/**
+	 * Add column. Parameters may either be specified as list of arguments, or formatted into single object 
+	 * literal with parameter names as below. Title and key are required.
+	 * @param {String} group - The header group. If not null, used to group two or more headers as subheaders 
+	 *        under a banner header (via colspan).
+	 * @param {String} title - The title to display the header as.
+	 * @param {String} key - The key used to retrieve data from this header.
+	 * @param {String} [dateFormat] - Optional date format to format dates under this header.
+	 * @param {String} [hdrStyles] - Optional styles to apply to the header. Overrides any colStyles 
+	 *                 properties.
+	 * @param {String} [colStyles] - Optional styles to apply to every row in this column (including header). 
+	 *                 If you only want to apply to non-header cells, must override values in hdrStyles.
+	 * @param {String} [onClick] - Optional onClick functionality to add to each cell (excluding header). 
+	 *                 Callback will be given the entire row's data as the parameter.
+	 */
 	CommonTable.prototype.addColumn = function(group, title, key, dateFormat, hdrStyles, colStyles, onClick) {
 		if(group.hasOwnProperty("title") && group.hasOwnProperty("key") && !title && !key) {
 			// add as object literal
@@ -59,7 +89,11 @@
 		return this;
 	};
 	
-	
+	/**
+	 * [Re]draw table headers.
+	 * @param {String} [sortOnKey] - Option key to sort on.
+	 * @param {Boolean} [ascending] - If sorting, whether ascending or descending order.
+	 */
 	CommonTable.prototype.createHeaders = function(sortOnKey, ascending) {
 		this.tbodyElement.html("");
 		var hdrRows = [
@@ -74,7 +108,7 @@
 			// add group header, or extend the colspan, if necessary
 			if(hdr.group) {
 				if(lastGroupName && hdr.group === lastGroupName) {
-					lastGroupElem.attr("colspan", 1+lastGroupElem.attr("colspan"));
+					lastGroupElem.attr("colspan", 1+parseInt(lastGroupElem.attr("colspan")));
 				} else {
 					lastGroupName = hdr.group;
 					lastGroupElem = $("<th>", {
@@ -133,7 +167,17 @@
 		return this;
 	};
 	
-	
+	/**
+	 * Populate and [re]draw table.
+	 * @param {Array} tableData - Array of objects, representing data by row. Data is not stored to object or 
+	 *        dynamically bound in any way. To update table, must be redrawn, passing the updated data array.
+	 * @param {String} [sortOnKey] - Option key to sort on.
+	 * @param {Boolean} [ascending] - If sorting, whether ascending or descending order.
+	 * @param {Function} [dateFormatter] - Optional date formatting function that takes parameters in the 
+	 *        order of the date value and the date format. Will only be called if column header has a 
+	 *        dateFormat value. Attempted in try-catch block, so all values are attempted to be formatted, but
+	 *        if formatter throws exception, continues as if non-date value.
+	 */
 	CommonTable.prototype.populateTable = function(tableData, sortOnKey, ascending, dateFormatter) {
 		// recreate headers, which should also clear all rows
 		this.createHeaders(sortOnKey, ascending);

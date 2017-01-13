@@ -1,4 +1,3 @@
-/* defaults */
 body {
   font-family: 'Century Gothic', CenturyGothic, Geneva, AppleGothic, sans-serif;
   font-size: 1.0em;
@@ -25,7 +24,6 @@ input, select {
 .disabled btn, .disabled input, .disabled select, btn.disabled, input.disabled, select.disabled {
   cursor: not-allowed;
 }
-
 
 /* generic button style */
 .btn, .btn-disabled {
@@ -91,49 +89,6 @@ option:disabled {
   border-right: 1px solid #b9cad8;
 }
 
-/* generic table */
-.cm-table {
-  border-collapse: collapse;
-  border-top: 1px solid #aaa;
-  border-bottom: 1px solid #aaa;
-  font-size: 0.75em;
-}
-.cm-table td, .cm-table th {
-  /* needed for vertically aligned icons to work */
-  position: relative;
-  padding: 2px 4px;
-}
-.cm-table th {
-  /*background: #C5D7E1;*/
-  background: #606465;
-  color: #fff;
-  padding-right: 16px;
-}
-.cm-table tr:nth-child(even) {
-  background: #eee;
-}
-.cm-table td {
-  border: 1px #ddd;
-  border-style: none solid;
-}
-.nodata td {
-  font-style: italic;
-}
-
-/* sort icons */
-.icon-ascending, .icon-descending {
-  position: absolute;
-  top: calc(50% - 8px);
-  right: 4px;
-  font-style: normal;
-}
-.icon-ascending::before {
-  content: "\25B4";
-}
-.icon-descending::before {
-  content: "\25BE";
-}
-
 /* for grabbing functionality */
 .grab {
   cursor: move;
@@ -151,5 +106,4 @@ option:disabled {
 /* jquery-ui overrides */
 .ui-autocomplete {
   z-index: 9999;
-  font-size: 12px;
 }

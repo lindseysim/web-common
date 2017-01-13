@@ -1,9 +1,6 @@
-
-// START IIFE (Immediately-Invoked Function Expression) Constructor
 !function(root, factory) {
 	// CommonJS-based (e.g. NodeJS) API
 	if(typeof module === "object" && module.exports) {
-		// jquery required -- check if this is loaded outside of dependency managers
 		module.exports = factory(require("jquery"));
 	// AMD-based (e.g. RequireJS) API
 	} else if(typeof define === "function" && define.amd) {
