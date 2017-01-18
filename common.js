@@ -57,18 +57,47 @@
 		 * @param {string} [direction="right"] - Side in which tooltip should appear.
 		 * @returns {jQuery} Itself.
 		 */
-		$.fn.addTooltip = function(tooltipMsg, direction) {
-			if(!tooltipMsg) { return; }
-			if(!direction) {
-				direction = "right";
-			} else {
-				direction = direction.toLowerCase().trim();
-				if(direction != "left" && direction != "right" && direction != "top" && direction != "bottom") {
-					direction = "right";
+		jQuery.fn.addTooltip = function(tooltipMsg, direction) {
+			if(!tooltipMsg) {
+				this.removeClass("cm-tooltip-left cm-tooltip-right cm-tooltip-top cm-tooltip-bottom");
+				this.removeAttribute("cm-tooltip-msg");
+				return;
+			}
+			var dirs = ["right", "left", "top", "bottom"], 
+				iDir = -1;
+			if(direction) {
+				iDir = $.inArray(direction.toLowerCase().trim(), dirs);
+			}
+			if(iDir >= 0) {
+				for(var i = 0; i < dirs.length; i++) {
+					if(i === iDir) {
+						this.addClass("cm-tooltip-"+dirs[i]);
+					} else {
+						this.removeClass("cm-tooltip-"+dirs[i]);
+					}
 				}
 			}
-			this.addClass("cm-tooltip-"+direction).attr("cm-tooltip-msg", tooltipMsg);
+			this.attr("cm-tooltip-msg", tooltipMsg);
 			return this;
+		};
+		
+		/**
+		 * Add help icon with tooltip.
+		 * @param {string} tooltipMsg - The tooltip content.
+		 * @param {string} [direction="right"] - Side in which tooltip should appear.
+		 * @param {Object} [style] - Additional optional styles to the icon.
+		 * @returns {jQuery} Itself.
+		 */
+		jQuery.fn.appendHelpIcon = function(tooltipMsg, direction, style) {
+			if(!direction) { direction = "top"; }
+			var i = $("<i>", {"class": "cm-help-icon", "text": "?"}).appendTo(this)
+				.addTooltip(tooltipMsg, direction);
+			if(style) { i.css(style); }
+			return this;
+		};
+		
+		jQuery.fn.removeHelpIcon = function() {
+			this.find(".cm-help-icon").remove();
 		};
 		
 		//****************************************************************************************************
