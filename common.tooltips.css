@@ -84,7 +84,8 @@
 
 /* vertical positionings */
 .cm-tooltip-top:after, .cm-tooltip-bottom:after {
-  left: -25%;
+  left: -50%;
+  transform: translateX(-50%);
 }
 
 /* top cm-tooltip styles */
