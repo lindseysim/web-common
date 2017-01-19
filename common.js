@@ -247,7 +247,7 @@
 		// Add modal close functionality by clicking anywhere not in the modal
 		$("#cm-modal-outer").click(function(evt) {
 			if(window.commonGlobals.modalNotExitable) { return; }
-			if(!$(evt.target).closest('#cm-modal-container div')) {
+			if(!$(evt.target).closest('#cm-modal-container div').length) {
 				$("#cm-modal-outer").hide();
 			}
 		});
@@ -375,7 +375,8 @@
 		 *        (so as to visually signify the modal status). Keep in mind in older browsers that don't 
 		 *        support transparency it'll just grey out the entire background.
 		 * @param {boolean} options.notExitable - Modal content closes when clicking outside of modal, by 
-		 *        default. Set true to override this (that is, modal can only be closed programmatically).
+		 *        default. Set true to override this (that is, modal can only be closed programmatically -- 
+		 *        which by default is still allowed via the closer).
 		 * @param {boolean} options.hideCloser - If set true, does not automatically apply a close modal "X" 
 		 *        to the top right of the content.
 		 */
@@ -397,6 +398,8 @@
 				}
 				if(!options.showBackground) {
 					modalContainer.css('background-color', 'transparent');
+				} else {
+					modalContainer.css('background-color', '');
 				}
 				modalContainer.show();
 				window.commonGlobals.modalOpened = true;

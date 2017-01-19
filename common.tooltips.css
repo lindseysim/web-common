@@ -24,6 +24,7 @@
 
 /* triangle pointer */
 .cm-tooltip-left:before, .cm-tooltip-right:before, .cm-tooltip-top:before, .cm-tooltip-bottom:before {
+  height: 0;
   z-index: 1001;
   border: 6px solid transparent;
   content: "";
@@ -43,12 +44,14 @@
 }
 
 /* horizontal positionings */
-.cm-tooltip-left:before, .cm-tooltip-left:after, .cm-tooltip-right:before, .cm-tooltip-right:after 
-{
-  bottom: 50%;
+.cm-tooltip-left:before, .cm-tooltip-left:after, .cm-tooltip-right:before, .cm-tooltip-right:after {
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 .cm-tooltip-left:before, .cm-tooltip-right:before {
-  top: 25%;
+  
 }
 .cm-tooltip-left:after, .cm-tooltip-right:after {
   margin-bottom: -13px;
