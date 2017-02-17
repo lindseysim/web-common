@@ -90,14 +90,14 @@
 		 */
 		jQuery.fn.appendHelpIcon = function(tooltipMsg, direction, style) {
 			if(!direction) { direction = "top"; }
-			var i = $("<i>", {"class": "cm-help-icon", "text": "?"}).appendTo(this)
+			var i = $("<i>", {"class": "cm-icon", "text": "?"}).appendTo(this)
 				.addTooltip(tooltipMsg, direction);
 			if(style) { i.css(style); }
 			return this;
 		};
 		
 		jQuery.fn.removeHelpIcon = function() {
-			this.find(".cm-help-icon").remove();
+			this.find(".cm-icon").remove();
 		};
 		
 		//****************************************************************************************************

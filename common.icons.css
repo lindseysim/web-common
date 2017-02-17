@@ -1,0 +1,26 @@
+.cm-icon {
+  position: absolute;
+  margin: 2px 4px;
+  background-color: #41525a;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  text-align: center;
+  color: #fff;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: bolder;
+  line-height: 16px;
+  cursor: default;
+  
+}
+.cm-icon:after {
+  font-weight: normal;
+}
+/* help icon */
+.cm-help-icon {
+  
+}
+.cm-help-icon:after {
+  
+}
