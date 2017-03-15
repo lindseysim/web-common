@@ -71,10 +71,10 @@ Returned as object if instantiated via CommonJS or AMD import. Otherwise appende
 
 **common.setModal(visible, content, options)** : Creates a new modal dialog (or closes, if visible=false). Content is the HTML content of the inner dialog element. Options may be provided with:
 
-* id : Id of inner modal dialog element.
-* showBackground : If true, creates a semi-transparent background over window.
-* notExitable : Normally modal closes on clicking anywhere outside modal dialog element. If true, this prevents this functionality.
-* hideCloser : If true, does not apply the automatically placed "X" to close dialog on upper-right.
+* id - Id of inner modal dialog element.
+* showBackground - If true, creates a semi-transparent background over window.
+* notExitable - Normally modal closes on clicking anywhere outside modal dialog element. If true, this prevents this functionality.
+* hideCloser - If true, does not apply the automatically placed "X" to close dialog on upper-right.
 
 **common.setModalAsLoading(visible, content, options)** : Creates a new modal dialog with default values prepped for loading, including options of: id=cm-"modal-loading-dialog"; addDetails=true; showBackground=true; notExitable=true; hideCloser=true; imgUrl="images/loader.gif".
 
@@ -90,10 +90,22 @@ Requires common.table module.
 
 ** CommonTable.prototype.addColumn(group, title, key, dateFormat, hdrStyles, colStyles, onClick) ** : Add column. Parameters may either be specified as list of arguments, or formatted into single object literal with parameter names as below. Title and key are required.
 
-* \@param {String} group - The header group. If not null, used to group two or more headers as subheaders under a banner header (via colspan).
-* \@param {String} title - The title to display the header as.
-* \@param {String} key - The key used to retrieve data from this header.
-* \@param {String} [dateFormat] - Optional date format to format dates under this header.
-* \@param {String} [hdrStyles] - Optional styles to apply to the header. Overrides any colStyles properties.
-* \@param {String} [colStyles] - Optional styles to apply to every row in this column (including header). If you only want to apply to non-header cells, must override values in hdrStyles.
-* \@param {String} [onClick] - Optional onClick functionality to add to each cell (excluding header). Callback will be given the entire row's data as the parameter.
+* {String} group - The header group. If not null, used to group two or more headers as subheaders under a banner header (via colspan).
+* {String} title - The title to display the header as.
+* {String} key - The key used to retrieve data from this header.
+* {String} [dateFormat] - Optional date format to format dates under this header.
+* {String} [hdrStyles] - Optional styles to apply to the header. Overrides any colStyles properties.
+* {String} [colStyles] - Optional styles to apply to every row in this column (including header). If you only want to apply to non-header cells, must override values in hdrStyles.
+* {String} [onClick] - Optional onClick functionality to add to each cell (excluding header). Callback will be given the entire row's data as the parameter.
+
+** CommonTable.prototype.createHeaders(sortOnKey, ascending) ** : [Re]draw table headers.
+
+* {String} [sortOnKey] - Option key to sort on.
+* {Boolean} [ascending] - If sorting, whether ascending or descending order.
+
+** CommonTable.prototype.populateTable(tableData, sortOnKey, ascending, dateFormatter) ** : Populate and [re]draw table.
+
+* {Array} tableData - Array of objects, representing data by row. Data is not stored to object or dynamically bound in any way. To update table, must be redrawn, passing the updated data array.
+* {String} [sortOnKey] - Option key to sort on.
+* {Boolean} [ascending] - If sorting, whether ascending or descending order.
+* {Function} [dateFormatter] - Optional date formatting function that takes parameters in the order of the date value and the date format. Will only be called if column header has a dateFormat value. Attempted in try-catch block, so all values are attempted to be formatted, but if formatter throws exception, continues as if non-date value.
