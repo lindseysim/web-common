@@ -230,7 +230,6 @@
 			window.browserType.operaVersion = match ? parseInt(match[1]) : 9999;
 		}
 		
-		
 		//****************************************************************************************************
 		// Prep for modal content
 		//****************************************************************************************************
@@ -261,6 +260,19 @@
 	// Return object of utility functions
 	//********************************************************************************************************
 	return {
+		
+		/**
+		 * Find GET parameters in current URL.
+		 * @returns {Object} Literal of key-value GET variables found in URL.
+		 */
+		getUrlGetVars: function() {
+			var vars = {};
+			window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+				vars[key] = value;
+			});
+			return vars;
+		}, 
+		
 		/**
 		 * Adds the handling of adding/removing the 'grab' and 'grabbing' css classes on mouse drag events. 
 		 * Original for the map (as OpenLayers doesn't do this automatically) but useful for a lot of other 
@@ -405,6 +417,13 @@
 				window.commonGlobals.modalOpened = true;
 				window.commonGlobals.modalNotExitable = !!options.notExitable;
 			}
+		}, 
+		
+		/**
+		 * Hide any currently visible modal.
+		 */
+		hideModal: function() {
+			this.setModal(false);
 		}
 		
 	};
