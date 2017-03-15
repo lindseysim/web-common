@@ -21,6 +21,14 @@ JQuery is required for some functions to work.
 
 ### Global Additions ###
 
+**window.defaultErrorMessage** : Default error message.
+
+**window.browserType** : Stores information on browser type and version.
+
+**window.commonGlobals** : Variables need for global functionality, do not modify.
+
+**window.commonHelpersDefined** : Marked true once common functionality is instantiated.
+
 ### Prototype Modifications ###
 
 **String.prototype.capitalize()** : Will capitalize the each word in the string (using whitespace to delineate words).
@@ -38,3 +46,15 @@ JQuery is required for some functions to work.
 **jQuery.fn.removeHelpIcon()** : Removes any appended help icon.
 
 ### Date (UTC) Modifications ###
+
+**window.DateUTC(year, month, day, hour, min, sec)** : Creates a datetime, forced as UTC. Note that month is 1-12 (unlike Date constructor as 0-11).
+
+**Date.prototype.asUTC()** : Converts datetime to UTC.
+
+**Date.prototype.asUTCDate()** : Converts date only to UTC, dropping all time information.
+
+**Date.prototype.toUTCDate()** : See above.
+
+**Date.prototype.addDays(days)** : Returns new date with days added (or removed if negative).
+
+**Date.prototype.daysInMonth()** : Returns number of days in the month for this date.
