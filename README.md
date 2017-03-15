@@ -19,7 +19,7 @@ Library is configured for import via CommonJS based API (e.g. NodeJS), AMD-based
 
 JQuery is required for some functions to work.
 
-### Global Additions ###
+## Global Additions ##
 
 **window.defaultErrorMessage** : Default error message.
 
@@ -29,7 +29,7 @@ JQuery is required for some functions to work.
 
 **window.commonHelpersDefined** : Marked true once common functionality is instantiated.
 
-### Prototype Modifications ###
+## Prototype Modifications ##
 
 **String.prototype.capitalize()** : Will capitalize the each word in the string (using whitespace to delineate words).
 
@@ -39,13 +39,13 @@ JQuery is required for some functions to work.
 
 **jQuery.fn.center()** : Will center an element on screen using absolute positioning.
 
-**jQuery.fn.addTooltip(tooltipMsg, direction)** : Will add a tooltip to an element using pure css.
+**jQuery.fn.addTooltip(tooltipMsg, direction)** : Will add a tooltip to an element using pure css. Direction may be "left", "right", "top", or "bottom" (defaults to "right").
 
-**jQuery.fn.appendHelpIcon(tooltipMsg, direction, style)** : Will append a help icon at the end of this element, with a tooltip.
+**jQuery.fn.appendHelpIcon(tooltipMsg, direction, style)** : Will append a help icon at the end of this element, with a tooltip. Direction may be "left", "right", "top", or "bottom" (defaults to "right"). Style is optional styles object as keys-values which will be applied to the help icon.
 
 **jQuery.fn.removeHelpIcon()** : Removes any appended help icon.
 
-### Date (UTC) Modifications ###
+## Date (UTC) Modifications ##
 
 **window.DateUTC(year, month, day, hour, min, sec)** : Creates a datetime, forced as UTC. Note that month is 1-12 (unlike Date constructor as 0-11).
 
@@ -58,3 +58,22 @@ JQuery is required for some functions to work.
 **Date.prototype.addDays(days)** : Returns new date with days added (or removed if negative).
 
 **Date.prototype.daysInMonth()** : Returns number of days in the month for this date.
+
+## Common Object ##
+
+Returned as object if instantiated via CommonJS or AMD import. Otherwise appended to root as common (e.g. window.common).
+
+**common.addGrabCursorFunctionality(element)** : Adds grab cursor functionality to draggable element.
+
+**common.newWindow(e, url, name, width, height, minimal)** : Creates a new, centered window, even accounting for dual screen monitors.. The event object, if not provided, is grabbed from window.event. This is used to screen against middle-mouse clicks and ctrl+left-clicks which should be handled separately to create a new tab. If minimal is true, attempts to hide menubar, statusbar, and location -- though many modern browsers may prevent some or all of this.
+
+### Modal Dialogs ###
+
+**common.setModal(visible, content, options)** : Creates a new modal dialog (or closes, if visible=false). Content is the HTML content of the inner dialog element. Options may be provided with:
+
+* id : Id of inner modal dialog element.
+* showBackground : If true, creates a semi-transparent background over window.
+* notExitable : Normally modal closes on clicking anywhere outside modal dialog element. If true, this prevents this functionality.
+* hideCloser : If true, does not apply the automatically placed "X" to close dialog on upper-right.
+
+**common.setModalAsLoading(visible, content, options)** : Creates a new modal dialog with default values prepped for loading, including options of: id=cm-"modal-loading-dialog"; addDetails=true; showBackground=true; notExitable=true; hideCloser=true; imgUrl="images/loader.gif".
