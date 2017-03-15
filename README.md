@@ -90,10 +90,10 @@ Requires common.table module.
 
 ** CommonTable.prototype.addColumn(group, title, key, dateFormat, hdrStyles, colStyles, onClick) ** : Add column. Parameters may either be specified as list of arguments, or formatted into single object literal with parameter names as below. Title and key are required.
 
-* @param {String} group - The header group. If not null, used to group two or more headers as subheaders under a banner header (via colspan).
-* @param {String} title - The title to display the header as.
-* @param {String} key - The key used to retrieve data from this header.
-* @param {String} [dateFormat] - Optional date format to format dates under this header.
-* @param {String} [hdrStyles] - Optional styles to apply to the header. Overrides any colStyles properties.
-* @param {String} [colStyles] - Optional styles to apply to every row in this column (including header). If you only want to apply to non-header cells, must override values in hdrStyles.
-* @param {String} [onClick] - Optional onClick functionality to add to each cell (excluding header). Callback will be given the entire row's data as the parameter.
+* \@param {String} group - The header group. If not null, used to group two or more headers as subheaders under a banner header (via colspan).
+* \@param {String} title - The title to display the header as.
+* \@param {String} key - The key used to retrieve data from this header.
+* \@param {String} [dateFormat] - Optional date format to format dates under this header.
+* \@param {String} [hdrStyles] - Optional styles to apply to the header. Overrides any colStyles properties.
+* \@param {String} [colStyles] - Optional styles to apply to every row in this column (including header). If you only want to apply to non-header cells, must override values in hdrStyles.
+* \@param {String} [onClick] - Optional onClick functionality to add to each cell (excluding header). Callback will be given the entire row's data as the parameter.
