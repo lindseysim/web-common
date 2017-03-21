@@ -247,10 +247,22 @@
 		$("#cm-modal-outer").click(function(evt) {
 			if(window.commonGlobals.modalNotExitable) { return; }
 			if(!$(evt.target).closest('#cm-modal-container div').length) {
-				$("#cm-modal-outer").hide();
+				window.commonGlobals.closeModal();
 			}
 		});
-	
+		/**
+		 * Close any open modal.
+		 * @param {boolean} suppressOnClose - If true, suppresses onClose event, if one is attached.
+		 */
+		window.commonGlobals.closeModal = function(suppressOnClose) {
+			$("#cm-modal-outer").hide();
+			if(window.commonGlobals.modalOnClose) {
+				if(!suppressOnClose) {
+					window.commonGlobals.modalOnClose();
+				}
+				window.commonGlobals.modalOnClose = null;
+			}
+		};
 		// set global helpers as defined
 		window.commonHelpersDefined = true;
 	}
@@ -338,7 +350,7 @@
 		//****************************************************************************************************
 		/**
 		 * Create (or destroy) a modal dialog with a default loading message (in this case: "Loading..").
-		 * @param {boolean} visible - True creates, false removes.
+		 * @param {boolean} visible - True creates, false closes.
 		 * @param {Object} options
 		 * @param {string} [content="Loading.."] - The loading message string.
 		 * @param {string} [options.imgUrl="images/loader.gif"] - The link to a loading image. If 
@@ -353,6 +365,8 @@
 		 *        bt default.  Set true to override this (that is, modal can only be closed programmatically).
 		 * @param {boolean} [options.hideCloser=true] - If set true, does not automatically apply a close modal
 		 *        "X" to the top right of the content.
+		 * @param {callback} [options.onClose] - Function to run before closing modal. Note this does not run 
+		 *        if simply changing/swapping out modal content.
 		 */
 		setModalAsLoading: function(visible, content, options) {
 			if(!visible) {
@@ -379,7 +393,7 @@
 
 		/**
 		 * Create (or destroy) a modal dialog.
-		 * @param {boolean} visible - True creates, false removes.
+		 * @param {boolean} visible - True creates, false closes.
 		 * @param {string} content - The HTML content of the modal dialog.
 		 * @param {Object} options
 		 * @param {string} options.id - Whether to attach an ID to the modal content div.
@@ -391,20 +405,22 @@
 		 *        which by default is still allowed via the closer).
 		 * @param {boolean} options.hideCloser - If set true, does not automatically apply a close modal "X" 
 		 *        to the top right of the content.
+		 * @param {callback} [options.onClose] - Function to run before closing modal. Note this does not run 
+		 *        if simply changing/swapping out modal content.
 		 */
 		setModal: function(visible, content, options) {
 			if(!options) { options = {}; }
 			var modalContainer = $("#cm-modal-outer");
 			if(!visible) {
-				modalContainer.hide();
+				window.commonGlobals.closeModal();
 			} else {
 				var modalContent = modalContainer.find(".cm-modal-inner")
 					.attr("id", options.id ? options.id : "")
 					.html(content);
 				if(!options.hideCloser) {
-					modalContent.prepend(
+					modalContent.append(
 						$("<div>", {id: "cm-modal-closer"}).on("click", function() {
-							modalContainer.hide();
+							window.commonGlobals.closeModal();
 						})
 					);
 				}
@@ -413,6 +429,11 @@
 				} else {
 					modalContainer.css('background-color', '');
 				}
+				if(options.onClose) {
+					window.commonGlobals.modalOnClose = options.onClose;
+				} else {
+					window.commonGlobals.modalOnClose = null;
+				}
 				modalContainer.show();
 				window.commonGlobals.modalOpened = true;
 				window.commonGlobals.modalNotExitable = !!options.notExitable;
@@ -420,10 +441,19 @@
 		}, 
 		
 		/**
-		 * Hide any currently visible modal.
+		 * Hide any currently visible modal. Same as closeModal().
+		 * @param {boolean} suppressOnClose - If true, suppresses onClose event, if one is attached.
 		 */
-		hideModal: function() {
-			this.setModal(false);
+		hideModal: function(suppressOnClose) {
+			window.commonGlobals.closeModal(suppressOnClose);
+		}, 
+		
+		/**
+		 * Hide any currently visible modal. Same as hideModal().
+		 * @param {boolean} suppressOnClose - If true, suppresses onClose event, if one is attached.
+		 */
+		closeModal: function(suppressOnClose) {
+			window.commonGlobals.closeModal(suppressOnClose);
 		}
 		
 	};
