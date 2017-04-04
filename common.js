@@ -9,7 +9,7 @@
 	} else {
 		root.common = factory(root.$);
 	}
-}(this, function($) {
+}(this, function(jQuery) {
 	
 	if(!window.commonHelpersDefined) {
 		//****************************************************************************************************
@@ -319,6 +319,41 @@
 			}
 		}, 
 		
+		createDropdown: function(element, menu) {
+			var addDropdown = function(outer, menuObj) {
+				var inner = $("<div>", {'class': 'cm-dropdown-menu'}).appendTo(outer);
+				for(var i = 0; i < menuObj.length; i++) {
+					var m = menuObj[i];
+					var menuItem = $("<div>", {
+						'id': m.id ? m.id : '', 
+						'class': 'cm-dropdown-menu-item'
+					}).appendTo(inner);
+					if(m.class) { menuItem.addClass(m.class); }
+					if(m.style) { menuItem.css(m.style); }
+					if(m.href) {
+						$("<a>", {
+							href: m.href, 
+							target: m.target ? m.target : '',
+							text: m.text
+						}).appendTo(menuItem);
+					} else {
+						menuItem.text(m.text);
+					}
+					if(m.onClick) {
+						menuItem.on('click', m.onClick);
+					}
+					if(m.menu) {
+						addDropdown(menuItem.addClass("cm-dropdown"), m.menu);
+					}
+				}
+			};
+			addDropdown($(element).addClass("cm-dropdown"), menu);
+		}, 
+		
+		clearDropdown: function(element) {
+			$(element).removeClass("cm-dropdown").find(".cm-dropdown-menu").remove();
+		}, 
+		
 		//****************************************************************************************************
 		// Modal dialogs. On first loading common 3 elements (#cm-modal-outer, #cm-modal-container, and 
 		// #cm-modal-content) are added to the document body. These are required for the below functions to 
@@ -369,16 +404,16 @@
 		 * Create (or destroy) a modal dialog.
 		 * @param {boolean} visible - True creates, false removes.
 		 * @param {string} content - The HTML content of the modal dialog.
-		 * @param {Object} options
-		 * @param {string} options.id - Whether to attach an ID to the modal content div.
-		 * @param {boolean} options.showBackground - Whether to hve a semi-transparent div over the background
-		 *        (so as to visually signify the modal status). Keep in mind in older browsers that don't 
-		 *        support transparency it'll just grey out the entire background.
-		 * @param {boolean} options.notExitable - Modal content closes when clicking outside of modal, by 
+		 * @param {Object} [options]
+		 * @param {string} [options.id] - Whether to attach an ID to the modal content div.
+		 * @param {boolean} [options.hideCloser] - If set true, does not automatically apply a close modal "X"
+		 *        to the top right of the content.
+		 * @param {boolean} [options.notExitable] - Modal content closes when clicking outside of modal, by 
 		 *        default. Set true to override this (that is, modal can only be closed programmatically -- 
 		 *        which by default is still allowed via the closer).
-		 * @param {boolean} options.hideCloser - If set true, does not automatically apply a close modal "X" 
-		 *        to the top right of the content.
+		 * @param {boolean} [options.showBackground] - Whether to have a semi-transparent div over the 
+		 *        background (so as to visually signify the modal status). Keep in mind in older browsers that
+		 *        don't support transparency it'll just grey out the entire background.
 		 */
 		setModal: function(visible, content, options) {
 			if(!options) { options = {}; }
