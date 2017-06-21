@@ -11,7 +11,7 @@
 	}
 }(this, function(jQuery) {
 	
-	if(!window.commonHelpersDefined) {
+	if(!window.cmLibHelpersDefined) {
 		//****************************************************************************************************
 		// Misc prototype extensions
 		//****************************************************************************************************
@@ -233,7 +233,7 @@
 		//****************************************************************************************************
 		// Prep for modal content
 		//****************************************************************************************************
-		window.commonGlobals = {};
+		window.cmLibGlobals = {};
 		// Add modal content (if not already existing)
 		if($("#cm-modal-outer").length === 0) {
 			$("<div>", {'class': 'cm-modal-inner'}).appendTo(
@@ -245,32 +245,35 @@
 		$("#cm-modal-outer").hide();
 		// Add modal close functionality by clicking anywhere not in the modal
 		$("#cm-modal-outer").click(function(evt) {
-			if(window.commonGlobals.modalNotExitable) { return; }
+			if(window.cmLibGlobals.modalNotExitable) { return; }
 			if(!$(evt.target).closest('#cm-modal-container div').length) {
-				window.commonGlobals.closeModal();
+				window.cmLibGlobals.closeModal();
 			}
 		});
 		/**
 		 * Close any open modal.
 		 * @param {boolean} suppressOnClose - If true, suppresses onClose event, if one is attached.
 		 */
-		window.commonGlobals.closeModal = function(suppressOnClose) {
+		window.cmLibGlobals.closeModal = function(suppressOnClose) {
 			$("#cm-modal-outer").hide();
-			if(window.commonGlobals.modalOnClose) {
+			if(window.cmLibGlobals.modalOnClose) {
 				if(!suppressOnClose) {
-					window.commonGlobals.modalOnClose();
+					window.cmLibGlobals.modalOnClose();
 				}
-				window.commonGlobals.modalOnClose = null;
+				window.cmLibGlobals.modalOnClose = null;
+				window.cmLibGlobals.modalOpened = false;
 			}
 		};
 		// set global helpers as defined
-		window.commonHelpersDefined = true;
+		window.cmLibHelpersDefined = true;
 	}
 	
 	
 	//********************************************************************************************************
 	// Return object of utility functions
 	//********************************************************************************************************
+	var commonGlobals = window.cmLibGlobals;
+	
 	return {
 		
 		/**
@@ -324,8 +327,8 @@
 				var dualScreenTop  = window.screenTop  !== undefined ? window.screenTop  : screen.top;
 				var winWidth  = window.innerWidth  ? window.innerWidth  : document.documentElement.clientWidth  ? document.documentElement.clientWidth : screen.width;
 				var winHeight = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
-				var left = ((winWidth / 2)  - (width / 2))  + dualScreenLeft;
-				var top  = ((winHeight / 2) - (height / 2)) + dualScreenTop;
+				var left = dualScreenLeft + 0.5*(winWidth - width);
+				var top  = dualScreenTop  + 0.5*(winHeight - height);
 				var options = "width=" + width + ", height=" + height + ", left=" + left + ", top=" + top;
 				if(minimal) {
 					options += ", scrollbars=yes, menubar=no, statusbar=no, location=no";
@@ -396,6 +399,15 @@
 		// work.
 		//****************************************************************************************************
 		/**
+		 * Check whether modal is open.
+		 * @returns {Boolean} Whether modal window is opened.
+		 */
+		isModalOpen: function() {
+			window.cmLibGlobals.modalOpened = $("#cm-modal-outer").is(":visible");
+			return window.cmLibGlobals.modalOpened;
+		}, 
+		
+		/**
 		 * Create (or destroy) a modal dialog with a default loading message (in this case: "Loading..").
 		 * @param {boolean} visible - True creates, false closes.
 		 * @param {Object} options
@@ -459,7 +471,7 @@
 			if(!options) { options = {}; }
 			var modalContainer = $("#cm-modal-outer");
 			if(!visible) {
-				window.commonGlobals.closeModal();
+				commonGlobals.closeModal();
 			} else {
 				var modalContent = modalContainer.find(".cm-modal-inner")
 					.attr("id", options.id ? options.id : "")
@@ -467,7 +479,7 @@
 				if(!options.hideCloser) {
 					modalContent.append(
 						$("<div>", {id: "cm-modal-closer"}).on("click", function() {
-							window.commonGlobals.closeModal();
+							commonGlobals.closeModal();
 						})
 					);
 				}
@@ -477,14 +489,52 @@
 					modalContainer.css('background-color', '');
 				}
 				if(options.onClose) {
-					window.commonGlobals.modalOnClose = options.onClose;
+					commonGlobals.modalOnClose = options.onClose;
 				} else {
-					window.commonGlobals.modalOnClose = null;
+					commonGlobals.modalOnClose = null;
 				}
 				modalContainer.show();
-				window.commonGlobals.modalOpened = true;
-				window.commonGlobals.modalNotExitable = !!options.notExitable;
+				commonGlobals.modalOpened = true;
+				commonGlobals.modalNotExitable = !!options.notExitable;
 			}
+		}, 
+		
+		/**
+		 * Change modal dialog content while leaving all other options the same. Added benefit of measures to 
+		 * keep the content-size changes from being too jarring when swapping content. However, if there is an
+		 * inline width/height defined in the style, these will be lost.
+		 * @param {string} content - The HTML content of the modal dialog.
+		 * @param {callback} prepContentCallback - If some prep work is needed before determining the new 
+		 *        dimensions.
+		 */
+		changeModal: function(content, prepContentCallback) {
+			if(!this.isModalOpen()) {
+				this.setModal(true, content);
+				if(prepContentCallback) { prepContentCallback(); }
+				return;
+			}
+			var modalContent = $("#cm-modal-outer").find(".cm-modal-inner"), 
+				oldWidth  = modalContent.width(), 
+				oldHeight = modalContent.height();
+			// fix dimensions
+			modalContent.css('width', oldWidth).css('height', oldHeight);
+			// new content
+			modalContent.html(content);
+			if(prepContentCallback) { prepContentCallback(); }
+			// fast store new dims before reverting
+			modalContent.css('height', '').css('width', '');
+			var newWidth  = modalContent.width(), 
+				newHeight = modalContent.height();
+			modalContent.css('width', oldWidth).css('height', oldHeight);
+			// animate then reset to auto
+			modalContent.animate(
+				{height: newHeight, width: newWidth}, 
+				200, 
+				"swing", 
+				function() {
+					modalContent.css('height', '').css('width', '');
+				}
+			);
 		}, 
 		
 		/**
@@ -492,7 +542,7 @@
 		 * @param {boolean} suppressOnClose - If true, suppresses onClose event, if one is attached.
 		 */
 		hideModal: function(suppressOnClose) {
-			window.commonGlobals.closeModal(suppressOnClose);
+			commonGlobals.closeModal(suppressOnClose);
 		}, 
 		
 		/**
@@ -500,7 +550,7 @@
 		 * @param {boolean} suppressOnClose - If true, suppresses onClose event, if one is attached.
 		 */
 		closeModal: function(suppressOnClose) {
-			window.commonGlobals.closeModal(suppressOnClose);
+			commonGlobals.closeModal(suppressOnClose);
 		}
 		
 	};
