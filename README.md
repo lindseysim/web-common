@@ -14,7 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 ## Use ##
 
-Import common.js and common.css for the base commons modules. Import common.table.js to add the table module.
+Import common.min.js and common.min.css for the base commons modules. Import common.table.min.js to add the table module.
 
 Library is configured for import via CommonJS based API (e.g. NodeJS), AMD-based API (e.g. RequireJS), or simply regular instantiation.
 
@@ -26,9 +26,9 @@ JQuery is required for some functions to work.
 
 **window.browserType** : Stores information on browser type and version.
 
-**window.commonGlobals** : Variables need for global functionality, do not modify.
+**window.cmLibGlobals** : Variables need for global functionality, do not modify.
 
-**window.commonHelpersDefined** : Marked true once common functionality is instantiated.
+**window.cmLibHelpersDefined** : Marked true once common functionality is instantiated, do not modify.
 
 ## Prototype Modifications ##
 
@@ -48,7 +48,7 @@ JQuery is required for some functions to work.
 
 ## Date (UTC) Modifications ##
 
-**window.DateUTC(year, month, day, hour, min, sec)** : Creates a datetime, forced as UTC. Note that month is 1-12 (unlike Date constructor as 0-11).
+**DateUTC(year, month, day, hour, min, sec)** : Creates a datetime, forced as UTC. Note that month is 1-12 (unlike Date constructor as 0-11).
 
 **Date.prototype.asUTC()** : Converts datetime to UTC.
 
@@ -64,11 +64,17 @@ JQuery is required for some functions to work.
 
 Returned as object if instantiated via CommonJS or AMD import. Otherwise appended to root as common (e.g. window.common).
 
+**common.getUrlGetVars()** : Find GET parameters in current URL.
+
 **common.addGrabCursorFunctionality(element)** : Adds grab cursor functionality to draggable element.
 
 **common.newWindow(e, url, name, width, height, minimal)** : Creates a new, centered window, even accounting for dual screen monitors.. The event object, if not provided, is grabbed from window.event. This is used to screen against middle-mouse clicks and ctrl+left-clicks which should be handled separately to create a new tab. If minimal is true, attempts to hide menubar, statusbar, and location -- though many modern browsers may prevent some or all of this.
 
+**common.createDropdown(element, menu)** : Create a dropdown menu on an element. Menu parameter is an array of object literals defining the menu. The parameters 'id', 'class', 'style', and 'text', if they exist, are applied. For functionality, either add 'href' and optionally 'target' parameters or supply a callback to an 'onClick' parameter. To create a submenu, simply add a 'menu' parameter with the same nested structure.
+
 ### Modal Dialogs ###
+
+**common.isModalOpen() ** : Check whether modal is open.
 
 **common.setModal(visible, content, options)** : Creates a new modal dialog (or closes, if visible=false). Content is the HTML content of the inner dialog element. Options may be provided with:
 
@@ -78,6 +84,12 @@ Returned as object if instantiated via CommonJS or AMD import. Otherwise appende
 * hideCloser - If true, does not apply the automatically placed "X" to close dialog on upper-right.
 
 **common.setModalAsLoading(visible, content, options)** : Creates a new modal dialog with default values prepped for loading, including options of: id=cm-"modal-loading-dialog"; addDetails=true; showBackground=true; notExitable=true; hideCloser=true; imgUrl="images/loader.gif".
+
+**common.changeModal(content, prepContentCallback)** :  Change modal dialog content while leaving all other options the same. Added benefit of measures to keep the content-size changes from being too jarring when swapping content. However, if there is an inline width/height defined in the style, these will be lost.
+
+**common.closeModal(suppressOnClose)** : Hide any currently visible modal. Same as hideModal().
+
+**common.hideModal(suppressOnClose)** : Hide any currently visible modal. Same as closeModal().
 
 ## CommonTable Class ##
 
