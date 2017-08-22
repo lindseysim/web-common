@@ -55,11 +55,12 @@
 		 * Add tooltip.
 		 * @param {string} tooltipMsg - The tooltip content.
 		 * @param {string} [direction="right"] - Side in which tooltip should appear.
+		 * @param {boolean} [force] - If true, tooltip is always visible.
 		 * @returns {jQuery} Itself.
 		 */
-		jQuery.fn.addTooltip = function(tooltipMsg, direction) {
+		jQuery.fn.addTooltip = function(tooltipMsg, direction, force) {
 			if(!tooltipMsg) {
-				this.removeClass("cm-tooltip-left cm-tooltip-right cm-tooltip-top cm-tooltip-bottom");
+				this.removeClass("cm-tooltip-left cm-tooltip-right cm-tooltip-top cm-tooltip-bottom cm-tooltip-force");
 				this.removeAttribute("cm-tooltip-msg");
 				return;
 			}
@@ -77,6 +78,7 @@
 					}
 				}
 			}
+			if(!!force) { this.addClass("cm-tooltip-force"); }
 			this.attr("cm-tooltip-msg", tooltipMsg);
 			return this;
 		};
@@ -86,12 +88,13 @@
 		 * @param {string} tooltipMsg - The tooltip content.
 		 * @param {string} [direction="right"] - Side in which tooltip should appear.
 		 * @param {Object} [style] - Additional optional styles to the icon.
+		 * @param {boolean} [force] - If true, tooltip is always visible.
 		 * @returns {jQuery} Itself.
 		 */
-		jQuery.fn.appendHelpIcon = function(tooltipMsg, direction, style) {
+		jQuery.fn.appendHelpIcon = function(tooltipMsg, direction, style, force) {
 			if(!direction) { direction = "top"; }
 			var i = $("<i>", {"class": "cm-icon", "text": "?"}).appendTo(this)
-				.addTooltip(tooltipMsg, direction);
+				.addTooltip(tooltipMsg, direction, force);
 			if(style) { i.css(style); }
 			return this;
 		};

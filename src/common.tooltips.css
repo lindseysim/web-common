@@ -22,6 +22,11 @@
   visibility: visible;
 }
 
+/* force visibility */
+.cm-tooltip-force:after, .cm-tooltip-force:before {
+  visibility: visible;
+}
+
 /* triangle pointer */
 .cm-tooltip-left:before, .cm-tooltip-right:before, .cm-tooltip-top:before, .cm-tooltip-bottom:before {
   height: 0;
