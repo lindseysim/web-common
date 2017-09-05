@@ -509,8 +509,10 @@
 		 * @param {string} content - The HTML content of the modal dialog.
 		 * @param {callback} prepContentCallback - If some prep work is needed before determining the new 
 		 *        dimensions.
+		 * @param {boolean} [hideCloser] - Due to HTML refresh, closer will be readded unless this is set to 
+		 *        true.
 		 */
-		changeModal: function(content, prepContentCallback) {
+		changeModal: function(content, prepContentCallback, hideCloser) {
 			if(!this.isModalOpen()) {
 				this.setModal(true, content);
 				if(prepContentCallback) { prepContentCallback(); }
@@ -524,6 +526,14 @@
 			// new content
 			modalContent.html(content);
 			if(prepContentCallback) { prepContentCallback(); }
+			// add closer
+			if(!hideCloser) {
+				modalContent.append(
+					$("<div>", {id: "cm-modal-closer"}).on("click", function() {
+						commonGlobals.closeModal();
+					})
+				);
+			}
 			// fast store new dims before reverting
 			modalContent.css('height', '').css('width', '');
 			var newWidth  = modalContent.width(), 
