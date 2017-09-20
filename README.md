@@ -28,8 +28,6 @@ JQuery is required for some functions to work.
 
 **window.cmLibGlobals** : Variables need for global functionality, do not modify.
 
-**window.cmLibHelpersDefined** : Marked true once common functionality is instantiated, do not modify.
-
 ## Prototype Modifications ##
 
 **String.prototype.capitalize()** : Will capitalize the each word in the string (using whitespace to delineate words).
@@ -72,6 +70,8 @@ Returned as object if instantiated via CommonJS or AMD import. Otherwise appende
 
 **common.createDropdown(element, menu)** : Create a dropdown menu on an element. Menu parameter is an array of object literals defining the menu. The parameters 'id', 'class', 'style', and 'text', if they exist, are applied. For functionality, either add 'href' and optionally 'target' parameters or supply a callback to an 'onClick' parameter. To create a submenu, simply add a 'menu' parameter with the same nested structure.
 
+**common.clearDropdown(element)** : Remove dropdown menu functionality from an element.
+
 ### Modal Dialogs ###
 
 **common.isModalOpen() ** : Check whether modal is open.
@@ -90,6 +90,7 @@ Returned as object if instantiated via CommonJS or AMD import. Otherwise appende
 **common.closeModal(suppressOnClose)** : Hide any currently visible modal. Same as hideModal().
 
 **common.hideModal(suppressOnClose)** : Hide any currently visible modal. Same as closeModal().
+
 
 ## CommonTable Class ##
 
