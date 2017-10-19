@@ -298,7 +298,8 @@
          * @param {jQuery} element - jQuery object for element to add functionality to.
          */
         addGrabCursorFunctionality: function(element) {
-            $(element)
+            element = $(element);
+            element
                 .addClass("grab")
                 .mousedown(function() {
                     element.removeClass("grab").addClass("grabbing");
