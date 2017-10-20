@@ -76,14 +76,12 @@ option:disabled {
 /* for grabbing functionality */
 .grab {
   cursor: move;
-  cursor: url(grab.cur), move;
   cursor: grab;
   cursor: -moz-grab;
   cursor: -webkit-grab;
 }
 .grabbing {
   cursor: move;
-  cursor: url(grabbing.cur), move;
   cursor: grabbing;
   cursor: -moz-grabbing;
   cursor: -webkit-grabbing;
