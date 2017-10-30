@@ -69,7 +69,6 @@
 .cm-tooltip-right:before {
   border-right-color: #333;
   border-right-color: rgba(50, 50, 50, 0.9);
-  
 }
 .cm-tooltip-right:after {
   margin-left: 12px;
@@ -82,7 +81,6 @@
 .cm-tooltip-left:before {
   border-left-color: #333;
   border-left-color: rgba(50, 50, 50, 0.9);
-  
 }
 .cm-tooltip-left:after {
   margin-right: 12px;

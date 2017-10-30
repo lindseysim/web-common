@@ -205,7 +205,7 @@
         window.browserType.isOpera   = (!!window.opr && !!opr.addons) || !!window.opera || ua.indexOf(' opr/') >= 0;
         window.browserType.isFirefox = typeof InstallTrigger !== 'undefined';
         window.browserType.isSafari  = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
-        window.browserType.isChrome  = !!window.chrome && !window.browserType.isOpera;
+        window.browserType.isChrome  = !!window.chrome && !!window.chrome.webstore && !window.browserType.isOpera;
         window.browserType.isIE      = /*@cc_on!@*/false || !!document.documentMode;
         window.browserType.isEdge    = !window.browserType.isIE && !!window.StyleMedia;
         if(window.browserType.isIE) {
