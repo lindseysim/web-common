@@ -420,6 +420,8 @@
          *        null/undefined, looks for "images/loader.gif". If false, does not append any loading image.
          * @param {boolean} [options.addDetails=true] - If true, adds paragraph with class `loading-details` 
          *        for use of addition information.
+         * @param {string} [options.addDetailsText="Please wait.."] - If options.addDetails is true, loads 
+         *        this as loading details text.
          * @param {string} [options.id="modal-loading-dialog"] - ID attached to modal content div.
          * @param {boolean} [options.showBackground=true] - Whether to hve a semi-transparent div over the 
          *        background (so as to visually signify the modal status). Keep in mind in older browsers that
@@ -438,17 +440,18 @@
                 if(!content)                             { content = "Loading.."; }
                 if(!options)                             { options = {}; }
                 if(!options.id)                          { options.id = "cm-modal-loading-dialog"; }
-                if(options.addDetails === undefined)     { options.addDetails = true; }
+                if(options.addDetails === undefined)     { options.addDetails = false; }
+                if(!options.addDetailsText)              { options.addDetailsText = "Please wait.."; }
                 if(options.showBackground === undefined) { options.showBackground = true; }
                 if(options.notExitable === undefined)    { options.notExitable = true; }
                 if(options.hideCloser === undefined)     { options.hideCloser = true; }
                 if(!options.imgUrl && options.imgUrl !== false)  { options.imgUrl = "images/loader.gif"; }
-                var loadingDialog = $("<div>", {'id': 'cm-modal-loading-dialog'}).html("&nbsp;" + content);
+                var loadingDialog = $("<div>").html("&nbsp;" + content);
                 if(options.imgUrl) {
                     loadingDialog.prepend($("<img>", {'src': options.imgUrl, 'alt': 'loading'}));
                 }
                 if(options.addDetails) {
-                    $("<p>", {'class': 'cm-modal-loading-details'}).appendTo(loadingDialog).html("Loading..");
+                    $("<p>", {'class': 'cm-modal-loading-details'}).appendTo(loadingDialog).html(options.addDetailsText);
                 }
                 this.setModal(visible, loadingDialog, options);
             }
