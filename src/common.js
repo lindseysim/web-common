@@ -446,7 +446,7 @@
                 if(options.notExitable === undefined)    { options.notExitable = true; }
                 if(options.hideCloser === undefined)     { options.hideCloser = true; }
                 if(!options.imgUrl && options.imgUrl !== false)  { options.imgUrl = "images/loader.gif"; }
-                var loadingDialog = $("<div>", {'id': 'cm-modal-loading-dialog'}).html("&nbsp;" + content);
+                var loadingDialog = $("<div>").html("&nbsp;" + content);
                 if(options.imgUrl) {
                     loadingDialog.prepend($("<img>", {'src': options.imgUrl, 'alt': 'loading'}));
                 }
