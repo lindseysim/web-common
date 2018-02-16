@@ -34,7 +34,7 @@ input, select {
   background-position: 0 -15px;
   border-color: #aaa;
 }
-.btn-disabled {
+.btn-disabled, .btn:disabled {
   background-image: linear-gradient(to bottom,#DADADA,#e6e6e6);
   background-image: -webkit-gradient(linear,0 0,0 100%,from(#DADADA),to(#e6e6e6));
   background-image: -webkit-linear-gradient(top, #DADADA, #e6e6e6);

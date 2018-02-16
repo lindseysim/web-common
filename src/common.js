@@ -432,6 +432,8 @@
          *        "X" to the top right of the content.
          * @param {callback} [options.onClose] - Function to run before closing modal. Note this does not run 
          *        if simply changing/swapping out modal content.
+         * @return {jQuery} JQuery element for modal container ("#cm-modal-outer .cm-modal-inner") or none if 
+         *         modal was closed.
          */
         setModalAsLoading: function(visible, content, options) {
             if(!visible) {
@@ -453,7 +455,7 @@
                 if(options.addDetails) {
                     $("<p>", {'class': 'cm-modal-loading-details'}).appendTo(loadingDialog).html(options.addDetailsText);
                 }
-                this.setModal(visible, loadingDialog, options);
+                return this.setModal(visible, loadingDialog, options);
             }
         }, 
 
@@ -473,6 +475,8 @@
          *        don't support transparency it'll just grey out the entire background.
          * @param {callback} [options.onClose] - Function to run before closing modal. Note this does not run 
          *        if simply changing/swapping out modal content.
+         * @return {jQuery} JQuery element for modal container ("#cm-modal-outer .cm-modal-inner") or none if 
+         *         modal was closed.
          */
         setModal: function(visible, content, options) {
             if(!options) { options = {}; }
@@ -503,6 +507,7 @@
                 modalContainer.show();
                 commonGlobals.modalOpened = true;
                 commonGlobals.modalNotExitable = !!options.notExitable;
+                return modalContent;
             }
         }, 
         
@@ -515,6 +520,8 @@
          *        dimensions.
          * @param {boolean} [hideCloser] - Due to HTML refresh, closer will be readded unless this is set to 
          *        true.
+         * @return {jQuery} JQuery element for modal container ("#cm-modal-outer .cm-modal-inner") or none if 
+         *         modal was closed.
          */
         changeModal: function(content, prepContentCallback, hideCloser) {
             if(!this.isModalOpen()) {
@@ -552,6 +559,7 @@
                     modalContent.css('height', '').css('width', '');
                 }
             );
+            return modalContent;
         }, 
         
         /**
