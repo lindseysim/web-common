@@ -201,7 +201,7 @@
         
         // note, none of these browser checks are future-proof, periodically update as necessary
         var ua = navigator.userAgent.toLowerCase();
-        window.browserType = {};
+        window.browser = window.browserType = {};
         window.browserType.isOpera   = (!!window.opr && !!opr.addons) || !!window.opera || ua.indexOf(' opr/') >= 0;
         window.browserType.isFirefox = typeof InstallTrigger !== 'undefined';
         window.browserType.isSafari  = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;

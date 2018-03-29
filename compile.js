@@ -23,8 +23,7 @@ compressor.minify({
     callback: function (err, min) {
         if(err) { return console.log(err); }
     }
-})
-
+});
 compressor.minify({
     compressor: 'uglifyjs',
     input: './src/common.table.js',
@@ -32,7 +31,7 @@ compressor.minify({
     callback: function (err, min) {
         if(err) { return console.log(err); }
     }
-})
+});
 new CleanCSS().minify(
     ['./src/common.css'], 
     function(err, out) {

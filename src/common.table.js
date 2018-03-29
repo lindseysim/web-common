@@ -56,16 +56,20 @@
      *        under a banner header (via colspan).
      * @param {String} title - The title to display the header as.
      * @param {String} key - The key used to retrieve data from this header.
-     * @param {String} [dateFormat] - Optional date format to format dates under this header.
-     * @param {String} [hdrStyles] - Optional styles to apply to the header. Overrides any colStyles 
-     *                 properties.
-     * @param {String} [colStyles] - Optional styles to apply to every row in this column (including header). 
-     *                 If you only want to apply to non-header cells, must override values in hdrStyles.
-     * @param {String} [onClick] - Optional onClick functionality to add to each cell (excluding header). 
-     *                 Callback will be given the entire row's data as the parameter.
+     * @param {Object] [options]
+     * @param {Callback} [options.format] - Format callback.
+     * @param {String} [options.dateFormat] - Optional date format to format dates under this header.
+     * @param {String} [options.hdrStyles] - Optional styles to apply to the header. Overrides any colStyles 
+     *        properties.
+     * @param {String} [options.colStyles] - Optional styles to apply to every row in this column (including 
+     *        header). If you only want to apply to non-header cells, must override values in hdrStyles.
+     * @param {String} [options.onClick] - Optional onClick functionality to add to each cell (excluding 
+     *        header). Callback will be given the entire row's data as the parameter.
+     * @param {boolean} [options.sortable] - Optional flag to set/disable sortable column on this column. 
+     *        By default columns are sortable, so set as false or null to disable.
      */
-    CommonTable.prototype.addColumn = function(group, title, key, dateFormat, hdrStyles, colStyles, onClick) {
-        if(group.hasOwnProperty("title") && group.hasOwnProperty("key") && !title && !key) {
+    CommonTable.prototype.addColumn = function(group, title, key, options) {
+        if(group && group.hasOwnProperty("title") && group.hasOwnProperty("key") && !title && !key) {
             // add as object literal
             if(!group.group) {
                 group.group = null;
@@ -76,14 +80,17 @@
             if(!group) {
                 group = null;
             }
+            if(!options) options = {};
             this.headerObjs.push({
                 group:      group, 
                 title:      title, 
                 key:        key, 
-                dateFormat: dateFormat, 
-                hdrStyles:  hdrStyles, 
-                colStyles:  colStyles, 
-                onClick:    onClick
+                format:     options.format, 
+                dateFormat: options.dateFormat, 
+                hdrStyles:  options.hdrStyles, 
+                colStyles:  options.colStyles, 
+                onClick:    options.onClick, 
+                sortable:   (options.sortable === undefined || options.sortable)
             });
         }
         return this;
@@ -95,6 +102,7 @@
      * @param {Boolean} [ascending] - If sorting, whether ascending or descending order.
      */
     CommonTable.prototype.createHeaders = function(sortOnKey, ascending) {
+        var self = this;
         this.tbodyElement.html("");
         var hdrRows = [
             $("<tr>", {"cm-table-rowtype": "header-row"}).appendTo(this.tbodyElement), 
@@ -143,14 +151,15 @@
                 );
             }
             // sort functionality
-            var self = this;
-            hdrElem.css("cursor", "pointer").on('click', function(theKey, isAscending) {
-                    return function(evt) {
-                        evt.stopPropagation();
-                        self.populateTable(null, theKey, isAscending);
-                    };
-                }(hdr.key, sortOnThis ? !ascending : true)
-            );
+            if(hdr.sortable) {
+                hdrElem.css("cursor", "pointer").on('click', function(theKey, isAscending) {
+                        return function(evt) {
+                            evt.stopPropagation();
+                            self.populateTable(null, theKey, isAscending);
+                        };
+                    }(hdr.key, sortOnThis ? !ascending : true)
+                );
+            }
             // add to row
             if(hdr.group) {
                 hdrRows[1].append(hdrElem);
@@ -182,9 +191,7 @@
         // recreate headers, which should also clear all rows
         this.createHeaders(sortOnKey, ascending);
         // get data or use last provided
-        if(tableData) {
-            this.tableData = tableData;
-        }
+        if(tableData) this.tableData = tableData;
         // sort data
         var sortedData = this.tableData;
         if(sortOnKey && sortedData.length) {
@@ -221,7 +228,9 @@
             var row = $("<tr>", {"cm-table-rowtype": "data"}).appendTo(this.tbodyElement);
             for(var j = 0; j < this.headerObjs.length; j++) {
                 var val = sortedData[i][this.headerObjs[j].key];
-                if(this.headerObjs[j].dateFormat) {
+                if(this.headerObjs[j].format) {
+                    val = this.headerObjs[j].format(val);
+                } else if(this.headerObjs[j].dateFormat) {
                     try {
                         val = dateFormatter(val, this.headerObjs[j].dateFormat);
                     } catch(e) {
@@ -238,6 +247,7 @@
                         .on("click", function(callback, onData) {
                             return function(evt) {
                                 callback(onData);
+                                evt.preventDefault();
                             };
                         }(this.headerObjs[j].onClick, sortedData[i]));
                 } else {
