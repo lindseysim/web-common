@@ -312,8 +312,8 @@
         /**
          * Custom function to create a new window. Has a lot of useful functionality that gets commonly used, 
          * e.g. having every new window centered on the monitor, even accounting for dual monitor setups.
-         * @param {event} e - Event object (useful on links where you want to keep the middle-mouse clicks and
-         *        ctrl+left-clicks as new tabs as those are filtered and ignored).
+         * @param {event} event - Event object (useful on links where you want to keep the middle-mouse clicks
+         *        and ctrl+left-clicks as new tabs as those are filtered and ignored).
          * @param {string} url - Link URL.
          * @param {string} name - New window name.
          * @param {number} width - Width in pixels.
@@ -322,9 +322,9 @@
          *        many modern browsers this has no effect).
          * @returns {Window} The new window object.
          */
-        newWindow: function(e, url, name, width, height, minimal) {
-            if(!e) e = window.event;
-            if(e === undefined || !(e.which === 2 || (e.which === 1 && e.ctrlKey))) {
+        newWindow: function(event, url, name, width, height, minimal) {
+            if(!event) event = window.event;
+            if(event === undefined || !(event.which === 2 || (event.which === 1 && event.ctrlKey))) {
                 // center window, from http://www.xtf.dk/2011/08/center-new-popup-window-even-on.html
                 // Fixes dual-screen position                          Most browsers       Firefox
                 var dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : screen.left;
@@ -461,6 +461,28 @@
 
         /**
          * Create (or destroy) a modal dialog.
+         * @param {string} content - The HTML content of the modal dialog.
+         * @param {Object} [options]
+         * @param {string} [options.id] - Whether to attach an ID to the modal content div.
+         * @param {boolean} [options.hideCloser] - If set true, does not automatically apply a close modal "X"
+         *        to the top right of the content.
+         * @param {boolean} [options.notExitable] - Modal content closes when clicking outside of modal, by 
+         *        default. Set true to override this (that is, modal can only be closed programmatically -- 
+         *        which by default is still allowed via the closer).
+         * @param {boolean} [options.showBackground] - Whether to have a semi-transparent div over the 
+         *        background (so as to visually signify the modal status). Keep in mind in older browsers that
+         *        don't support transparency it'll just grey out the entire background.
+         * @param {callback} [options.onClose] - Function to run before closing modal. Note this does not run 
+         *        if simply changing/swapping out modal content.
+         * @return {jQuery} JQuery element for modal container ("#cm-modal-outer .cm-modal-inner") or none if 
+         *         modal was closed.
+         */
+        openModal: function(content, options) {
+            this.setModal(true, content, options);
+        }, 
+        
+        /**
+         * Create (or destroy) a modal dialog.
          * @param {boolean} visible - True creates, false closes.
          * @param {string} content - The HTML content of the modal dialog.
          * @param {Object} [options]
@@ -516,7 +538,7 @@
          * keep the content-size changes from being too jarring when swapping content. However, if there is an
          * inline width/height defined in the style, these will be lost.
          * @param {string} content - The HTML content of the modal dialog.
-         * @param {callback} prepContentCallback - If some prep work is needed before determining the new 
+         * @param {callback} [prepContentCallback] - If some prep work is needed before determining the new 
          *        dimensions.
          * @param {boolean} [hideCloser] - Due to HTML refresh, closer will be readded unless this is set to 
          *        true.

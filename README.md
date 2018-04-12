@@ -2,7 +2,7 @@
 
 Lawrence Sim
 
-Copyright 2017
+Copyright 2018
 
 ## License ##
 
@@ -22,104 +22,137 @@ JQuery is required for some functions to work.
 
 ## Global Additions ##
 
-**window.defaultErrorMessage** : Default error message.
+**``window.defaultErrorMessage`` :** Default error message.
 
-**window.browserType** : Stores information on browser type and version.
+**``window.browser`` :** Stores information on browser type and version.
 
-**window.cmLibGlobals** : Variables need for global functionality, do not modify.
+**``window.browserType`` :** Alias for *window.browser*, left for backwards compatibility.
+
+**``window.cmLibGlobals`` :** Variables need for global functionality, do not modify.
 
 ## Prototype Modifications ##
 
-**String.prototype.capitalize()** : Will capitalize the each word in the string (using whitespace to delineate words).
+**``String.prototype.capitalize()`` :** Will capitalize the each word in the string (using whitespace to delineate words).
 
-**Number.prototype.addCommas(precision)** : Will convert a given number to a string, using the supplied precision, with commas.
+**``Number.prototype.addCommas(precision)`` :** Will convert a given number to a string, using the supplied precision, with commas.
 
 ### JQuery Modifications ###
 
-**jQuery.fn.center()** : Will center an element on screen using absolute positioning.
+**``jQuery.fn.center()`` :** Will center an element on screen using absolute positioning.
 
-**jQuery.fn.addTooltip(tooltipMsg, direction)** : Will add a tooltip to an element using pure css. Direction may be "left", "right", "top", or "bottom" (defaults to "right").
+**``jQuery.fn.addTooltip(tooltipMsg[, direction])`` :** Will add a tooltip to an element using pure css. Direction may be "left", "right", "top", or "bottom" (defaults to "right").
 
-**jQuery.fn.appendHelpIcon(tooltipMsg, direction, style)** : Will append a help icon at the end of this element, with a tooltip. Direction may be "left", "right", "top", or "bottom" (defaults to "right"). Style is optional styles object as keys-values which will be applied to the help icon.
+**``jQuery.fn.appendHelpIcon(tooltipMsg[, direction[, style]])`` :** Will append a help icon at the end of this element, with a tooltip. Direction may be "left", "right", "top", or "bottom" (defaults to "right"). Style is optional styles object as keys-values which will be applied to the help icon.
 
-**jQuery.fn.removeHelpIcon()** : Removes any appended help icon.
+``jQuery.fn.removeHelpIcon()`` : Removes any appended help icon.
 
 ## Date (UTC) Modifications ##
 
-**DateUTC(year, month, day, hour, min, sec)** : Creates a datetime, forced as UTC. Note that month is 1-12 (unlike Date constructor as 0-11).
+**``DateUTC(year, month, day, hour, min, sec)`` :** Creates a datetime, forced as UTC. Note that month is 1-12 (unlike Date constructor as 0-11).
 
-**Date.prototype.asUTC()** : Converts datetime to UTC.
+**``Date.prototype.asUTC()`` :** Converts datetime to UTC.
 
-**Date.prototype.asUTCDate()** : Converts date only to UTC, dropping all time information.
+**``Date.prototype.asUTCDate()`` :** Converts date only to UTC, dropping all time information.
 
-**Date.prototype.toUTCDate()** : See above.
+**``Date.prototype.toUTCDate()`` :** See above.
 
-**Date.prototype.addDays(days)** : Returns new date with days added (or removed if negative).
+**``Date.prototype.addDays(days)`` :** Returns new date with days added (or removed if negative).
 
-**Date.prototype.daysInMonth()** : Returns number of days in the month for this date.
+**``Date.prototype.daysInMonth()`` :** Returns number of days in the month for this date.
 
 ## Common Object ##
 
-Returned as object if instantiated via CommonJS or AMD import. Otherwise appended to root as common (e.g. window.common).
+Returned as object if instantiated via CommonJS or AMD import. Otherwise appended to root as common (e.g. *window.common*).
 
-**common.getUrlGetVars()** : Find GET parameters in current URL.
+**``common.getUrlGetVars()`` :** Retrieve GET parameters in current URL as object literal (dictionary format).
 
-**common.addGrabCursorFunctionality(element)** : Adds grab cursor functionality to draggable element.
+**``common.addGrabCursorFunctionality(element)`` :** Adds grab cursor functionality to draggable element.
 
-**common.newWindow(e, url, name, width, height, minimal)** : Creates a new, centered window, even accounting for dual screen monitors.. The event object, if not provided, is grabbed from window.event. This is used to screen against middle-mouse clicks and ctrl+left-clicks which should be handled separately to create a new tab. If minimal is true, attempts to hide menubar, statusbar, and location -- though many modern browsers may prevent some or all of this.
+**``common.newWindow(event, url, name, width, height, minimal)`` :** Creates a new, centered window, even accounting for dual screen monitors.. The *event* object, if not provided, is grabbed from window.event. This is used to screen against middle-mouse clicks and ctrl+left-clicks which should be handled separately to create a new tab. If *minimal* is true, attempts to hide menubar, statusbar, and location -- though many modern browsers may prevent some or all of this.
 
-**common.createDropdown(element, menu)** : Create a dropdown menu on an element. Menu parameter is an array of object literals defining the menu. The parameters 'id', 'class', 'style', and 'text', if they exist, are applied. For functionality, either add 'href' and optionally 'target' parameters or supply a callback to an 'onClick' parameter. To create a submenu, simply add a 'menu' parameter with the same nested structure.
+**``common.createDropdown(element, menu)`` :** Create a dropdown menu on an element. *menu* parameter is an array of object literals defining the menu. The parameters 'id', 'class', 'style', and 'text', if they exist, are applied. For functionality, either add 'href' and optionally 'target' parameters or supply a callback to an 'onClick' parameter. To create a submenu, simply add a 'menu' parameter with the same nested structure.
 
-**common.clearDropdown(element)** : Remove dropdown menu functionality from an element.
+Example given below:
+
+    common.createDropdown("#menu", 
+		[
+			{
+				id: "menu-btn-1", 
+				text: "Menu Item 1", 
+				href: "pages/about.html", 
+				style: {"font-weight": "bold"}, 
+				onClick: function() { console.log("menu item 1 clicked"); }
+			}, 
+			{
+				id: "submenu", 
+				text: "Submenu, 
+				style: "font-weight:bold;", 
+				menu: [
+					{text: "Submenu Item 1", href: "google.com"},
+					{text: "Submenu Item 2", href: "gmail.com"} 
+				]
+			}
+		]
+    );
+
+**``common.clearDropdown(element)`` :** Remove dropdown menu functionality from an element.
 
 ### Modal Dialogs ###
 
-**common.isModalOpen() ** : Check whether modal is open.
+**``common.isModalOpen()`` :** Check whether modal is open.
 
-**common.setModal(visible, content, options)** : Creates a new modal dialog (or closes, if visible=false). Content is the HTML content of the inner dialog element. Options may be provided with:
+**``common.setModal(visible[, content[, options]])`` :** Creates a new modal dialog (or closes, if visible=false).* Content* is the HTML content of the inner dialog element. *Options* may be provided with:
 
-* id - Id of inner modal dialog element.
-* showBackground - If true, creates a semi-transparent background over window.
-* notExitable - Normally modal closes on clicking anywhere outside modal dialog element. If true, this prevents this functionality.
-* hideCloser - If true, does not apply the automatically placed "X" to close dialog on upper-right.
+* `id` - Id of inner modal dialog element.
+* `showBackground` - If true, creates a semi-transparent background over window.
+* `notExitable` - Normally modal closes on clicking anywhere outside modal dialog element. If true, this prevents this functionality.
+* `hideCloser` - If true, does not apply the automatically placed "X" to close dialog on upper-right.
+* `onClose` - Callback to run on modal being closed. 
+**
+``common.openModal(content[, options])`` :** Same as *common.setModal()* but with *visible* parameter defaulted to true.
 
-**common.setModalAsLoading(visible, content, options)** : Creates a new modal dialog with default values prepped for loading, including options of: id=cm-"modal-loading-dialog"; addDetails=true; showBackground=true; notExitable=true; hideCloser=true; imgUrl="images/loader.gif".
+**``common.setModalAsLoading(visible[, content[, options]])`` :** Creates a new modal dialog with default values prepped for loading. *Content* is optional and defaults to "Loading..". In addition to same *options* available for *common.setModal*, extended *options* available are:
 
-**common.changeModal(content, prepContentCallback)** :  Change modal dialog content while leaving all other options the same. Added benefit of measures to keep the content-size changes from being too jarring when swapping content. However, if there is an inline width/height defined in the style, these will be lost.
+* `id` - Id of inner modal dialog element. Defaults to "cm-modal-loading-dialog".
+* `addDetails` - If true, adds paragraph element with class *cm-modal-loading-details*.
+* `addDetailsText` - If *addDetails* is true, set the detail text (defaults to "Please wait..").
+* `imgUrl` - If true adds a loading image with this as the source. Defaults to "images/loader.gif".
 
-**common.closeModal(suppressOnClose)** : Hide any currently visible modal. Same as hideModal().
+**``common.changeModal(content[, prepContentCallback[, hideCloser]])`` :**  Change modal dialog content while leaving all other options the same. Added benefit of measures to keep the content-size changes from being too jarring when swapping content. However, if there is an inline width/height defined in the style, these will be lost.
 
-**common.hideModal(suppressOnClose)** : Hide any currently visible modal. Same as closeModal().
+**``common.closeModal([suppressOnClose])`` :** Hide any currently visible modal. If *suppressOnClose* is true, suppresses any on-close event attached to last modal.
+
+**``common.hideModal([suppressOnClose])`` :** Same as closeModal().
 
 
 ## CommonTable Class ##
 
 Requires common.table module.
 
-** CommonTable(tableId, tableClass, container) ** : Creates new CommonTable with id and class (if provided, default class is "cm-table") and appends to container (if provided).
+**``CommonTable(tableId[, tableClass[, container]])`` :** Creates new CommonTable with id and class (if provided, default class is "cm-table") and appends to container (if provided).
 
-** CommonTable.prototype.appendTo(container) ** : Appends table to element.
+**``CommonTable.prototype.appendTo(container)`` :** Appends table to element.
 
-** CommonTable.prototype.prependTo(container) ** : Prepends table to element.
+**``CommonTable.prototype.prependTo(container)`` :** Prepends table to element.
 
-** CommonTable.prototype.addColumn(group, title, key, dateFormat, hdrStyles, colStyles, onClick) ** : Add column. Parameters may either be specified as list of arguments, or formatted into single object literal with parameter names as below. Title and key are required.
+**``CommonTable.prototype.addColumn(group, title, key[, dateFormat[, hdrStyles[, colStyles[, onClick]]]])``** : Add column. Parameters may either be specified as list of arguments, or formatted into single object literal with parameter names as below. Title and key are required.
 
-* {String} group - The header group. If not null, used to group two or more headers as subheaders under a banner header (via colspan).
-* {String} title - The title to display the header as.
-* {String} key - The key used to retrieve data from this header.
-* {String} [dateFormat] - Optional date format to format dates under this header.
-* {String} [hdrStyles] - Optional styles to apply to the header. Overrides any colStyles properties.
-* {String} [colStyles] - Optional styles to apply to every row in this column (including header). If you only want to apply to non-header cells, must override values in hdrStyles.
-* {String} [onClick] - Optional onClick functionality to add to each cell (excluding header). Callback will be given the entire row's data as the parameter.
+* `group` (string) - The header group. If not null, used to group two or more headers as subheaders under a banner header (via colspan).
+* `title` (string) - The title to display the header as.
+* `key` (string) - The key used to retrieve data from this header.
+* `[dateFormat]` (string) - Optional date format to format dates under this header.
+* `[hdrStyles]` (string|object) - Optional styles to apply to the header. Overrides any colStyles properties.
+* `[colStyles]` (string|object) - Optional styles to apply to every row in this column (including header). If you only want to apply to non-header cells, must override values in hdrStyles.
+* `[onClick]` (function) - Optional onClick functionality to add to each cell (excluding header). Callback will be given the entire row's data as the parameter.
 
-** CommonTable.prototype.createHeaders(sortOnKey, ascending) ** : [Re]draw table headers.
+**``CommonTable.prototype.createHeaders([sortOnKey[, ascending]])`` :** [Re]draw table headers.
 
-* {String} [sortOnKey] - Option key to sort on.
-* {Boolean} [ascending] - If sorting, whether ascending or descending order.
+* `[sortOnKey]` (string) - Option key to sort on.
+* `[ascending]` (boolean) - If sorting, whether ascending or descending order.
 
-** CommonTable.prototype.populateTable(tableData, sortOnKey, ascending, dateFormatter) ** : Populate and [re]draw table.
+**``CommonTable.prototype.populateTable(tableData[, sortOnKey[, ascending[, dateFormatter]]])`` :** Populate and [re]draw table.
 
-* {Array} tableData - Array of objects, representing data by row. Data is not stored to object or dynamically bound in any way. To update table, must be redrawn, passing the updated data array.
-* {String} [sortOnKey] - Option key to sort on.
-* {Boolean} [ascending] - If sorting, whether ascending or descending order.
-* {Function} [dateFormatter] - Optional date formatting function that takes parameters in the order of the date value and the date format. Will only be called if column header has a dateFormat value. Attempted in try-catch block, so all values are attempted to be formatted, but if formatter throws exception, continues as if non-date value.
+* `tableData` (array) - Array of objects, representing data by row. Data is not stored to object or dynamically bound in any way. To update table, must be redrawn, passing the updated data array.
+* `[sortOnKey]` (string) - Option key to sort on.
+* `[ascending]` (boolean) - If sorting, whether ascending or descending order.
+* `[dateFormatter]` (function) - Optional date formatting function that takes parameters in the order of the date value and the date format. Will only be called if column header has a dateFormat value. Attempted in try-catch block, so all values are attempted to be formatted, but if formatter throws exception, continues as if non-date value.
