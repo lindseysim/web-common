@@ -258,7 +258,7 @@
          * @param {boolean} suppressOnClose - If true, suppresses onClose event, if one is attached.
          */
         window.cmLibGlobals.closeModal = function(suppressOnClose) {
-            $("#cm-modal-outer").hide();
+            $("#cm-modal-outer").hide().find(".cm-modal-inner").html("");
             if(window.cmLibGlobals.modalOnClose) {
                 if(!suppressOnClose) {
                     window.cmLibGlobals.modalOnClose();
