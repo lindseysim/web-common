@@ -1,17 +1,19 @@
 !function(root, factory) {
     // CommonJS-based (e.g. NodeJS) API
     if(typeof module === "object" && module.exports) {
-        module.exports = factory(require("jquery"));
+        module.exports = factory();
     // AMD-based (e.g. RequireJS) API
     } else if(typeof define === "function" && define.amd) {
-        define(["jquery"], factory);
+        define(factory);
     // Regular instantiation 
     } else {
-        root.common = factory(root.$);
+        root.common = factory();
     }
-}(this, function(jQuery) {
+}(this, function() {
     
     if(!window.cmLibGlobals || !window.cmLibGlobals.helpersDefined) {
+        window.cmLibGlobals = {};
+        
         //****************************************************************************************************
         // Misc prototype extensions
         //****************************************************************************************************
@@ -39,68 +41,29 @@
         };
         
         /**
-         * Center itself in the window with absolute positioning.
-         * @returns {jQuery} Itself.
+         * Quickly set multiple attributes at once.
+         * @param {Object} attrs - Literal of key-value attribute pairs.
          */
-        jQuery.fn.center = function() {
-            this.css({
-                position: "absolute", 
-                top:  Math.max(0, (($(window).height() - $(this).outerHeight()) / 2) + $(window).scrollTop()),
-                left: Math.max(0, (($(window).width()  - $(this).outerWidth())  / 2) + $(window).scrollLeft())
-            });
-            return this;
+        Element.prototype.setAttributes = function(attrs) {
+            for(var key in attrs) {
+                this.setAttribute(key, attrs[key]);
+            }
         };
         
         /**
-         * Add tooltip.
-         * @param {string} tooltipMsg - The tooltip content.
-         * @param {string} [direction="right"] - Side in which tooltip should appear.
-         * @param {boolean} [force] - If true, tooltip is always visible.
-         * @returns {jQuery} Itself.
+         * Shortcut for setting CSS styles.
+         * @param {Object|String} style - Either a string for style name (paired with 2nd attribute value), or
+         *        an object literal of multiple styles as key-value pairs.
+         * @param {String} [value] - If style is key/string, the value for said CSS style.
          */
-        jQuery.fn.addTooltip = function(tooltipMsg, direction, force) {
-            if(!tooltipMsg) {
-                this.removeClass("cm-tooltip-left cm-tooltip-right cm-tooltip-top cm-tooltip-bottom cm-tooltip-force");
-                this.removeAttribute("cm-tooltip-msg");
-                return;
-            }
-            var dirs = ["right", "left", "top", "bottom"], 
-                iDir = -1;
-            if(direction) {
-                iDir = $.inArray(direction.toLowerCase().trim(), dirs);
-            }
-            if(iDir >= 0) {
-                for(var i = 0; i < dirs.length; i++) {
-                    if(i === iDir) {
-                        this.addClass("cm-tooltip-"+dirs[i]);
-                    } else {
-                        this.removeClass("cm-tooltip-"+dirs[i]);
-                    }
+        Element.prototype.css = function(style, value) {
+            if(style instanceof String && value instanceof String) {
+                this.style[style] = value;
+            } else {
+                for(var key in style) {
+                    this.style[key] = style[key];
                 }
             }
-            if(!!force) { this.addClass("cm-tooltip-force"); }
-            this.attr("cm-tooltip-msg", tooltipMsg);
-            return this;
-        };
-        
-        /**
-         * Add help icon with tooltip.
-         * @param {string} tooltipMsg - The tooltip content.
-         * @param {string} [direction="right"] - Side in which tooltip should appear.
-         * @param {Object} [style] - Additional optional styles to the icon.
-         * @param {boolean} [force] - If true, tooltip is always visible.
-         * @returns {jQuery} Itself.
-         */
-        jQuery.fn.appendHelpIcon = function(tooltipMsg, direction, style, force) {
-            if(!direction) { direction = "top"; }
-            var i = $("<i>", {"class": "cm-icon", "text": "?"}).appendTo(this)
-                .addTooltip(tooltipMsg, direction, force);
-            if(style) { i.css(style); }
-            return this;
-        };
-        
-        jQuery.fn.removeHelpIcon = function() {
-            this.find(".cm-icon").remove();
         };
         
         //****************************************************************************************************
@@ -193,6 +156,103 @@
             return (new Date(this.getUTCFullYear(), this.getUTCMonth()+1, 0)).getDate();
         };
         
+        //****************************************************************************************************
+        // JQuery specific helper functions
+        //****************************************************************************************************
+        window.cmLibGlobals.initJQueryHelpers = function() {
+            if(!window.cmLibGlobals.jqueryHelpersDefined) {
+                /**
+                 * Center itself in the window with absolute positioning.
+                 * @returns {jQuery} Itself.
+                 */
+                jQuery.fn.center = function() {
+                    this.css({
+                        position: "absolute", 
+                        top:  Math.max(0, (($(window).height() - $(this).outerHeight()) / 2) + $(window).scrollTop()),
+                        left: Math.max(0, (($(window).width()  - $(this).outerWidth())  / 2) + $(window).scrollLeft())
+                    });
+                    return this;
+                };
+
+                /**
+                 * Add tooltip.
+                 * @param {string} tooltipMsg - The tooltip content.
+                 * @param {string} [direction="right"] - Side in which tooltip should appear.
+                 * @param {boolean} [force] - If true, tooltip is always visible.
+                 * @returns {jQuery} Itself.
+                 */
+                jQuery.fn.addTooltip = function(tooltipMsg, direction, force) {
+                    if(!tooltipMsg) {
+                        this.removeClass("cm-tooltip-left cm-tooltip-right cm-tooltip-top cm-tooltip-bottom cm-tooltip-force");
+                        this.removeAttribute("cm-tooltip-msg");
+                        return;
+                    }
+                    var dirs = ["right", "left", "top", "bottom"], 
+                        iDir = -1;
+                    if(direction) {
+                        iDir = $.inArray(direction.toLowerCase().trim(), dirs);
+                    }
+                    if(iDir >= 0) {
+                        for(var i = 0; i < dirs.length; i++) {
+                            if(i === iDir) {
+                                this.addClass("cm-tooltip-"+dirs[i]);
+                            } else {
+                                this.removeClass("cm-tooltip-"+dirs[i]);
+                            }
+                        }
+                    }
+                    if(!!force) { this.addClass("cm-tooltip-force"); }
+                    this.attr("cm-tooltip-msg", tooltipMsg);
+                    return this;
+                };
+
+                /**
+                 * Add help icon with tooltip.
+                 * @param {string} tooltipMsg - The tooltip content.
+                 * @param {string} [direction="right"] - Side in which tooltip should appear.
+                 * @param {Object} [style] - Additional optional styles to the icon.
+                 * @param {boolean} [force] - If true, tooltip is always visible.
+                 * @returns {jQuery} Itself.
+                 */
+                jQuery.fn.appendHelpIcon = function(tooltipMsg, direction, style, force) {
+                    if(!direction) { direction = "top"; }
+                    var i = $("<i>", {"class": "cm-icon", "text": "?"}).appendTo(this)
+                        .addTooltip(tooltipMsg, direction, force);
+                    if(style) { i.css(style); }
+                    return this;
+                };
+
+                jQuery.fn.removeHelpIcon = function() {
+                    this.find(".cm-icon").remove();
+                };
+
+                window.cmLibGlobals.jqueryHelpersDefined = true;
+            }
+        };
+        if(typeof jQuery !== "undefined" && typeof $ !== "undefined") {
+            window.cmLibGlobals.initJQueryHelpers();
+        }
+        
+        //****************************************************************************************************
+        // Useful functions to put in global
+        //****************************************************************************************************
+        /**
+         * Formats given element selection as iterable of DOM Element objects. JQuery selections are 
+         * transformed via get(), NodeLists or otherwise iterable are return as is, and a singular element 
+         * selection is simply wrapper in an array.
+         * @param {jQuery|NodeList|Element} element - Object to return as element list.
+         * @returns {Array} Array of Element objects.
+         */
+        window.cmLibGlobals.getElementList = function(element) {
+            if(!element) return [];
+            if(jQuery && element instanceof jQuery) {
+                return element.get();
+            }
+            if(element[Symbol.iterator] === "function") {
+                return element;
+            }
+            return [element];
+        };
         
         //****************************************************************************************************
         // Misc. Globals
@@ -236,29 +296,37 @@
         //****************************************************************************************************
         // Prep for modal content
         //****************************************************************************************************
-        window.cmLibGlobals = {};
         // Add modal content (if not already existing)
-        if($("#cm-modal-outer").length === 0) {
-            $("<div>", {'class': 'cm-modal-inner'}).appendTo(
-                $("<div>", {id: 'cm-modal-container'}).appendTo(
-                    $("<div>", {id: 'cm-modal-outer'}).appendTo("body")
-                )
-            );
-        }
-        $("#cm-modal-outer").hide();
-        // Add modal close functionality by clicking anywhere not in the modal
-        $("#cm-modal-outer").click(function(evt) {
-            if(window.cmLibGlobals.modalNotExitable) { return; }
-            if(!$(evt.target).closest('#cm-modal-container div').length) {
-                window.cmLibGlobals.closeModal();
+        (function() {
+            if(!document.querySelector("#cm-modal-outer")) {
+                var inner = document.createElement("div"), 
+                    outer = document.createElement("div"), 
+                    container = document.createElement("div");
+                inner.className = "cm-modal-inner";
+                outer.setAttribute("id", "cm-modal-outer");
+                container.setAttribute("id", "cm-modal-container");
+                document.body.append(container);
+                container.append(outer);
+                outer.append(inner);
             }
-        });
+            var outer = document.querySelector("#cm-modal-outer");
+            outer.style['visibility'] = "hidden";
+            // Add modal close functionality by clicking anywhere not in the modal
+            outer.addEventListener('click', function(evt) {
+                if(window.cmLibGlobals.modalNotExitable) { return; }
+                if(!evt.target.closest('#cm-modal-container div')) {
+                    window.cmLibGlobals.closeModal();
+                }
+            });
+        }());
         /**
          * Close any open modal.
          * @param {boolean} suppressOnClose - If true, suppresses onClose event, if one is attached.
          */
         window.cmLibGlobals.closeModal = function(suppressOnClose) {
-            $("#cm-modal-outer").hide().find(".cm-modal-inner").html("");
+            var outer = document.querySelector("#cm-modal-outer");
+            outer.style['visibility'] = "hidden";
+            outer.querySelector(".cm-modal-inner").innerHTML = "";
             if(window.cmLibGlobals.modalOnClose) {
                 if(!suppressOnClose) {
                     window.cmLibGlobals.modalOnClose();
@@ -270,7 +338,6 @@
         // set global helpers as defined
         window.cmLibGlobals.helpersDefined = true;
     }
-    
     
     //********************************************************************************************************
     // Return object of utility functions
@@ -295,18 +362,23 @@
          * Adds the handling of adding/removing the 'grab' and 'grabbing' css classes on mouse drag events. 
          * Original for the map (as OpenLayers doesn't do this automatically) but useful for a lot of other 
          * stuff, like custom dialog boxes/windows.
-         * @param {jQuery} element - jQuery object for element to add functionality to.
+         * @param {Element|NodeList|jQuery} element - Element ot add functionality to. May be single element, 
+         *        a NodeList/Array of elements, or a jQuery selection.
          */
         addGrabCursorFunctionality: function(element) {
-            element = $(element);
-            element
-                .addClass("grab")
-                .mousedown(function() {
-                    element.removeClass("grab").addClass("grabbing");
-                })
-                .mouseup(function() {
-                    element.removeClass("grabbing").addClass("grab");
+            var elList = commonGlobals.getElementList(element);
+            for(var i = 0; i < elList.length; ++i) {
+                e = elList[i];
+                e.classList.add("grab");
+                e.addEventListener('mousedown', function() {
+                    this.classList.remove("grab");
+                    this.classList.add("grabbing");
                 });
+                e.addEventListener('mouseup', function() {
+                    this.classList.remove("grabbing");
+                    this.classList.add("grab");
+                });
+            }
         }, 
 
         /**
@@ -360,33 +432,42 @@
          */
         createDropdown: function(element, menu) {
             var addDropdown = function(outer, menuObj) {
-                var inner = $("<div>", {'class': 'cm-dropdown-menu'}).appendTo(outer);
-                for(var i = 0; i < menuObj.length; i++) {
-                    var m = menuObj[i];
-                    var menuItem = $("<div>", {
-                        'id': m.id ? m.id : '', 
-                        'class': 'cm-dropdown-menu-item'
-                    }).appendTo(inner);
-                    if(m.class) { menuItem.addClass(m.class); }
+                var inner = document.createElement("div");
+                inner.className = 'cm-dropdown-menu';
+                outer.append(inner);
+                for(var j = 0; j < menuObj.length; j++) {
+                    var m = menuObj[j];
+                    var menuItem = document.createElement("div");
+                    menuItem.setAttribute("id", m.id ? m.id : '');
+                    menuItem.className = 'cm-dropdown-menu-item';
+                    inner.append(menuItem);
+                    if(m.class) { menuItem.classList.add(m.class); }
                     if(m.style) { menuItem.css(m.style); }
                     if(m.href) {
-                        $("<a>", {
+                        var a  = document.createElement("a");
+                        a.setAttributes({
                             href: m.href, 
                             target: m.target ? m.target : '',
                             text: m.text
-                        }).appendTo(menuItem);
+                        });
+                        menuItem.append(a);
                     } else {
-                        menuItem.text(m.text);
+                        menuItem.innerHTML = m.text;
                     }
                     if(m.onClick) {
-                        menuItem.on('click', m.onClick);
+                        menuItem.addEventListener('click', m.onClick);
                     }
                     if(m.menu) {
-                        addDropdown(menuItem.addClass("cm-dropdown"), m.menu);
+                        menuItem.classList.add("cm-dropdown");
+                        addDropdown(menuItem, m.menu);
                     }
                 }
             };
-            addDropdown($(element).addClass("cm-dropdown"), menu);
+            var elList = commonGlobals.getElementList(element);
+            for(var i = 0; i < elList.lenght; ++i) {
+                elList[i].classList.add("cm-dropdown");
+                addDropdown(elList[i], menu);
+            }
         }, 
         
         /**
@@ -394,7 +475,14 @@
          * @param {jQuery} element - jQuery object for element to remove from.
          */
         clearDropdown: function(element) {
-            $(element).removeClass("cm-dropdown").find(".cm-dropdown-menu").remove();
+            var elList = commonGlobals.getElementList(element);
+            for(var i = 0; i < elList.lenght; ++i) {
+                elList[i].classList.remove("cm-dropdown");
+                var menuList = elList[i].querySelectorAll("cm-dropdown-menu");
+                for(var j = 0; j < menuList.lenght; ++j) {
+                    menuList[j].remove();
+                }
+            }
         }, 
         
         //****************************************************************************************************
@@ -407,7 +495,7 @@
          * @returns {Boolean} Whether modal window is opened.
          */
         isModalOpen: function() {
-            window.cmLibGlobals.modalOpened = $("#cm-modal-outer").is(":visible");
+            window.cmLibGlobals.modalOpened = document.querySelector("#cm-modal-outer").offsetParent !== null;
             return window.cmLibGlobals.modalOpened;
         }, 
         
@@ -432,8 +520,8 @@
          *        "X" to the top right of the content.
          * @param {callback} [options.onClose] - Function to run before closing modal. Note this does not run 
          *        if simply changing/swapping out modal content.
-         * @return {jQuery} JQuery element for modal container ("#cm-modal-outer .cm-modal-inner") or none if 
-         *         modal was closed.
+         * @return {Element} Element for modal container ("#cm-modal-outer .cm-modal-inner") or none if modal 
+         *         was closed.
          */
         setModalAsLoading: function(visible, content, options) {
             if(!visible) {
@@ -448,12 +536,18 @@
                 if(options.notExitable === undefined)    { options.notExitable = true; }
                 if(options.hideCloser === undefined)     { options.hideCloser = true; }
                 if(!options.imgUrl && options.imgUrl !== false)  { options.imgUrl = "images/loader.gif"; }
-                var loadingDialog = $("<div>").html("&nbsp;" + content);
+                var loadingDialog = document.createElement("div");
+                loadingDialog.innerHTML = "&nbsp;" + content;
                 if(options.imgUrl) {
-                    loadingDialog.prepend($("<img>", {'src': options.imgUrl, 'alt': 'loading'}));
+                    var img = document.createElement("img");
+                    img.setAttributes({'src': options.imgUrl, 'alt': 'loading'});
+                    loadingDialog.prepend(img);
                 }
                 if(options.addDetails) {
-                    $("<p>", {'class': 'cm-modal-loading-details'}).appendTo(loadingDialog).html(options.addDetailsText);
+                    var p = document.createElement("p");
+                    p.className = 'cm-modal-loading-details';
+                    p.innerHTML = options.addDetailsText;
+                    loadingDialog.append(p);
                 }
                 return this.setModal(visible, loadingDialog, options);
             }
@@ -474,8 +568,8 @@
          *        don't support transparency it'll just grey out the entire background.
          * @param {callback} [options.onClose] - Function to run before closing modal. Note this does not run 
          *        if simply changing/swapping out modal content.
-         * @return {jQuery} JQuery element for modal container ("#cm-modal-outer .cm-modal-inner") or none if 
-         *         modal was closed.
+         * @return {Element} Element for modal container ("#cm-modal-outer .cm-modal-inner") or none if modal 
+         *         was closed.
          */
         openModal: function(content, options) {
             this.setModal(true, content, options);
@@ -484,7 +578,7 @@
         /**
          * Create (or destroy) a modal dialog.
          * @param {boolean} visible - True creates, false closes.
-         * @param {string} content - The HTML content of the modal dialog.
+         * @param {string|Element|jQuery} content - The HTML content of the modal dialog.
          * @param {Object} [options]
          * @param {string} [options.id] - Whether to attach an ID to the modal content div.
          * @param {boolean} [options.hideCloser] - If set true, does not automatically apply a close modal "X"
@@ -497,24 +591,36 @@
          *        don't support transparency it'll just grey out the entire background.
          * @param {callback} [options.onClose] - Function to run before closing modal. Note this does not run 
          *        if simply changing/swapping out modal content.
-         * @return {jQuery} JQuery element for modal container ("#cm-modal-outer .cm-modal-inner") or none if 
-         *         modal was closed.
+         * @return {Element} Element for modal container ("#cm-modal-outer .cm-modal-inner") or none if modal 
+         *         was closed.
          */
         setModal: function(visible, content, options) {
             if(!options) { options = {}; }
-            var modalContainer = $("#cm-modal-outer");
+            var modalContainer = document.querySelector("#cm-modal-outer");
             if(!visible) {
                 commonGlobals.closeModal();
             } else {
-                var modalContent = modalContainer.find(".cm-modal-inner")
-                    .attr("id", options.id ? options.id : "")
-                    .html(content);
+                var modalContent = modalContainer.querySelector(".cm-modal-inner");
+                modalContent.setAttribute("id", options.id ? options.id : "");
+                if(
+                    (typeof jQuery !== "undefined" && content instanceof jQuery)
+                    || (typeof $ !== "undefined" && content instanceof $)
+                ) {
+                    modalContent.innerHTML = "";
+                    modalContent.append(content[0]);
+                } else if(content instanceof Element) {
+                    modalContent.innerHTML = "";
+                    modalContent.append(content);
+                } else if(typeof content === "string") {
+                    modalContent.innerHTML = content;
+                }
                 if(!options.hideCloser) {
-                    modalContent.append(
-                        $("<div>", {id: "cm-modal-closer"}).on("click", function() {
-                            commonGlobals.closeModal();
-                        })
-                    );
+                    var closer = document.createElement("div");
+                    closer.setAttribute("id", "cm-modal-closer");
+                    closer.addEventListener("click", function() {
+                        commonGlobals.closeModal();
+                    });
+                    modalContent.append(closer);
                 }
                 if(!options.showBackground) {
                     modalContainer.css('background-color', 'transparent');
@@ -526,7 +632,7 @@
                 } else {
                     commonGlobals.modalOnClose = null;
                 }
-                modalContainer.show();
+                modalContainer.style["visibility"] = "";
                 commonGlobals.modalOpened = true;
                 commonGlobals.modalNotExitable = !!options.notExitable;
                 return modalContent;
@@ -542,8 +648,8 @@
          *        dimensions.
          * @param {boolean} [hideCloser] - Due to HTML refresh, closer will be readded unless this is set to 
          *        true.
-         * @return {jQuery} JQuery element for modal container ("#cm-modal-outer .cm-modal-inner") or none if 
-         *         modal was closed.
+         * @return {Element} Element for modal container ("#cm-modal-outer .cm-modal-inner") or none if modal 
+         *         was closed.
          */
         changeModal: function(content, prepContentCallback, hideCloser) {
             if(!this.isModalOpen()) {
@@ -551,36 +657,40 @@
                 if(prepContentCallback) { prepContentCallback(); }
                 return;
             }
-            var modalContent = $("#cm-modal-outer").find(".cm-modal-inner"), 
-                oldWidth  = modalContent.width(), 
-                oldHeight = modalContent.height();
+            var modalContent = document.querySelector("#cm-modal-outer").querySelector(".cm-modal-inner"), 
+                oldWidth  = modalContent.offsetWidth, 
+                oldHeight = modalContent.offsetHeight;
             // fix dimensions
-            modalContent.css('width', oldWidth).css('height', oldHeight);
+            modalContent.css({'width': oldWidth, 'height': oldHeight});
             // new content
-            modalContent.html(content);
-            if(prepContentCallback) { prepContentCallback(); }
+            modalContent.innerHTML = content;
+            if(prepContentCallback) prepContentCallback();
             // add closer
             if(!hideCloser) {
-                modalContent.append(
-                    $("<div>", {id: "cm-modal-closer"}).on("click", function() {
-                        commonGlobals.closeModal();
-                    })
-                );
+                var closer = document.createElement("div");
+                closer.setAttribute("id", "cm-modal-closer");
+                closer.addEventListener("click", function() {
+                    commonGlobals.closeModal();
+                });
+                modalContent.append(closer);
             }
             // fast store new dims before reverting
-            modalContent.css('height', '').css('width', '');
-            var newWidth  = modalContent.width(), 
-                newHeight = modalContent.height();
-            modalContent.css('width', oldWidth).css('height', oldHeight);
+            modalContent.css({'height': '', 'width': ''});
+            var newWidth  = modalContent.offsetWidth, 
+                newHeight = modalContent.offsetHeight;
+            modalContent.css({'width': oldWidth, 'height': oldHeight});
             // animate then reset to auto
-            modalContent.animate(
-                {height: newHeight, width: newWidth}, 
-                200, 
-                "swing", 
-                function() {
-                    modalContent.css('height', '').css('width', '');
-                }
-            );
+            var duration = 0.2;
+            var transitionValue = "width " + duration + "s ease 0, height " + duration + "s ease 0";
+            modalContent.css({
+                '-webkit-transition': transitionValue, 
+                '-moz-transition': transitionValue, 
+                'transition': transitionValue
+            });
+            modalContent.css({height: newHeight, width: newWidth});
+            window.setTimeout(duration, function() {
+                modalContent.css({'height': '', 'width': ''});
+            });
             return modalContent;
         }, 
         
