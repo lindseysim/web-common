@@ -1,15 +1,4 @@
-!function(root, factory) {
-    // CommonJS-based (e.g. NodeJS) API
-    if(typeof module === "object" && module.exports) {
-        module.exports = factory();
-    // AMD-based (e.g. RequireJS) API
-    } else if(typeof define === "function" && define.amd) {
-        define(factory);
-    // Regular instantiation 
-    } else {
-        root.CommonTable = factory();
-    }
-}(this, function() {
+(function() {
     "use strict";
     
     // Element.remove()
@@ -356,25 +345,4 @@
         }());
     }
     
-    // Technically polyfills but useful additions
-    if(!Element.prototype.setAttributes) {
-        Element.prototype.setAttributes = function(attrs) {
-            for(var key in attrs) {
-                this.setAttribute(key, attrs[key]);
-            }
-        };
-    }
-    
-    if(!Element.prototype.css) {
-        Element.prototype.css = function(styles, value) {
-            if(style instanceof String && value instanceof String) {
-                this.style[style] = value;
-            } else {
-                for(var key in styles) {
-                    this.style[key] = styles[key];
-                }
-            }
-        };
-    }
-    
-});
+})();
