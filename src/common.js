@@ -498,60 +498,6 @@
             window.cmLibGlobals.modalOpened = document.querySelector("#cm-modal-outer").offsetParent !== null;
             return window.cmLibGlobals.modalOpened;
         }, 
-        
-        /**
-         * Create (or destroy) a modal dialog with a default loading message (in this case: "Loading..").
-         * @param {boolean} visible - True creates, false closes.
-         * @param {Object} options
-         * @param {string} [content="Loading.."] - The loading message string.
-         * @param {string} [options.imgUrl="images/loader.gif"] - The link to a loading image. If 
-         *        null/undefined, looks for "images/loader.gif". If false, does not append any loading image.
-         * @param {boolean} [options.addDetails=true] - If true, adds paragraph with class `loading-details` 
-         *        for use of addition information.
-         * @param {string} [options.addDetailsText="Please wait.."] - If options.addDetails is true, loads 
-         *        this as loading details text.
-         * @param {string} [options.id="modal-loading-dialog"] - ID attached to modal content div.
-         * @param {boolean} [options.showBackground=true] - Whether to hve a semi-transparent div over the 
-         *        background (so as to visually signify the modal status). Keep in mind in older browsers that
-         *        don't support transparency it'll just grey out the entire background.
-         * @param {boolean} [options.notExitable=true] - Modal content closes when clicking outside of modal,
-         *        bt default.  Set true to override this (that is, modal can only be closed programmatically).
-         * @param {boolean} [options.hideCloser=true] - If set true, does not automatically apply a close modal
-         *        "X" to the top right of the content.
-         * @param {callback} [options.onClose] - Function to run before closing modal. Note this does not run 
-         *        if simply changing/swapping out modal content.
-         * @return {Element} Element for modal container ("#cm-modal-outer .cm-modal-inner") or none if modal 
-         *         was closed.
-         */
-        setModalAsLoading: function(visible, content, options) {
-            if(!visible) {
-                this.setModal(false);
-            } else {
-                if(!content)                             { content = "Loading.."; }
-                if(!options)                             { options = {}; }
-                if(!options.id)                          { options.id = "cm-modal-loading-dialog"; }
-                if(options.addDetails === undefined)     { options.addDetails = false; }
-                if(!options.addDetailsText)              { options.addDetailsText = "Please wait.."; }
-                if(options.showBackground === undefined) { options.showBackground = true; }
-                if(options.notExitable === undefined)    { options.notExitable = true; }
-                if(options.hideCloser === undefined)     { options.hideCloser = true; }
-                if(!options.imgUrl && options.imgUrl !== false)  { options.imgUrl = "images/loader.gif"; }
-                var loadingDialog = document.createElement("div");
-                loadingDialog.innerHTML = "&nbsp;" + content;
-                if(options.imgUrl) {
-                    var img = document.createElement("img");
-                    img.setAttributes({'src': options.imgUrl, 'alt': 'loading'});
-                    loadingDialog.prepend(img);
-                }
-                if(options.addDetails) {
-                    var p = document.createElement("p");
-                    p.className = 'cm-modal-loading-details';
-                    p.innerHTML = options.addDetailsText;
-                    loadingDialog.append(p);
-                }
-                return this.setModal(visible, loadingDialog, options);
-            }
-        }, 
 
         /**
          * Create (or destroy) a modal dialog.
@@ -636,6 +582,60 @@
                 commonGlobals.modalOpened = true;
                 commonGlobals.modalNotExitable = !!options.notExitable;
                 return modalContent;
+            }
+        }, 
+        
+        /**
+         * Create (or destroy) a modal dialog with a default loading message (in this case: "Loading..").
+         * @param {boolean} visible - True creates, false closes.
+         * @param {Object} options
+         * @param {string} [content="Loading.."] - The loading message string.
+         * @param {string} [options.imgUrl="images/loader.gif"] - The link to a loading image. If 
+         *        null/undefined, looks for "images/loader.gif". If false, does not append any loading image.
+         * @param {boolean} [options.addDetails=true] - If true, adds paragraph with class `loading-details` 
+         *        for use of addition information.
+         * @param {string} [options.addDetailsText="Please wait.."] - If options.addDetails is true, loads 
+         *        this as loading details text.
+         * @param {string} [options.id="modal-loading-dialog"] - ID attached to modal content div.
+         * @param {boolean} [options.showBackground=true] - Whether to hve a semi-transparent div over the 
+         *        background (so as to visually signify the modal status). Keep in mind in older browsers that
+         *        don't support transparency it'll just grey out the entire background.
+         * @param {boolean} [options.notExitable=true] - Modal content closes when clicking outside of modal,
+         *        bt default.  Set true to override this (that is, modal can only be closed programmatically).
+         * @param {boolean} [options.hideCloser=true] - If set true, does not automatically apply a close modal
+         *        "X" to the top right of the content.
+         * @param {callback} [options.onClose] - Function to run before closing modal. Note this does not run 
+         *        if simply changing/swapping out modal content.
+         * @return {Element} Element for modal container ("#cm-modal-outer .cm-modal-inner") or none if modal 
+         *         was closed.
+         */
+        setModalAsLoading: function(visible, content, options) {
+            if(!visible) {
+                this.setModal(false);
+            } else {
+                if(!content)                             { content = "Loading.."; }
+                if(!options)                             { options = {}; }
+                if(!options.id)                          { options.id = "cm-modal-loading-dialog"; }
+                if(options.addDetails === undefined)     { options.addDetails = false; }
+                if(!options.addDetailsText)              { options.addDetailsText = "Please wait.."; }
+                if(options.showBackground === undefined) { options.showBackground = true; }
+                if(options.notExitable === undefined)    { options.notExitable = true; }
+                if(options.hideCloser === undefined)     { options.hideCloser = true; }
+                if(!options.imgUrl && options.imgUrl !== false)  { options.imgUrl = "images/loader.gif"; }
+                var loadingDialog = document.createElement("div");
+                loadingDialog.innerHTML = "&nbsp;" + content;
+                if(options.imgUrl) {
+                    var img = document.createElement("img");
+                    img.setAttributes({'src': options.imgUrl, 'alt': 'loading'});
+                    loadingDialog.prepend(img);
+                }
+                if(options.addDetails) {
+                    var p = document.createElement("p");
+                    p.className = 'cm-modal-loading-details';
+                    p.innerHTML = options.addDetailsText;
+                    loadingDialog.append(p);
+                }
+                return this.setModal(visible, loadingDialog, options);
             }
         }, 
         
