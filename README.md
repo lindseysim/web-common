@@ -1,26 +1,41 @@
 # Web Common #
 
-Lawrence Sim
-
-Copyright 2018
+Lawrence Sim  
+Copyright © 2018
 
 ## License ##
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+*Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:*
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+*The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.*
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*
 
 ## Use ##
 
-Import common.min.js and common.min.css for the base commons modules. Import common.table.min.js to add the table module.
+Import `common.min.js` and `common.min.css` for the base commons modules. Import `common.table.min.js` to add the table module.
 
 Library is configured for import via CommonJS based API (e.g. NodeJS), AMD-based API (e.g. RequireJS), or simply regular instantiation.
 
-JQuery is required for some functions to work.
+JQuery helper functions are optional, but should be initialized automatically if JQuery is detected. To ensure these helpers are initialized though (if libraries are loaded asynchronously, the automatic detection of JQuery may fail due to race condition), force initialization though the call `window.cmLibGlobals.initJQueryHelpers()`.
+
+## Polyfills ##
+
+Ensures the below functions exists, many of which are missing in (surprise, surprise) Internet Explorer and Edge.
+
+**``Element.prototype.remove`` :** [https://developer.mozilla.org/en-US/docs/Web/API/ChildNode/remove](https://developer.mozilla.org/en-US/docs/Web/API/ChildNode/remove)
+
+**``Element.prototype.prepend`` :** [https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/prepend](https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/prepend)
+
+**``Element.classList`` :** Ensures existence of `contains()`, `add()`, `remove()`, `toggle()`, and `replace()` functions. [https://developer.mozilla.org/en-US/docs/Web/API/Element/classList](https://developer.mozilla.org/en-US/docs/Web/API/Element/classList)
+
+**``String.prototype.startsWith`` :** [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith)
+
+**``String.prototype.endsWith`` :** [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith)
 
 ## Global Additions ##
+
+The values/objects are added to the global namespace (under `window`).
 
 **``window.defaultErrorMessage`` :** Default error message.
 
@@ -32,21 +47,19 @@ JQuery is required for some functions to work.
 
 ## Prototype Modifications ##
 
+These useful functions are added to common object prototypes.
+
 **``String.prototype.capitalize()`` :** Will capitalize the each word in the string (using whitespace to delineate words).
 
 **``Number.prototype.addCommas(precision)`` :** Will convert a given number to a string, using the supplied precision, with commas.
 
-### JQuery Modifications ###
+**``Element.prototype.setAttributes(attrs)`` :** Sets multiple attributes (given as dictionary) at once.
 
-**``jQuery.fn.center()`` :** Will center an element on screen using absolute positioning.
-
-**``jQuery.fn.addTooltip(tooltipMsg[, direction])`` :** Will add a tooltip to an element using pure css. Direction may be "left", "right", "top", or "bottom" (defaults to "right").
-
-**``jQuery.fn.appendHelpIcon(tooltipMsg[, direction[, style]])`` :** Will append a help icon at the end of this element, with a tooltip. Direction may be "left", "right", "top", or "bottom" (defaults to "right"). Style is optional styles object as keys-values which will be applied to the help icon.
-
-``jQuery.fn.removeHelpIcon()`` : Removes any appended help icon.
+**``Element.prototype.css(style, [value])`` :** Much like the JQuery css() function, sets inline style, either as style name and value provided as strings, or given a dictionary of style names and values and key-value pairs. 
 
 ## Date (UTC) Modifications ##
+
+Additional functions for handling basic Date objects are added. Specifically to ensure UTC handling.
 
 **``DateUTC(year, month, day, hour, min, sec)`` :** Creates a datetime, forced as UTC. Note that month is 1-12 (unlike Date constructor as 0-11).
 
@@ -59,6 +72,18 @@ JQuery is required for some functions to work.
 **``Date.prototype.addDays(days)`` :** Returns new date with days added (or removed if negative).
 
 **``Date.prototype.daysInMonth()`` :** Returns number of days in the month for this date.
+
+### JQuery Modifications ###
+
+The following JQuery functionality is added. See note on ensuring this is enabled under "Use" section.
+
+**``jQuery.fn.center()`` :** Will center an element on screen using absolute positioning.
+
+**``jQuery.fn.addTooltip(tooltipMsg[, direction])`` :** Will add a tooltip to an element using pure css. Direction may be "left", "right", "top", or "bottom" (defaults to "right").
+
+**``jQuery.fn.appendHelpIcon(tooltipMsg[, direction[, style]])`` :** Will append a help icon at the end of this element, with a tooltip. Direction may be "left", "right", "top", or "bottom" (defaults to "right"). Style is optional styles object as keys-values which will be applied to the help icon.
+
+**``jQuery.fn.removeHelpIcon()`` :** Removes any appended help-icon.
 
 ## Common Object ##
 
@@ -99,6 +124,8 @@ Example given below:
 
 ### Modal Dialogs ###
 
+By default, this library appends a hidden div to the body to handle modals (whether used or not). The below functionality handles this built-in modal. Modal functionality is quite simple, opening a centered modal dialog in the window. Various options are provided, but by default there is a closer 'x' in the upper-right corner and clicking outside the modal box will also close the dialog.
+
 **``common.isModalOpen()`` :** Check whether modal is open.
 
 **``common.setModal(visible[, content[, options]])`` :** Creates a new modal dialog (or closes, if visible=false).* Content* is the HTML content of the inner dialog element. *Options* may be provided with:
@@ -108,8 +135,8 @@ Example given below:
 * `notExitable` - Normally modal closes on clicking anywhere outside modal dialog element. If true, this prevents this functionality.
 * `hideCloser` - If true, does not apply the automatically placed "X" to close dialog on upper-right.
 * `onClose` - Callback to run on modal being closed. 
-**
-``common.openModal(content[, options])`` :** Same as *common.setModal()* but with *visible* parameter defaulted to true.
+
+**``common.openModal(content[, options])`` :** Same as *common.setModal()* but with *visible* parameter defaulted to true.
 
 **``common.setModalAsLoading(visible[, content[, options]])`` :** Creates a new modal dialog with default values prepped for loading. *Content* is optional and defaults to "Loading..". In addition to same *options* available for *common.setModal*, extended *options* available are:
 
@@ -127,7 +154,11 @@ Example given below:
 
 ## CommonTable Class ##
 
-Requires common.table module.
+Requires common.table module. Table handling object which handles data formatting, grouped column, column sorting, and basic styling.
+
+After initializing object and attaching to document, begin by adding columns with `addColumn()`. The `key` is important in defining how to assign the data to said column. Other parameters allow various style and formatting methods. Once all columns are added, add data and draw the table with `populateTable()`. The data, sent as an array of object literals/dictionaries, is mapped to the columns automatically with the `key` defined for each column.
+
+And example usage script provided at bottom.	
 
 **``CommonTable(tableId[, tableClass[, container]])`` :** Creates new CommonTable with id and class (if provided, default class is "cm-table") and appends to container (if provided).
 
@@ -145,7 +176,7 @@ Requires common.table module.
 * `[colStyles]` (string|object) - Optional styles to apply to every row in this column (including header). If you only want to apply to non-header cells, must override values in hdrStyles.
 * `[onClick]` (function) - Optional onClick functionality to add to each cell (excluding header). Callback will be given the entire row's data as the parameter.
 
-**``CommonTable.prototype.createHeaders([sortOnKey[, ascending]])`` :** [Re]draw table headers.
+**``CommonTable.prototype.createHeaders([sortOnKey[, ascending]])`` :** [Re]draw table. Unlike `populateTable()`, this only redraws the headers (rest of the row are lost).
 
 * `[sortOnKey]` (string) - Option key to sort on.
 * `[ascending]` (boolean) - If sorting, whether ascending or descending order.
@@ -156,3 +187,44 @@ Requires common.table module.
 * `[sortOnKey]` (string) - Option key to sort on.
 * `[ascending]` (boolean) - If sorting, whether ascending or descending order.
 * `[dateFormatter]` (function) - Optional date formatting function that takes parameters in the order of the date value and the date format. Will only be called if column header has a dateFormat value. Attempted in try-catch block, so all values are attempted to be formatted, but if formatter throws exception, continues as if non-date value.
+
+----------
+
+*Example usage:*
+
+    var tbl = new CommonTable("my-table-id", "my-table-class");
+	tbl.appendTo("#table-container");
+	
+	// first three columns under "Name" group
+	tbl.addColumn("Name", "First", "firstName");
+	tbl.addColumn("Name", "Nickname", "nickName");
+	tbl.addColumn("Name", "Last", "lastName");
+	tbl.addColumn(null, "Birthday", "birthDate", "UTC:yyyy-mm-dd");
+	tbl.addColumn(null, "Wins", "winCount");
+	tbl.addColumn(null, "Losses", "lossCount");
+	tbl.addColumn(null, "Draws", "drawCount");
+
+	var data = [
+		{
+			firstName: "Tony", 
+			nickName: "El Cucuy", 
+			lastName: "Ferguson", 
+			winCount: 23, 
+			lossCount: 3, 
+			drawCount: 0, 
+			birthDate: new Date(1984, 2, 12)
+		}, 
+		// etc...
+	];
+
+	tbl.populateTable(
+		data, 
+		// sort by wins descending
+		"winCount", 
+		false, 
+		// pass dateFormat function to use on birthdate, a good one to use is:
+		// http://blog.stevenlevithan.com/archives/date-time-format
+		function(value, format) {
+			return dateFormat(value, format);
+		}
+	);

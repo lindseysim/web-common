@@ -1,15 +1,15 @@
 !function(root, factory) {
     // CommonJS-based (e.g. NodeJS) API
     if(typeof module === "object" && module.exports) {
-        module.exports = factory(require("jquery"));
+        module.exports = factory();
     // AMD-based (e.g. RequireJS) API
     } else if(typeof define === "function" && define.amd) {
-        define(["jquery"], factory);
+        define(factory);
     // Regular instantiation 
     } else {
-        root.CommonTable = factory(root.$);
+        root.CommonTable = factory();
     }
-}(this, function($) {
+}(this, function() {
     
     /**
      * Create table element and CommonTable handler.
@@ -22,11 +22,15 @@
         this.hdrGroups    = [];
         this.headerObjs   = [];
         this.headerElems  = [];
-        this.tableElement = $("<table>", {'class': 'cm-table'});
-        this.tbodyElement = $("<tbody>").appendTo(this.tableElement);
-        if(container)  { this.tableElement.appendTo(container); }
-        if(tableId)    { this.tableElement.attr("id", tableId); }
-        if(tableClass) { this.tableElement.attr("class", tableClass); }
+        this.tableElement = document.createElement('table');
+        this.tbodyElement = document.createElement('tbody');
+        
+        this.tableElement.append(tbodyElement);
+        this.tableElement.className = 'cm-table';
+        
+        if(tableId)    this.tableElement.setAttribute("id", tableId);
+        if(tableClass) this.tableElement.classList.add(tableClass);
+        if(container)  container.append(this.tableElement);
         return this;
     };
     
@@ -35,7 +39,7 @@
      * @param {String|jQuery} container - Container select or jQuery DOM element.
      */
     CommonTable.prototype.appendTo = function(container) {
-        this.tableElement.appendTo(container);
+        container.append(this.tableElement);
         return this;
     };
     
@@ -45,7 +49,7 @@
      * @param {String|jQuery} container - Container select or jQuery DOM element.
      */
     CommonTable.prototype.prependTo = function(container) {
-        this.tableElement.prependTo(container);
+        container.prepend(this.tableElement);
         return this;
     };
     
@@ -103,11 +107,14 @@
      */
     CommonTable.prototype.createHeaders = function(sortOnKey, ascending) {
         var self = this;
-        this.tbodyElement.html("");
-        var hdrRows = [
-            $("<tr>", {"cm-table-rowtype": "header-row"}).appendTo(this.tbodyElement), 
-            $("<tr>", {"cm-table-rowtype": "header-row"}).appendTo(this.tbodyElement)
-        ];
+        this.tbodyElement.innerHTML = "";
+        var hdrRows = [];
+        for(var i = 0; i < 2; ++i) {
+            var el = document.createElement("tr");
+            el.setAttribute("cm-table-rowtype", "header-row");
+            this.tbodyElement.append(el);
+            hdrRows.push(el);
+        }
         
         var lastGroupName = null;
         var lastGroupElem = null;
@@ -116,62 +123,64 @@
             // add group header, or extend the colspan, if necessary
             if(hdr.group) {
                 if(lastGroupName && hdr.group === lastGroupName) {
-                    lastGroupElem.attr("colspan", 1+parseInt(lastGroupElem.attr("colspan")));
+                    lastGroupElem.setAttribute("colspan", 1+parseInt(lastGroupElem.attr("colspan")));
                 } else {
                     lastGroupName = hdr.group;
-                    lastGroupElem = $("<th>", {
-                        html: hdr.group, 
+                    lastGroupElem = document.createElement("th");
+                    lastGroupElem.innerHTML = hdr.group;
+                    lastGroupElem.setAttributes({
                         style: "text-align:center;", 
                         colspan: 1, 
                         "cm-table-celltype": "header-group"
-                    }).appendTo(hdrRows[0]);
+                    });
+                    hdrRows[0].append(lastGroupElem);
                 }
             }
-            var hdrElem = $("<th>", {html: hdr.title, "cm-table-celltype": "header"});
+            var hdrElem = document.createElement("th");
+            hdrElem.innerHTML = hdr.title;
+            hdrElem.setAttribute("cm-table-celltype", "header");
             // add styles -- note that hdrStyles overwrites colStyles
             var styles = {};
             if(hdr.colStyles) {
-                for(var s in hdr.colStyles) {
-                    styles[s] = hdr.colStyles[s];
-                }
+                for(var s in hdr.colStyles) styles[s] = hdr.colStyles[s];
             }
             if(hdr.hdrStyles) {
-                for(var s in hdr.hdrStyles) {
-                    styles[s] = hdr.hdrStyles[s];
-                }
+                for(var s in hdr.hdrStyles) styles[s] = hdr.hdrStyles[s];
             }
             hdrElem.css(styles);
             // current sort header
             var sortOnThis = sortOnKey && sortOnKey === hdr.key;
             if(sortOnThis) {
-                hdrElem.append(
-                    $("<i>", {
-                        "class" : "icon-" + (ascending ? "ascending" : "descending")
-                    })
-                );
+                var icon = document.createElement("i");
+                icon.className = "icon-" + (ascending ? "ascending" : "descending");
+                hdrElem.append(icon);
             }
             // sort functionality
             if(hdr.sortable) {
-                hdrElem.css("cursor", "pointer").on('click', function(theKey, isAscending) {
+                hdrElem.css("cursor", "pointer");
+                hdrElem.addEventListener('click', 
+                    (function(theKey, isAscending) {
                         return function(evt) {
                             evt.stopPropagation();
                             self.populateTable(null, theKey, isAscending);
                         };
-                    }(hdr.key, sortOnThis ? !ascending : true)
+                    }(hdr.key, sortOnThis ? !ascending : true))
                 );
             }
             // add to row
             if(hdr.group) {
                 hdrRows[1].append(hdrElem);
             } else {
-                hdrElem.attr("rowspan", 2);
+                hdrElem.setAttribute("rowspan", 2);
                 hdrRows[0].append(hdrElem);
             }
         }
         // if no groups, delete unnecessary row, remove rowspans
-        if(!hdrRows[1][0].hasChildNodes()) {
+        if(!hdrRows[1].hasChildNodes()) {
             hdrRows[1].remove();
-            hdrRows[0].find("th").attr("rowspan", 1);
+            hdrRows[0].querySelectorAll("th").forEach(function() {
+                this.setAttribute("rowspan", "");
+            });
         }
         return this;
     };
@@ -225,7 +234,9 @@
         }
         // add by rows
         for(var i = 0; i < sortedData.length; i++) {
-            var row = $("<tr>", {"cm-table-rowtype": "data"}).appendTo(this.tbodyElement);
+            var row = document.createElement("tr");
+            row.setAttribute("cm-table-rowtype", "data");
+            this.tbodyElement.append(row);
             for(var j = 0; j < this.headerObjs.length; j++) {
                 var val = sortedData[i][this.headerObjs[j].key];
                 if(this.headerObjs[j].format) {
@@ -237,21 +248,27 @@
                         // do nothing on error, just don't format date
                     }
                 }
-                var cell = $("<td>", {"cm-table-celltype": "data"}).appendTo(row);
+                var cell = document.createElement("<td>");
+                cell.setAttribute("cm-table-celltype", "data");
+                row.append(cell);
                 if(this.headerObjs[j].colStyles) {
                     cell.css(this.headerObjs[j].colStyles);
                 }
                 if(this.headerObjs[j].onClick) {
                     // if click functionality, wrap in anchor
-                    $("<a>", {href: "#", html: val}).appendTo(cell)
-                        .on("click", function(callback, onData) {
+                    var a = document.createElement("a");
+                    a.setAttribute("href", "#");
+                    a.innerHTML = val;
+                    cell.append(a);
+                    a.addEventListener("click", (function(callback, onData) {
                             return function(evt) {
                                 callback(onData);
                                 evt.preventDefault();
                             };
-                        }(this.headerObjs[j].onClick, sortedData[i]));
+                        }(this.headerObjs[j].onClick, sortedData[i]))
+                    );
                 } else {
-                    cell.html(val);
+                    cell.innerHTML = val;
                 }
             }
         }
