@@ -18,7 +18,7 @@ for(var i = 0; i < copy.length; i++) {
 
 compressor.minify({
     compressor: 'uglifyjs',
-    input: './src/common.js',
+    input: ['./src/ie-is-special.js', './src/common.js'],
     output: './dist/common.min.js',
     callback: function (err, min) {
         if(err) { return console.log(err); }
@@ -26,7 +26,7 @@ compressor.minify({
 });
 compressor.minify({
     compressor: 'uglifyjs',
-    input: './src/common.table.js',
+    input: ['./src/ie-is-special.js', './src/common.table.js'],
     output: './dist/common.table.min.js',
     callback: function (err, min) {
         if(err) { return console.log(err); }
