@@ -47,6 +47,15 @@
                 digits = (digits = number.length) > 3 ? digits % 3 : 0;
             return sign + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + (precision ? "." + Math.abs(n - number).toFixed(precision).slice(2) : "");
         };
+
+        /**
+         * Simple is-visible check using offsetParent trick. Note it will have issues with elements in fixed 
+         * positions;
+         * @returns {Boolean} True if visible.
+         */
+        Element.prototype.isVisible = function() {
+            return this.offsetParent !== null;
+        };
         
         /**
          * Quickly set multiple attributes at once.
@@ -386,7 +395,7 @@
                 }
             }
             return clone;
-        };
+        }, 
         
         /**
          * Find GET parameters in current URL.
@@ -808,10 +817,10 @@
                 xhr.responseType = params.dataType;
             }
             xhr.onreadystatechange  = function() {
-                if(xmlhttp.readyState ==- 4) {
+                if(xmlhttp.readyState === 4) {
                     if(xhr.status === 200) {
                         params.success(
-                            responseType !== "json" ? xhr.responseText || JSON.parse(xhr.responseText), 
+                            responseType !== "json" ? xhr.responseText : JSON.parse(xhr.responseText), 
                             xhr.statusText, 
                             xhr
                         );

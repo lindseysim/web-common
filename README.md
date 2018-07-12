@@ -31,6 +31,8 @@ Ensures the below functions exists, many of which are missing in (surprise, surp
 
 **``Element.prototype.prepend(nodes)`` :** [https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/prepend](https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/prepend)
 
+**``Element.prototype.closest()`` :** [https://developer.mozilla.org/en-US/docs/Web/API/Element/closest](https://developer.mozilla.org/en-US/docs/Web/API/Element/closest)
+
 **``Element.classList`` :** Ensures existence of `contains()`, `add()`, `remove()`, `toggle()`, and `replace()` functions. [https://developer.mozilla.org/en-US/docs/Web/API/Element/classList](https://developer.mozilla.org/en-US/docs/Web/API/Element/classList)
 
 **``String.prototype.startsWith(searchString)`` :** [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith)
@@ -58,6 +60,8 @@ These useful functions are added to common object prototypes.
 **``String.prototype.capitalize()`` :** Will capitalize the each word in the string (using whitespace to delineate words).
 
 **``Number.prototype.addCommas(precision)`` :** Will convert a given number to a string, using the supplied precision, with commas.
+
+**``Element.prototype.isVisible()`` :** Simple is-visible check using `offsetParent` trick. Note it will have issues with elements in fixed positions.
 
 **``Element.prototype.setAttributes(attrs)`` :** Sets multiple attributes (given as dictionary) at once.
 
