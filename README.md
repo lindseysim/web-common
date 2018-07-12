@@ -283,4 +283,4 @@ And example usage script provided at bottom.
 
 ##Acknowledgments##
 
-A huge bulk of this library was built on solutions found through the Mozilla Developers Network, StackOverflow, and otherwise from people much smarter than me. Where
+A huge bulk of this library was built on solutions found through the Mozilla Developers Network, StackOverflow, and many other smart folks. I would also like to thank SFEI, Bill Burr, and coffee. 
