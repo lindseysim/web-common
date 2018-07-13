@@ -273,7 +273,7 @@
          */
         window.cmLibGlobals.getElementList = function(element) {
             if(!element) return [];
-            if(jQuery && element instanceof jQuery) {
+            if(typeof jQuery !== "undefined" && element instanceof jQuery) {
                 return element.get();
             }
             if(element[Symbol.iterator] === "function") {

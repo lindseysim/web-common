@@ -133,18 +133,18 @@ Example given below:
 		[
 			{
 				id: "menu-btn-1", 
-				text: "Menu Item 1", 
-				href: "pages/about.html", 
+				text: "Homepage", 
+				href: "index.html", 
 				style: {"font-weight": "bold"}, 
 				onClick: function() { console.log("menu item 1 clicked"); }
 			}, 
 			{
 				id: "submenu", 
-				text: "Submenu, 
-				style: "font-weight:bold;", 
+				text: "Totally Work Related", 
+				style: {"font-style": "italic"}, 
 				menu: [
-					{text: "Submenu Item 1", href: "google.com"},
-					{text: "Submenu Item 2", href: "gmail.com"} 
+					{text: "Business Stuff", href: "https://facebook.com"},
+					{text: "Web Dev. Stuff", href: "https://reddit.com"} 
 				]
 			}
 		]
