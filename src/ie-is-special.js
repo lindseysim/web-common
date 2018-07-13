@@ -1,6 +1,5 @@
 (function() {
-    "use strict";
-    
+
     // Element.remove()
     if(!Element.prototype.remove) {
         Element.prototype.remove = function() {
@@ -76,6 +75,7 @@
             && !("classList" in document.createElementNS("http://www.w3.org/2000/svg","g"))
         ) {
             (function (view) {
+                "use strict";
                 if(!('Element' in view)) return;
                 var classListProp = "classList", 
                     protoProp = "prototype", 
@@ -197,6 +197,7 @@
             }(self));
         }
         (function () {
+            "use strict";
             var testElement = document.createElement("_");
             testElement.classList.add("c1", "c2");
             if(!testElement.classList.contains("c2")) {
@@ -243,6 +244,7 @@
     // String repeat (modified from MDN)
     if(!String.prototype.repeat) {
         String.prototype.repeat = function(count) {
+            "use strict";
             if(this === null || this === undefined) {
                 throw new TypeError("can\"t convert " + this + " to object");
             }
@@ -267,117 +269,19 @@
         };
     }
     
-    // String startsWith and endsWiths. All credit due to Mathias Bynens <https://mathiasbynens.be/>
+    // String startsWith and endsWith
     if(!String.prototype.startsWith) {
-        (function() {
-            var defineProperty = (function() {
-                // IE 8 only supports `Object.defineProperty` on DOM elements
-                try {
-                    var object = {}, 
-                        $defineProperty = Object.defineProperty, 
-                        result = $defineProperty(object, object, object) && $defineProperty;
-                } catch(error) {}
-                return result;
-            }());
-            var toString = {}.toString;
-            var startsWith = function(search) {
-                if(this == null) {
-                    throw TypeError();
-                }
-                var string = String(this);
-                if(search && toString.call(search) == '[object RegExp]') {
-                    throw TypeError();
-                }
-                var stringLength = string.length, 
-                    searchString = String(search), 
-                    searchLength = searchString.length, 
-                    position = arguments.length > 1 ? arguments[1] : undefined;
-                // `ToInteger`
-                var pos = position ? Number(position) : 0;
-                if(pos != pos) { // better `isNaN`
-                    pos = 0;
-                }
-                var start = Math.min(Math.max(pos, 0), stringLength);
-                // Avoid the `indexOf` call if no match is possible
-                if(searchLength + start > stringLength) {
-                    return false;
-                }
-                var index = -1;
-                while(++index < searchLength) {
-                    if(string.charCodeAt(start + index) != searchString.charCodeAt(index)) {
-                        return false;
-                    }
-                }
-                return true;
-            };
-            if(defineProperty) {
-                defineProperty(String.prototype, 'startsWith', {
-                    'value': startsWith,
-                    'configurable': true,
-                    'writable': true
-                });
-            } else {
-                String.prototype.startsWith = startsWith;
-            }
-        }());
+        String.prototype.startsWith = function(search, pos) {
+            return this.substr(!pos || pos < 0 ? 0 : +pos, search.length) === search;
+        };
     }
     if(!String.prototype.endsWith) {
-        (function() {
-            var defineProperty = (function() {
-                // IE 8 only supports `Object.defineProperty` on DOM elements
-                try {
-                    var object = {}, 
-                        $defineProperty = Object.defineProperty, 
-                        result = $defineProperty(object, object, object) && $defineProperty;
-                } catch(error) {}
-                return result;
-            }());
-            var toString = {}.toString;
-            var endsWith = function(search) {
-                if(this == null) {
-                    throw TypeError();
-                }
-                var string = String(this);
-                if(search && toString.call(search) == '[object RegExp]') {
-                    throw TypeError();
-                }
-                var stringLength = string.length, 
-                    searchString = String(search), 
-                    searchLength = searchString.length, 
-                    pos = stringLength;
-                if(arguments.length > 1) {
-                    var position = arguments[1];
-                    if(position !== undefined) {
-                        // `ToInteger`
-                        pos = position ? Number(position) : 0;
-                        if (pos != pos) { // better `isNaN`
-                            pos = 0;
-                        }
-                    }
-                }
-                var end = Math.min(Math.max(pos, 0), stringLength), 
-                    start = end - searchLength;
-                if(start < 0) {
-                    return false;
-                }
-                var index = -1;
-                while(++index < searchLength) {
-                    if(string.charCodeAt(start + index) != searchString.charCodeAt(index)) {
-                        return false;
-                    }
-                }
-                return true;
-            };
-            if(defineProperty) {
-                defineProperty(String.prototype, 'endsWith', {
-                    'value': endsWith,
-                    'configurable': true,
-                    'writable': true
-                });
-            } else {
-                String.prototype.endsWith = endsWith;
+        String.prototype.endsWith = function(search, this_len) {
+            if(this_len === undefined || this_len > this.length) {
+                this_len = this.length;
             }
-        }());
+            return this.substring(this_len - search.length, this_len) === search;
+        };
     }
     
 })();
