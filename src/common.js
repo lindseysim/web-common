@@ -54,7 +54,7 @@
          * @returns {Boolean} True if visible.
          */
         Element.prototype.isVisible = function() {
-            return this.offsetParent !== null;
+            return this.offsetParent !== null && (!this.style.visibility || this.style.visibility.toLowerCase() !== "hidden");
         };
         
         /**
