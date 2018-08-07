@@ -12,7 +12,7 @@
 }(this, function() {
     
     if(!window.cmLibGlobals || !window.cmLibGlobals.helpersDefined) {
-        window.cmLibGlobals = {};
+        window.cmLibGlobals = {_modalsInit: false};
         
         //****************************************************************************************************
         // Misc prototype extensions
@@ -324,29 +324,28 @@
         //****************************************************************************************************
         // Prep for modal content
         //****************************************************************************************************
-        // Add modal content (if not already existing)
-        (function() {
-            if(!document.querySelector("#cm-modal-outer")) {
-                var inner = document.createElement("div"), 
-                    outer = document.createElement("div"), 
-                    container = document.createElement("div");
-                inner.className = "cm-modal-inner";
-                outer.setAttribute("id", "cm-modal-outer");
-                container.setAttribute("id", "cm-modal-container");
-                document.body.append(container);
-                container.append(outer);
-                outer.append(inner);
-            }
-            var outer = document.querySelector("#cm-modal-outer");
+        window.cmLibGlobals.initModalFunctionality = function() {
+            // Add modal content (if not already existing)
+            if(this._modalsInit && document.querySelector("#cm-modal-outer")) return;
+            var inner = document.createElement("div"), 
+                outer = document.createElement("div"), 
+                container = document.createElement("div");
+            inner.className = "cm-modal-inner";
+            outer.setAttribute("id", "cm-modal-outer");
+            container.setAttribute("id", "cm-modal-container");
+            document.body.append(container);
+            container.append(outer);
+            outer.append(inner);
             outer.style['visibility'] = "hidden";
             // Add modal close functionality by clicking anywhere not in the modal
+            var self = this;
             outer.addEventListener('click', function(evt) {
-                if(window.cmLibGlobals.modalNotExitable) { return; }
-                if(!evt.target.closest('#cm-modal-container div')) {
-                    window.cmLibGlobals.closeModal();
-                }
+                if(self.modalNotExitable) return;
+                if(!evt.target.closest('#cm-modal-container div')) self.closeModal();
             });
-        }());
+            this._modalsInit = true;
+        }
+        
         /**
          * Close any open modal.
          * @param {Boolean} suppressOnClose - If true, suppresses onClose event, if one is attached.
@@ -355,15 +354,14 @@
             var outer = document.querySelector("#cm-modal-outer");
             outer.style['visibility'] = "hidden";
             outer.querySelector(".cm-modal-inner").innerHTML = "";
-            if(window.cmLibGlobals.modalOnClose) {
-                if(!suppressOnClose) {
-                    window.cmLibGlobals.modalOnClose();
-                }
-                window.cmLibGlobals.modalOnClose = null;
-                window.cmLibGlobals.modalOpened = false;
+            if(this.modalOnClose) {
+                if(!suppressOnClose) this.modalOnClose();
+                this.modalOnClose = null;
+                this.modalOpened = false;
             }
         };
-        // set global helpers as defined
+        
+        // set global helper
         window.cmLibGlobals.helpersDefined = true;
     }
     
@@ -548,8 +546,9 @@
          * @returns {Boolean} Whether modal window is opened.
          */
         isModalOpen: function() {
-            window.cmLibGlobals.modalOpened = document.querySelector("#cm-modal-outer").offsetParent !== null;
-            return window.cmLibGlobals.modalOpened;
+            if(!commonGlobals._modalsInit) return false;
+            commonGlobals.modalOpened = document.querySelector("#cm-modal-outer").offsetParent !== null;
+            return commonGlobals.modalOpened;
         }, 
 
         /**
@@ -594,6 +593,7 @@
          *          was closed.
          */
         setModal: function(visible, content, options) {
+            if(!commonGlobals._modalsInit) commonGlobals.initModalFunctionality();
             if(!options) { options = {}; }
             var modalContainer = document.querySelector("#cm-modal-outer");
             if(!visible) {
@@ -705,6 +705,7 @@
          *         was closed.
          */
         changeModal: function(content, prepContentCallback, hideCloser) {
+            if(!commonGlobals._modalsInit) commonGlobals.initModalFunctionality();
             if(!this.isModalOpen()) {
                 this.setModal(true, content);
                 if(prepContentCallback) { prepContentCallback(); }
