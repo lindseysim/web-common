@@ -1,8 +1,13 @@
 {
-  "name": "common",
-  "main": "common.min.js",
+  "name": "web-common",
+  "author": "Lawrence Sim", 
+  "license": "MIT", 
+  "version": "2.01",
+  "repository": {
+    "type": "git",
+    "url": "git+https://siml@bitbucket.org/siml/web-common.git"
+  },
   "dependencies": {
-    "clean-css": "^4.1.3",
-    "node-minify": "~2.0.0"
+    "clean-css": "^4.1.3"
   }
 }

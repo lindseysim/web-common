@@ -21,7 +21,7 @@ compressor.minify({
     input: ['./src/ie-is-special.js', './src/common.js'],
     output: './dist/common.min.js',
     callback: function (err, min) {
-        if(err) { return console.log(err); }
+        if(err) return console.log(err);
     }
 });
 compressor.minify({
@@ -29,15 +29,15 @@ compressor.minify({
     input: ['./src/ie-is-special.js', './src/common.table.js'],
     output: './dist/common.table.min.js',
     callback: function (err, min) {
-        if(err) { return console.log(err); }
+        if(err) return console.log(err);
     }
 });
 new CleanCSS().minify(
     ['./src/common.css'], 
     function(err, out) {
-        if(err) { return console.log(err); }
+        if(err) return console.log(err);
         fs.writeFile('./dist/common.min.css', out.styles, function(err) {
-            if(err) { console.log(err); }
+            if(err) console.log(err);
         });
     }
 );

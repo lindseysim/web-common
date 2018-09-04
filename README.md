@@ -1,5 +1,7 @@
 # Web Common #
 
+Web Common is a collection of polyfills, extentions, and modules I repeatedly found myself reapplying on new projects.
+
 Lawrence Sim  
 Copyright © 2018
 
@@ -23,17 +25,19 @@ JQuery helper functions are optional, but should be initialized automatically if
 
 Ensures the below functions exists, many of which are missing in (surprise, surprise) Internet Explorer and Edge.
 
-**``Element.prototype.remove`` :** [https://developer.mozilla.org/en-US/docs/Web/API/ChildNode/remove](https://developer.mozilla.org/en-US/docs/Web/API/ChildNode/remove)
+**``Element.prototype.remove()`` :** [https://developer.mozilla.org/en-US/docs/Web/API/ChildNode/remove](https://developer.mozilla.org/en-US/docs/Web/API/ChildNode/remove)
 
-**``Element.prototype.append`` :** [https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/append](https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/append)
+**``Element.prototype.append(nodes)`` :** [https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/append](https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/append)
 
-**``Element.prototype.prepend`` :** [https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/prepend](https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/prepend)
+**``Element.prototype.prepend(nodes)`` :** [https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/prepend](https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/prepend)
+
+**``Element.prototype.closest()`` :** [https://developer.mozilla.org/en-US/docs/Web/API/Element/closest](https://developer.mozilla.org/en-US/docs/Web/API/Element/closest)
 
 **``Element.classList`` :** Ensures existence of `contains()`, `add()`, `remove()`, `toggle()`, and `replace()` functions. [https://developer.mozilla.org/en-US/docs/Web/API/Element/classList](https://developer.mozilla.org/en-US/docs/Web/API/Element/classList)
 
-**``String.prototype.startsWith`` :** [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith)
+**``String.prototype.startsWith(searchString)`` :** [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith)
 
-**``String.prototype.endsWith`` :** [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith)
+**``String.prototype.endsWith(searchString)`` :** [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith)
 
 ## Global Additions ##
 
@@ -51,19 +55,25 @@ The values/objects are added to the global namespace (under `window`).
 
 These useful functions are added to common object prototypes.
 
+**``Object.isObject(obj)`` :** Check is given object is an object-type. That is, not a primitive, string, or array. Useful for when parameters must be ensured is an object-literal/dictionary.
+
 **``String.prototype.capitalize()`` :** Will capitalize the each word in the string (using whitespace to delineate words).
 
 **``Number.prototype.addCommas(precision)`` :** Will convert a given number to a string, using the supplied precision, with commas.
+
+**``Element.prototype.isVisible()`` :** Simple is-visible check using `offsetParent` trick. Note it will have issues with elements in fixed positions.
 
 **``Element.prototype.setAttributes(attrs)`` :** Sets multiple attributes (given as dictionary) at once.
 
 **``Element.prototype.css(style, [value])`` :** Much like the JQuery css() function, sets inline style, either as style name and value provided as strings, or given a dictionary of style names and values and key-value pairs. 
 
+**``Element.prototype.center()`` :** Will center an element on screen using absolute positioning.
+
 ## Date (UTC) Modifications ##
 
 Additional functions for handling basic Date objects are added. Specifically to ensure UTC handling.
 
-**``DateUTC(year, month, day, hour, min, sec)`` :** Creates a datetime, forced as UTC. Note that month is 1-12 (unlike Date constructor as 0-11).
+**``DateUTC(year, month, day[, hour[, min[, sec]]])`` :** Creates a datetime, forced as UTC. Note that month is 1-12 (unlike Date constructor as 0-11).
 
 **``Date.prototype.asUTC()`` :** Converts datetime to UTC.
 
@@ -75,7 +85,7 @@ Additional functions for handling basic Date objects are added. Specifically to 
 
 **``Date.prototype.daysInMonth()`` :** Returns number of days in the month for this date.
 
-### JQuery Modifications ###
+## jQuery Modifications ##
 
 The following JQuery functionality is added. See note on ensuring this is enabled under "Use" section.
 
@@ -87,17 +97,35 @@ The following JQuery functionality is added. See note on ensuring this is enable
 
 **``jQuery.fn.removeHelpIcon()`` :** Removes any appended help-icon.
 
+## Tooltips and Help Icons ##
+
+The tooltips and help icons functionality (described above on the jQuery modifications) can be applied manually as well.
+
+To add a tooltip, simply add a class of `cm-tooltip-left`, `cm-tooltip-top`, `cm-tooltip-right`, or `cm-tooltip-bottom` and an attribute of `cm-tooltip-msg` with the tooltip message.
+
+To create a help icon, simply create the element `<i>?</i>`, with class `cm-icon`.
+
 ## Common Object ##
 
 Returned as object if instantiated via CommonJS or AMD import. Otherwise appended to root as common (e.g. *window.common*).
 
+**``common.extend(obj, extend[, allowOverwrite[, deepCopy]])`` :** Copy given object and extended with new values. Unless specified otherwise by `deepCopy` parameter behavior varies as follows:
+
+* If `extend` is null, `obj` is simply returned as is (no copy, original passed value).
+* If `obj` is null, `extend` is simply returned as is.
+* Values in first level of `obj` are passed to a clone. Thus primitive types are copied by value, but objects will be copied by reference. 
+
+Deep copy is done via `JSON.parse(JSON.stringify())`.
+
 **``common.getUrlGetVars()`` :** Retrieve GET parameters in current URL as object literal (dictionary format).
 
-**``common.addGrabCursorFunctionality(element)`` :** Adds grab cursor functionality to draggable element.
+**``common.newWindow(event, url, name, width, height[, minimal])`` :** Creates a new, centered window, even accounting for dual screen monitors.. The `event` object, if not provided, is grabbed from window.event. This is used to screen against middle-mouse clicks and ctrl+left-clicks which should be handled separately to create a new tab. If `minimal` is true, attempts to hide menubar, statusbar, and location -- though many modern browsers may prevent some or all of this.
 
-**``common.newWindow(event, url, name, width, height, minimal)`` :** Creates a new, centered window, even accounting for dual screen monitors.. The *event* object, if not provided, is grabbed from window.event. This is used to screen against middle-mouse clicks and ctrl+left-clicks which should be handled separately to create a new tab. If *minimal* is true, attempts to hide menubar, statusbar, and location -- though many modern browsers may prevent some or all of this.
+**``common.addGrabCursorFunctionality(element)`` :** Adds grab cursor functionality to draggable element. Element may be single element, a NodeList/Array of elements, or a jQuery selection.
 
-**``common.createDropdown(element, menu)`` :** Create a dropdown menu on an element. *menu* parameter is an array of object literals defining the menu. The parameters 'id', 'class', 'style', and 'text', if they exist, are applied. For functionality, either add 'href' and optionally 'target' parameters or supply a callback to an 'onClick' parameter. To create a submenu, simply add a 'menu' parameter with the same nested structure.
+**``common.createDropdown(element, menu)`` :** Create a dropdown menu on an element. *menu* parameter is an array of object literals defining the menu. The parameters 'id', 'class', 'style', and 'text', if they exist, are applied. For functionality, either add 'href' and optionally 'target' parameters or supply a callback to an 'onClick' parameter. To create a submenu, simply add a 'menu' parameter with the same nested structure. 
+
+Element may be single element, a NodeList/Array of elements, or a jQuery selection.
 
 Example given below:
 
@@ -105,24 +133,24 @@ Example given below:
 		[
 			{
 				id: "menu-btn-1", 
-				text: "Menu Item 1", 
-				href: "pages/about.html", 
+				text: "Homepage", 
+				href: "index.html", 
 				style: {"font-weight": "bold"}, 
 				onClick: function() { console.log("menu item 1 clicked"); }
 			}, 
 			{
 				id: "submenu", 
-				text: "Submenu, 
-				style: "font-weight:bold;", 
+				text: "Totally Work Related", 
+				style: {"font-style": "italic"}, 
 				menu: [
-					{text: "Submenu Item 1", href: "google.com"},
-					{text: "Submenu Item 2", href: "gmail.com"} 
+					{text: "Business Stuff", href: "https://facebook.com"},
+					{text: "Web Dev. Stuff", href: "https://reddit.com"} 
 				]
 			}
 		]
     );
 
-**``common.clearDropdown(element)`` :** Remove dropdown menu functionality from an element.
+**``common.clearDropdown(element)`` :** Remove dropdown menu functionality from an element. Element may be single element, a NodeList/Array of elements, or a jQuery selection.
 
 ### Modal Dialogs ###
 
@@ -153,6 +181,28 @@ By default, this library appends a hidden div to the body to handle modals (whet
 
 **``common.hideModal([suppressOnClose])`` :** Same as closeModal().
 
+### jQuery-like Functions ###
+
+**``common.ajax(params)`` :** Mimics [jQuery.ajax()](http://api.jquery.com/jQuery.ajax/) function call.
+
+* `url` - The URL of the request.
+* `async` - Asynchronous. Defaults to true.
+* `method` - Defaults to "GET".
+* `data` - Optional dictionary of data to send with request.
+* `dataType` - Type of returned data. See [XMLHttpRequest.responseType](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/responseType).
+* `success` - Callback on success. Passes parameters of `XMLHttpRequest.responseText`, `XMLHttpRequest.statusText`, and the `XMLHttpRequest` instance itself.
+* `error` - Callback on error. Passes parameters the `XMLHttpRequest` instance, `XMLHttpRequest.statusText`, and `XMLHttpRequest.responseText`.
+* `complete` - Callback on completion (whether success or error). Passes parameters the `XMLHttpRequest` instance and `XMLHttpRequest.statusText`.
+* `user` - Optional username, if necessitated.
+* `password` - Optional password, if necessitated.
+
+**``common.animate(element, properties, duration[, easing[, complete]]])`` :** Mimics [jQuery.animate()](http://api.jquery.com/jQuery.animate/) function using CSS3 transitions.
+
+* `element` - The Element to animate.
+* `properties` - CSS properties to animate to. Note not all properties are animatable. See [animatable CSS properties](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animated_properties).
+* `duration` - Duration of animation, in milliseconds.
+* `timingFunction` - Timing/easing function, defaults to "ease". See: [transition-timing-function](https://developer.mozilla.org/en-US/docs/Web/CSS/transition-timing-function).
+* `complete` - Optional callback to run on completion.
 
 ## CommonTable Class ##
 
@@ -173,22 +223,22 @@ And example usage script provided at bottom.
 * `group` (string) - The header group. If not null, used to group two or more headers as subheaders under a banner header (via colspan).
 * `title` (string) - The title to display the header as.
 * `key` (string) - The key used to retrieve data from this header.
-* `[dateFormat]` (string) - Optional date format to format dates under this header.
-* `[hdrStyles]` (string|object) - Optional styles to apply to the header. Overrides any colStyles properties.
-* `[colStyles]` (string|object) - Optional styles to apply to every row in this column (including header). If you only want to apply to non-header cells, must override values in hdrStyles.
-* `[onClick]` (function) - Optional onClick functionality to add to each cell (excluding header). Callback will be given the entire row's data as the parameter.
+* `dateFormat` (string) - Optional date format to format dates under this header.
+* `hdrStyles` (string|object) - Optional styles to apply to the header. Overrides any colStyles properties.
+* `colStyles` (string|object) - Optional styles to apply to every row in this column (including header). If you only want to apply to non-header cells, must override values in hdrStyles.
+* `onClick` (function) - Optional onClick functionality to add to each cell (excluding header). Callback will be given the entire row's data as the parameter.
 
 **``CommonTable.prototype.createHeaders([sortOnKey[, ascending]])`` :** [Re]draw table. Unlike `populateTable()`, this only redraws the headers (rest of the row are lost).
 
-* `[sortOnKey]` (string) - Option key to sort on.
-* `[ascending]` (boolean) - If sorting, whether ascending or descending order.
+* `sortOnKey` (string) - Optional key to sort on.
+* `ascending` (boolean) - If sorting, whether ascending or descending order.
 
 **``CommonTable.prototype.populateTable(tableData[, sortOnKey[, ascending[, dateFormatter]]])`` :** Populate and [re]draw table.
 
 * `tableData` (array) - Array of objects, representing data by row. Data is not stored to object or dynamically bound in any way. To update table, must be redrawn, passing the updated data array.
-* `[sortOnKey]` (string) - Option key to sort on.
-* `[ascending]` (boolean) - If sorting, whether ascending or descending order.
-* `[dateFormatter]` (function) - Optional date formatting function that takes parameters in the order of the date value and the date format. Will only be called if column header has a dateFormat value. Attempted in try-catch block, so all values are attempted to be formatted, but if formatter throws exception, continues as if non-date value.
+* `sortOnKey` (string) - Optional key to sort on.
+* `ascending` (boolean) - If sorting, whether ascending or descending order.
+* `dateFormatter` (function) - Optional date formatting function that takes parameters in the order of the date value and the date format. Will only be called if column header has a dateFormat value. Attempted in try-catch block, so all values are attempted to be formatted, but if formatter throws exception, continues as if non-date value.
 
 ----------
 
@@ -221,12 +271,20 @@ And example usage script provided at bottom.
 
 	tbl.populateTable(
 		data, 
-		// sort by wins descending
-		"winCount", 
+		"winCount",  // sort by wins descending
 		false, 
-		// pass dateFormat function to use on birthdate, a good one to use is:
+		// pass dateFormat function to use on birthdate, a good one to use is Steven Levithan's
 		// http://blog.stevenlevithan.com/archives/date-time-format
 		function(value, format) {
 			return dateFormat(value, format);
 		}
 	);
+
+&nbsp;
+
+
+&nbsp;
+
+##Acknowledgments##
+
+A huge bulk of this library was built on solutions found through the Mozilla Developers Network, StackOverflow, and many other smart folks. I would also like to thank SFEI, Bill Burr, and coffee. 
