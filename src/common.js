@@ -40,12 +40,16 @@
          * @returns {String}
          */
         Number.prototype.addCommas = function(precision){
-            var n = this, 
+            var n         = this, 
                 precision = isNaN(precision = Math.abs(precision)) ? 0 : precision, 
-                sign = n < 0 ? "-" : "", 
-                number = parseInt(n = Math.abs(+n || 0).toFixed(precision)) + "", 
-                digits = (digits = number.length) > 3 ? digits % 3 : 0;
-            return sign + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + (precision ? "." + Math.abs(n - number).toFixed(precision).slice(2) : "");
+                sign      = n < 0 ? "-" : "", 
+                number    = parseInt(n = Math.abs(+n || 0).toFixed(precision)) + "", 
+                digits    = (digits = number.length) > 3 ? digits % 3 : 0;
+            return (
+                sign
+                + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                + (precision ? "." + Math.abs(n - number).toFixed(precision).slice(2) : "")
+            );
         };
 
         /**
@@ -54,7 +58,10 @@
          * @returns {Boolean} True if visible.
          */
         Element.prototype.isVisible = function() {
-            return this.offsetParent !== null && (!this.style.visibility || this.style.visibility.toLowerCase() !== "hidden");
+            return (
+                this.offsetParent !== null 
+                && (!this.style.visibility || this.style.visibility.toLowerCase() !== "hidden")
+            );
         };
         
         /**
@@ -62,9 +69,7 @@
          * @param {Object} attrs - Literal of key-value attribute pairs.
          */
         Element.prototype.setAttributes = function(attrs) {
-            for(var key in attrs) {
-                this.setAttribute(key, attrs[key]);
-            }
+            for(var key in attrs) this.setAttribute(key, attrs[key]);
         };
         
         /**
@@ -77,9 +82,7 @@
             if(style instanceof String && value instanceof String) {
                 this.style[style] = value;
             } else if(style && style.constructor === Object) {
-                for(var key in style) {
-                    this.style[key] = style[key];
-                }
+                for(var key in style) this.style[key] = style[key];
             }
         };
 
@@ -109,9 +112,7 @@
          * @returns {Date}
          */
         DateUTC = function(year, month, day, hour, min, sec) {
-            if(!month && !day && !hour && !min && !sec) {
-                return new Date(parseInt(year));
-            }
+            if(!month && !day && !hour && !min && !sec) return new Date(parseInt(year));
             return new Date(Date.UTC(
                 parseInt(year), 
                 month ? parseInt(month)-1 : 0, 
@@ -133,7 +134,7 @@
             return new Date(Date.UTC(
                 this.getFullYear(), 
                 this.getMonth(), 
-                this.getDate(),  
+                this.getDate(), 
                 this.getHours(), 
                 this.getMinutes(), 
                 this.getSeconds()
@@ -327,8 +328,8 @@
         window.cmLibGlobals.initModalFunctionality = function() {
             // Add modal content (if not already existing)
             if(this._modalsInit && document.querySelector("#cm-modal-outer")) return;
-            var inner = document.createElement("div"), 
-                outer = document.createElement("div"), 
+            var inner     = document.createElement("div"), 
+                outer     = document.createElement("div"), 
                 container = document.createElement("div");
             inner.className = "cm-modal-inner";
             outer.setAttribute("id", "cm-modal-outer");
@@ -425,13 +426,13 @@
             if(event === undefined || !(event.which === 2 || (event.which === 1 && event.ctrlKey))) {
                 // center window, from http://www.xtf.dk/2011/08/center-new-popup-window-even-on.html
                 // Fixes dual-screen position                          Most browsers       Firefox
-                var dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : screen.left;
-                var dualScreenTop  = window.screenTop  !== undefined ? window.screenTop  : screen.top;
-                var winWidth  = window.innerWidth  ? window.innerWidth  : document.documentElement.clientWidth  ? document.documentElement.clientWidth : screen.width;
-                var winHeight = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
-                var left = dualScreenLeft + 0.5*(winWidth - width);
-                var top  = dualScreenTop  + 0.5*(winHeight - height);
-                var options = "width=" + width + ", height=" + height + ", left=" + left + ", top=" + top;
+                var dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : screen.left, 
+                    dualScreenTop  = window.screenTop  !== undefined ? window.screenTop  : screen.top, 
+                    winWidth  = window.innerWidth  ? window.innerWidth  : document.documentElement.clientWidth  ? document.documentElement.clientWidth  : screen.width, 
+                    winHeight = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height, 
+                    left = dualScreenLeft + 0.5*(winWidth - width), 
+                    top  = dualScreenTop  + 0.5*(winHeight - height), 
+                    options = "width=" + width + ", height=" + height + ", left=" + left + ", top=" + top;
                 if(minimal) {
                     options += ", scrollbars=yes, menubar=no, statusbar=no, location=no";
                 } else {
@@ -486,13 +487,13 @@
                 inner.className = 'cm-dropdown-menu';
                 outer.append(inner);
                 for(var j = 0; j < menuObj.length; j++) {
-                    var m = menuObj[j];
-                    var menuItem = document.createElement("div");
+                    var m = menuObj[j], 
+                        menuItem = document.createElement("div");
                     menuItem.setAttribute("id", m.id ? m.id : '');
                     menuItem.className = 'cm-dropdown-menu-item';
                     inner.append(menuItem);
-                    if(m.class) { menuItem.classList.add(m.class); }
-                    if(m.style) { menuItem.css(m.style); }
+                    if(m.class) menuItem.classList.add(m.class);
+                    if(m.style) menuItem.css(m.style);
                     if(m.href) {
                         var a  = document.createElement("a");
                         a.setAttributes({
@@ -666,15 +667,16 @@
             if(!visible) {
                 this.setModal(false);
             } else {
-                if(!content)                             { content = "Loading.."; }
-                if(!options)                             { options = {}; }
-                if(!options.id)                          { options.id = "cm-modal-loading-dialog"; }
-                if(options.addDetails === undefined)     { options.addDetails = false; }
-                if(!options.addDetailsText)              { options.addDetailsText = "Please wait.."; }
-                if(options.showBackground === undefined) { options.showBackground = true; }
-                if(options.notExitable === undefined)    { options.notExitable = true; }
-                if(options.hideCloser === undefined)     { options.hideCloser = true; }
-                if(!options.imgUrl && options.imgUrl !== false)  { options.imgUrl = "images/loader.gif"; }
+                if(!content)                             content = "Loading..";
+                if(!options)                             options = {};
+                if(!options.id)                          options.id = "cm-modal-loading-dialog";
+                if(options.addDetails === undefined)     options.addDetails = false;
+                if(!options.addDetailsText)              options.addDetailsText = "Please wait..";
+                if(options.showBackground === undefined) options.showBackground = true;
+                if(options.notExitable === undefined)    options.notExitable = true;
+                if(options.hideCloser === undefined)     options.hideCloser = true;
+                if(!options.imgUrl 
+                        && options.imgUrl !== false)     options.imgUrl = "images/loader.gif";
                 var loadingDialog = document.createElement("div");
                 loadingDialog.innerHTML = "&nbsp;" + content;
                 if(options.imgUrl) {
@@ -708,7 +710,7 @@
             if(!commonGlobals._modalsInit) commonGlobals.initModalFunctionality();
             if(!this.isModalOpen()) {
                 this.setModal(true, content);
-                if(prepContentCallback) { prepContentCallback(); }
+                if(prepContentCallback) prepContentCallback();
                 return;
             }
             var modalContent = document.querySelector("#cm-modal-outer").querySelector(".cm-modal-inner"), 
@@ -723,9 +725,7 @@
             if(!hideCloser) {
                 var closer = document.createElement("div");
                 closer.setAttribute("id", "cm-modal-closer");
-                closer.addEventListener("click", function() {
-                    commonGlobals.closeModal();
-                });
+                closer.addEventListener("click", function() { commonGlobals.closeModal(); });
                 modalContent.append(closer);
             }
             // fast store new dims before reverting
@@ -835,7 +835,7 @@
                 methodIsPost = method === "POST";
             xhr.open(
                 method, 
-                params.url (!methodIsPost ? reqParams : ""), 
+                params.url + (!methodIsPost ? reqParams : ""), 
                 params.async, 
                 params.user, 
                 params.password
