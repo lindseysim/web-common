@@ -248,7 +248,7 @@
                         // do nothing on error, just don't format date
                     }
                 }
-                var cell = document.createElement("<td>");
+                var cell = document.createElement("td");
                 cell.setAttribute("cm-table-celltype", "data");
                 row.append(cell);
                 if(this.headerObjs[j].colStyles) {
