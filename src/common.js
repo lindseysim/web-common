@@ -213,7 +213,7 @@
                 jQuery.fn.addTooltip = function(tooltipMsg, direction, force) {
                     if(!tooltipMsg) {
                         this.removeClass("cm-tooltip-left cm-tooltip-right cm-tooltip-top cm-tooltip-bottom cm-tooltip-force");
-                        this.removeAttribute("cm-tooltip-msg");
+                        this.removeAttr("cm-tooltip-msg");
                         return;
                     }
                     var dirs = ["right", "left", "top", "bottom"], 
