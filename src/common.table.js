@@ -178,8 +178,8 @@
         // if no groups, delete unnecessary row, remove rowspans
         if(!hdrRows[1].hasChildNodes()) {
             hdrRows[1].remove();
-            hdrRows[0].querySelectorAll("th").forEach(function() {
-                this.setAttribute("rowspan", "");
+            hdrRows[0].querySelectorAll("th").forEach(function(el) {
+                el.setAttribute("rowspan", "");
             });
         }
         return this;
