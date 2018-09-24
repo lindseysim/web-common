@@ -25,7 +25,7 @@
         this.tableElement = document.createElement('table');
         this.tbodyElement = document.createElement('tbody');
         
-        this.tableElement.append(tbodyElement);
+        this.tableElement.append(this.tbodyElement);
         this.tableElement.className = 'cm-table';
         
         if(tableId)    this.tableElement.setAttribute("id", tableId);
