@@ -291,35 +291,35 @@
         // note, none of these browser checks are future-proof, periodically update as necessary
         var ua = navigator.userAgent.toLowerCase();
         window.browser = window.browserType = {};
-        window.browserType.isOpera   = (!!window.opr && !!opr.addons) || !!window.opera || ua.indexOf(' opr/') >= 0;
-        window.browserType.isFirefox = typeof InstallTrigger !== 'undefined';
-        window.browserType.isSafari  = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
-        window.browserType.isChrome  = !!window.chrome && !!window.chrome.webstore && !window.browserType.isOpera;
-        window.browserType.isIE      = /*@cc_on!@*/false || !!document.documentMode;
-        window.browserType.isEdge    = !window.browserType.isIE && !!window.StyleMedia;
-        if(window.browserType.isIE) {
+        window.browser.isOpera   = (!!window.opr && !!opr.addons) || !!window.opera || ua.indexOf(' opr/') >= 0;
+        window.browser.isFirefox = typeof InstallTrigger !== 'undefined';
+        window.browser.isSafari  = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
+        window.browser.isChrome  = !!window.chrome && !!window.chrome.webstore && !window.browser.isOpera;
+        window.browser.isIE      = /*@cc_on!@*/false || !!document.documentMode;
+        window.browser.isEdge    = !window.browser.isIE && !!window.StyleMedia;
+        if(window.browser.isIE) {
             if(ua.indexOf('msie') >= 0) {
-                window.browserType.ieVersion = parseInt(ua.split('msie')[1]);
+                window.browser.ieVersion = parseInt(ua.split('msie')[1]);
             } else if(ua.indexOf('trident/') >= 0) {
-                window.browserType.ieVersion = parseInt(ua.split('rv:')[1]);
+                window.browser.ieVersion = parseInt(ua.split('rv:')[1]);
             } else {
-                window.browserType.ieVersion = 9999;
+                window.browser.ieVersion = 9999;
             }
-        } else if(window.browserType.isEdge) {
+        } else if(window.browser.isEdge) {
             var match = ua.match(/edge\/([0-9]+)\./);
-            window.browserType.edgeVersion = match ? parseInt(match[1]) : 9999;
-        } else if(window.browserType.isChrome) {
+            window.browser.edgeVersion = match ? parseInt(match[1]) : 9999;
+        } else if(window.browser.isChrome) {
             var match = ua.match(/chrom(e|ium)\/([0-9]+)\./);
-            window.browserType.chromeVersion = match ? parseInt(match[2]) : 9999;
-        } else if(window.browserType.isFirefox) {
+            window.browser.chromeVersion = match ? parseInt(match[2]) : 9999;
+        } else if(window.browser.isFirefox) {
             var match = ua.match(/firefox\/([0-9]+)\./);
-            window.browserType.firefoxVersion = match ? parseInt(match[1]) : 9999;
-        } else if(window.browserType.isSafari) {
+            window.browser.firefoxVersion = match ? parseInt(match[1]) : 9999;
+        } else if(window.browser.isSafari) {
             var match = ua.match(/safari\/([0-9]+)\./);
-            window.browserType.safariVersion = match ? parseInt(match[1]) : 9999;
-        } else if(window.browserType.isOpera) {
+            window.browser.safariVersion = match ? parseInt(match[1]) : 9999;
+        } else if(window.browser.isOpera) {
             var match = ua.match(/opera|opr\/([0-9]+)\./);
-            window.browserType.operaVersion = match ? parseInt(match[1]) : 9999;
+            window.browser.operaVersion = match ? parseInt(match[1]) : 9999;
         }
         
         //****************************************************************************************************
