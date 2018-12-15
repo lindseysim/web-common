@@ -39,6 +39,8 @@ Ensures the below functions exists, many of which are missing in (surprise, surp
 
 **``String.prototype.endsWith(searchString)`` :** [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith)
 
+**``Array.prototype.find(callback)`` :** [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find)
+
 ## Global Additions ##
 
 The values/objects are added to the global namespace (under `window`).

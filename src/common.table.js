@@ -25,7 +25,7 @@
         this.tableElement = document.createElement('table');
         this.tbodyElement = document.createElement('tbody');
         
-        this.tableElement.append(tbodyElement);
+        this.tableElement.append(this.tbodyElement);
         this.tableElement.className = 'cm-table';
         
         if(tableId)    this.tableElement.setAttribute("id", tableId);
@@ -178,8 +178,8 @@
         // if no groups, delete unnecessary row, remove rowspans
         if(!hdrRows[1].hasChildNodes()) {
             hdrRows[1].remove();
-            hdrRows[0].querySelectorAll("th").forEach(function() {
-                this.setAttribute("rowspan", "");
+            hdrRows[0].querySelectorAll("th").forEach(function(el) {
+                el.setAttribute("rowspan", "");
             });
         }
         return this;
@@ -248,7 +248,7 @@
                         // do nothing on error, just don't format date
                     }
                 }
-                var cell = document.createElement("<td>");
+                var cell = document.createElement("td");
                 cell.setAttribute("cm-table-celltype", "data");
                 row.append(cell);
                 if(this.headerObjs[j].colStyles) {
