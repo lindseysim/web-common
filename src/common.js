@@ -797,10 +797,10 @@
             if(!params.error)    params.error = function() {};
             if(!params.complete) params.complete = function() {};
 
-            var methodIsPost = params.method.toUpperCase() === "POST";
-            if(!methodIsPost && params.data) {
-                var reqParams = "", 
-                    first = true;
+            var reqParams = "", 
+                methodIsPost = params.method.toUpperCase() === "POST";
+            if(params.data) {
+                var first = true;
                 if(!params.url.endsWith("?")) reqParams += "?";
                 for(var key in params.data) {
                     if(first) {
