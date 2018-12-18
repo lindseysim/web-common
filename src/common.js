@@ -801,13 +801,13 @@
             if(params.data) {
                 if(!params.url.endsWith("?")) reqParams += "?";
                 var first = true;
-                for(var key in data) {
+                for(var key in params.data) {
                     if(first) {
                         reqParams += "&";
                     } else {
                         first = false;
                     }
-                    reqParams += encodeURI(key + '=' + data[key]);
+                    reqParams += encodeURI(key + '=' + params.data[key]);
                 }
             }
 
@@ -818,7 +818,7 @@
                 xhr.responseType = params.dataType;
             }
             xhr.onreadystatechange  = function() {
-                if(xmlhttp.readyState === 4) {
+                if(xhr.readyState === 4) {
                     if(xhr.status === 200) {
                         params.success(
                             responseType !== "json" ? xhr.responseText : JSON.parse(xhr.responseText), 
