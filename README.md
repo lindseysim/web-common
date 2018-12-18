@@ -25,6 +25,8 @@ JQuery helper functions are optional, but should be initialized automatically if
 
 Ensures the below functions exists, many of which are missing in (surprise, surprise) Internet Explorer and Edge.
 
+**``Array.prototype.find(callback)`` :** [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find)
+
 **``Element.prototype.remove()`` :** [https://developer.mozilla.org/en-US/docs/Web/API/ChildNode/remove](https://developer.mozilla.org/en-US/docs/Web/API/ChildNode/remove)
 
 **``Element.prototype.append(nodes)`` :** [https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/append](https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/append)
@@ -35,11 +37,13 @@ Ensures the below functions exists, many of which are missing in (surprise, surp
 
 **``Element.classList`` :** Ensures existence of `contains()`, `add()`, `remove()`, `toggle()`, and `replace()` functions. [https://developer.mozilla.org/en-US/docs/Web/API/Element/classList](https://developer.mozilla.org/en-US/docs/Web/API/Element/classList)
 
+**``NodeList.prototype.forEach`` :** [https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach](https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach)
+
 **``String.prototype.startsWith(searchString)`` :** [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith)
 
 **``String.prototype.endsWith(searchString)`` :** [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith)
 
-**``Array.prototype.find(callback)`` :** [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find)
+**``String.prototype.repeat(count)`` :** [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/repeat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/repeat)
 
 ## Global Additions ##
 
@@ -156,7 +160,7 @@ Example given below:
 
 ### Modal Dialogs ###
 
-By default, this library appends a hidden div to the body to handle modals (whether used or not). The below functionality handles this built-in modal. Modal functionality is quite simple, opening a centered modal dialog in the window. Various options are provided, but by default there is a closer 'x' in the upper-right corner and clicking outside the modal box will also close the dialog.
+When a modal function is first called, this library appends a hidden div to the body to handle modals. The below functionality handles this built-in modal. Modal functionality is quite simple, opening a centered modal dialog in the window. Various options are provided, but by default there is a closer 'x' in the upper-right corner and clicking outside the modal box will also close the dialog. Only one modal may be open at a time. Opening another modal will override the current one.
 
 **``common.isModalOpen()`` :** Check whether modal is open.
 
@@ -282,11 +286,8 @@ And example usage script provided at bottom.
 		}
 	);
 
-&nbsp;
+----------
 
-
-&nbsp;
-
-##Acknowledgments##
+### Acknowledgments ###
 
 A huge bulk of this library was built on solutions found through the Mozilla Developers Network, StackOverflow, and many other smart folks. I would also like to thank SFEI, Bill Burr, and coffee. 
