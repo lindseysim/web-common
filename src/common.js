@@ -797,10 +797,11 @@
             if(!params.error)    params.error = function() {};
             if(!params.complete) params.complete = function() {};
 
-            var reqParams = "";
+            var reqParams = "", 
+                methodIsPost = params.method.toUpperCase() === "POST";
             if(params.data) {
-                if(!params.url.endsWith("?")) reqParams += "?";
                 var first = true;
+                if(!params.url.endsWith("?")) reqParams += "?";
                 for(var key in params.data) {
                     if(first) {
                         reqParams += "&";
@@ -809,6 +810,7 @@
                     }
                     reqParams += encodeURI(key + '=' + params.data[key]);
                 }
+                params.url += reqParams;
             }
 
             var xhr = new XMLHttpRequest();
@@ -831,11 +833,9 @@
                     params.complete(xhr, xhr.statusText);
                 }
             };
-            var method = params.method.toUpperCase(), 
-                methodIsPost = method === "POST";
             xhr.open(
                 method, 
-                params.url + (!methodIsPost ? reqParams : ""), 
+                params.url, 
                 params.async, 
                 params.user, 
                 params.password
