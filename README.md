@@ -40,33 +40,43 @@ JQuery helper functions are optional, but should be initialized automatically if
 Ensures the below functions exists, many of which are missing in (surprise, surprise) Internet Explorer and Edge.
 
 **`Array.prototype.find(callback)`** 
+
 [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find)
 
 **`Element.prototype.remove()`** 
+
 [https://developer.mozilla.org/en-US/docs/Web/API/ChildNode/remove](https://developer.mozilla.org/en-US/docs/Web/API/ChildNode/remove)
 
 **`Element.prototype.append(nodes)`** 
+
 [https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/append](https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/append)
 
 **`Element.prototype.prepend(nodes)`** 
+
 [https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/prepend](https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/prepend)
 
 **`Element.prototype.closest()`** 
+
 [https://developer.mozilla.org/en-US/docs/Web/API/Element/closest](https://developer.mozilla.org/en-US/docs/Web/API/Element/closest)
 
 **`Element.classList`** 
+
 Ensures existence of `contains()`, `add()`, `remove()`, `toggle()`, and `replace()` functions. [https://developer.mozilla.org/en-US/docs/Web/API/Element/classList](https://developer.mozilla.org/en-US/docs/Web/API/Element/classList)
 
 **`NodeList.prototype.forEach`** 
+
 [https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach](https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach)
 
 **`String.prototype.startsWith(searchString)`** 
+
 [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith)
 
 **`String.prototype.endsWith(searchString)`** 
+
 [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith)
 
 **`String.prototype.repeat(count)`** 
+
 [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/repeat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/repeat)
 
 ## Global Additions ##
@@ -85,24 +95,31 @@ The values/objects are added to the global namespace (under `window`).
 These useful functions are added to common object prototypes.
 
 **`Object.isObject(obj)`** 
+
 Check is given object is an object-type. That is, not a primitive, string, or array. Useful for when parameters must be ensured is an object-literal/dictionary.
 
 **`String.prototype.capitalize()`** 
+
 Will capitalize the each word in the string (using whitespace to delineate words).
 
 **`Number.prototype.addCommas(precision)`** 
+
 Will convert a given number to a string, using the supplied precision, with commas.
 
 **`Element.prototype.isVisible()`** 
+
 Simple is-visible check using `offsetParent` trick. Note it will have issues with elements in fixed positions.
 
 **`Element.prototype.setAttributes(attrs)`** 
+
 Sets multiple attributes (given as dictionary) at once.
 
 **`Element.prototype.css(style[, value])`** 
+
 Much like the JQuery css() function, sets inline style, either as style name and value provided as strings, or given a dictionary of style names and values and key-value pairs. 
 
 **`Element.prototype.center()`** 
+
 Will center an element on screen using absolute positioning.
 
 ## Date (UTC) Modifications ##
@@ -110,37 +127,47 @@ Will center an element on screen using absolute positioning.
 Additional functions for handling basic Date objects are added. Specifically to ensure UTC handling.
 
 **`DateUTC(year, month, day[, hour[, min[, sec]]])`** 
+
 Creates a datetime, forced as UTC. Note that month is 1-12 (unlike Date constructor as 0-11).
 
 **`Date.prototype.asUTC()`** 
+
 Converts datetime to UTC.
 
 **`Date.prototype.asUTCDate()`** 
+
 Converts date only to UTC, dropping all time information.
 
 **`Date.prototype.toUTCDate()`** 
+
 See above.
 
 **`Date.prototype.addDays(days)`** 
+
 Returns new date with days added (or removed if negative).
 
 **`Date.prototype.daysInMonth()`** 
+
 Returns number of days in the month for this date.
 
 ## jQuery Modifications ##
 
 The following JQuery functionality is added. See note on ensuring this is enabled under "Use" section.
 
-**`jQuery.fn.center():** 
+**`jQuery.fn.center():`** 
+
 Will center an element on screen using absolute positioning.
 
 **`jQuery.fn.addTooltip(tooltipMsg[, direction])`** 
+
 Will add a tooltip to an element using pure css. Direction may be "left", "right", "top", or "bottom" (defaults to "right").
 
 **`jQuery.fn.appendHelpIcon(tooltipMsg[, direction[, style]])`** 
+
 Will append a help icon at the end of this element, with a tooltip. Direction may be "left", "right", "top", or "bottom" (defaults to "right"). Style is optional styles object as keys-values which will be applied to the help icon.
 
 **`jQuery.fn.removeHelpIcon()`** 
+
 Removes any appended help-icon.
 
 ## Tooltips and Help Icons ##
@@ -163,7 +190,7 @@ Given an object, returns an iterable list. If single `Element` is provided, simp
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| element | `Element`\|`NodeList`\|`jQuery`\|`String` | Object to convert to array or `NodeList`. |
+| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Object to convert to array or `NodeList`. |
 
 <a name="common-extend"></a>
 #### `common.extend(obj, extend[, allowOverwrite[, deepCopy]])` #### 
@@ -181,8 +208,8 @@ Deep copy is done via `JSON.parse(JSON.stringify())`.
 | :--- | :---: | :--- |
 | obj | `Object` | Base object |
 | extend | `Object` | Object of extensions to base object |
-| [allowOverwrite] | `Boolean` | Unless true, items in `extend` matching existing values in `obj` by key are not copied over. |
-| [deepCopy] | `Boolean` | If true, all values are copied via JSON.parse(JSON.stringify()), ensuring a deep copy. |
+| allowOverwrite | `Boolean` | Unless true, items in `extend` matching existing values in `obj` by key are not copied over. |
+| deepCopy | `Boolean` | If true, all values are copied via JSON.parse(JSON.stringify()), ensuring a deep copy. |
 
 <a name="common-getUrlGetVars"></a>
 #### `common.getUrlGetVars()` #### 
@@ -203,7 +230,7 @@ Creates a new, centered window, even accounting for dual screen monitors.. The `
 | name | `String` | New window name |
 | width | `Number` | Width in pixels |
 | height | `Number` | Height in pixels |
-| [minimal] | `Boolean` | If true forces hiding of menubar, statusbar, and location -- although with many modern browsers this has no effect as it is not allowed. |
+| minimal | `Boolean` | If true forces hiding of menubar, statusbar, and location -- although with many modern browsers this has no effect as it is not allowed. |
 
 <a name="common-addGrabCursorFunctionality"></a>
 #### `common.addGrabCursorFunctionality(element)` #### 
@@ -211,7 +238,7 @@ Adds grab cursor functionality to draggable element. Element may be single eleme
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| element | `Element`\|`NodeList`\|`jQuery`\|`String` | Element to add functionality to. See [`common.getElementList()`](#common-getElementList) for evaluation of this parameter. |
+| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to add functionality to. See [`common.getElementList()`](#common-getElementList) for evaluation of this parameter. |
 
 <a name="common-createDropdown"></a>
 #### `common.createDropdown(element, menu)` #### 
@@ -246,7 +273,7 @@ common.createDropdown("#menu",
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| element | `Element`\|`NodeList`\|`jQuery`\|`String` | Element to add dropdown to. See [`common.getElementList()`](#common-getElementList) for evaluation of this parameter. |
+| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to add dropdown to. See [`common.getElementList()`](#common-getElementList) for evaluation of this parameter. |
 | menu | `Object[]` | JSON map of menu |
 
 <a name="common-clearDropdown"></a>
@@ -255,7 +282,7 @@ Remove dropdown menu functionality from an element.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| element | `Element`\|`NodeList`\|`jQuery`\|`String` | Element to remove dropdown from. See [`common.getElementList()`](#common-getElementList) for evaluation of this parameter. |
+| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to remove dropdown from. See [`common.getElementList()`](#common-getElementList) for evaluation of this parameter. |
 
 ### Modal Dialogs ###
 
@@ -410,8 +437,8 @@ Add column. Parameters may either be specified as list of arguments, or formatte
 | title | `String` | The title to display the header as. |
 | key | `String` | The key used to retrieve data from this header. |
 | dateFormat | `String` | Optional date format to format dates under this header. |
-| hdrStyles | `String`\|`Object` | Optional styles to apply to the header. Overrides any colStyles properties. |
-| colStyles | `String`\|`Object` | Optional styles to apply to every row in this column (including header). If you only want to apply to non-header cells, must override values in hdrStyles. |
+| hdrStyles | `String` \| `Object` | Optional styles to apply to the header. Overrides any colStyles properties. |
+| colStyles | `String` \| `Object` | Optional styles to apply to every row in this column (including header). If you only want to apply to non-header cells, must override values in hdrStyles. |
 | onClick | `Callback` | Optional onClick functionality to add to each cell (excluding header). Callback will be given the entire row's data as the parameter. |
 | sortable | `Boolean` | Optional flag to set/disable sortable column on this column. By default columns are sortable, so set as false or null to disable. |
 
