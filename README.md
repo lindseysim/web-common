@@ -312,13 +312,13 @@ Creates a new modal dialog (or closes, if visible=false).* Content* is the HTML 
 | options.onClose | `Callback` | Callback to run on modal being closed.  |
 
 <a name="common-openModal"></a>
-**`common.openModal(content[, options])` :** 
+#### `common.openModal(content[, options])` ####
 Same as [`common.setModal()`](#common-setModal) but with `visible` parameter defaulted to `true`.
 
 **Returns:** `Element` of modal content div (`.cm-modal-inner`).
 
 <a name="common-setModalAsLoading"></a>
-#### common.setModalAsLoading(visible[, content[, options]])` ####
+#### `common.setModalAsLoading(visible[, content[, options]])` ####
 Creates a new modal dialog with default values prepped for loading. `content` is optional and defaults to `"Loading.."`. In addition to same `options` available for [`common.setModal()`](#common-setModal), extended `options` are:
 
 **Returns:** `Element` of modal content div (`.cm-modal-inner`).
@@ -337,7 +337,7 @@ Creates a new modal dialog with default values prepped for loading. `content` is
 | options.addDetailsText | `String` | `"Please wait.."` | If true, creates a semi-trans |
 
 <a name="common-changeModal"></a>
-#### common.changeModal(content[, prepContentCallback[, hideCloser]])` ####  
+#### `common.changeModal(content[, prepContentCallback[, hideCloser]])` ####  
 Change modal dialog content while leaving all other options the same. Added benefit of measures to keep the content-size changes from being too jarring when swapping content. However, if there is an inline width/height defined in the style, these will be lost.
 
 **Returns:** `Element` of modal content div (`.cm-modal-inner`).
@@ -349,7 +349,7 @@ Change modal dialog content while leaving all other options the same. Added bene
 | hideCloser | `Boolean` | Due to HTML refresh, closer will be readded unless this is set to true. |
 
 <a name="common-closeModal"></a>
-#### common.closeModal([suppressOnClose])` #### 
+#### `common.closeModal([suppressOnClose])` #### 
 Hide any currently visible modal.
 
 | Param | Type | Description |
@@ -357,7 +357,7 @@ Hide any currently visible modal.
 | suppressOnClose | `Boolean` | If true, suppresses `onClose` event callback, if one is attached. |
 
 <a name="common-hideModal"></a>
-#### common.hideModal([suppressOnClose])` #### 
+#### `common.hideModal([suppressOnClose])` #### 
 Same as [`closeModal()`](#common-closeModal).
 
 | Param | Type | Description |
@@ -367,7 +367,7 @@ Same as [`closeModal()`](#common-closeModal).
 ### jQuery-like Functions ###
 
 <a name="common-ajax"></a>
-#### common.ajax(params)` #### 
+#### `common.ajax(params)` #### 
 Mimics [jQuery.ajax()](http://api.jquery.com/jQuery.ajax/) function call.
 
 | Param | Type | Default | Description |
@@ -384,7 +384,7 @@ Mimics [jQuery.ajax()](http://api.jquery.com/jQuery.ajax/) function call.
 | params.password | `String` |  | Optional password, if necessitated. |
 
 <a name="common-animate"></a>
-#### common.animate(element, properties, duration[, easing[, complete]]])` #### 
+#### `common.animate(element, properties, duration[, easing[, complete]]])` #### 
 Mimics [jQuery.animate()](http://api.jquery.com/jQuery.animate/) function using CSS3 transitions.
 
 | Param | Type | Description |
