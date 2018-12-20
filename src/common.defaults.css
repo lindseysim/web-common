@@ -16,13 +16,7 @@ input, select {
   border-radius: 4px;
 }
 .btn {
-  background-image: linear-gradient(to bottom,#fff,#e6e6e6);
-  background-image: -webkit-gradient(linear,0 0,0 100%,from(#fff),to(#e6e6e6));
-  background-image: -webkit-linear-gradient(top, #fff, #e6e6e6);
-  background-image: -moz-linear-gradient(top,#fff,#e6e6e6);
-  background-image: -o-linear-gradient(top,#fff,#e6e6e6);
-  background-repeat: repeat-x;
-  background-color: #e6e6e6;
+  background-color: #f9f9f9;
   color: #333;
   cursor: pointer;
   transition: background 0.2s;
@@ -31,7 +25,7 @@ input, select {
   -o-transition: background 0.2s, border 0.2s;
 }
 .btn:hover {
-  background-position: 0 -15px;
+  background-color: #eef2f7;
   border-color: #aaa;
 }
 .btn-disabled, .btn:disabled {

@@ -269,11 +269,14 @@
          * Formats given element selection as iterable of DOM Element objects. JQuery selections are 
          * transformed via get(), NodeLists or otherwise iterable are return as is, and a singular element 
          * selection is simply wrapper in an array.
-         * @param {jQuery|NodeList|Element} element - Object to return as element list.
+         * @param {jQuery|NodeList|Element|String} element - Object to return as element list.
          * @returns {Array} Array of Element objects.
          */
         window.cmLibGlobals.getElementList = function(element) {
             if(!element) return [];
+            if(typeof element === "string") {
+                return document.querySelectorAll(element);
+            }
             if(typeof jQuery !== "undefined" && element instanceof jQuery) {
                 return element.get();
             }
@@ -371,16 +374,11 @@
     //********************************************************************************************************
     var commonGlobals = window.cmLibGlobals;
     var commonObj = {
-        /**
-         * Copy and extend an object.
-         * @param {Object} obj - The original object.
-         * @param {Object} extend - The object to copy over.
-         * @param {Boolean} allowOverwrite - Unless true, values in extend matching existing values in obj by 
-         *        key are not copied over.
-         * @param {Boolean} deepCopy - If true, all values are copied via JSON.parse(JSON.stringify()), 
-         *        ensuring a deep copy.
-         * @returns {Object}
-         */
+
+        getElementList: function(element) {
+            return window.cmLibGlobals.getElementList(element);
+        }, 
+
         extend: function(obj, extend, allowOverwrite, deepCopy) {
             if(!extend) return !deepCopy ? obj : JSON.parse(JSON.stringify(obj));
             if(!obj) return !deepCopy ? extend : JSON.parse(JSON.stringify(extend));
@@ -396,10 +394,6 @@
             return clone;
         }, 
         
-        /**
-         * Find GET parameters in current URL.
-         * @returns {Object} Literal of key-value GET variables found in URL.
-         */
         getUrlGetVars: function() {
             var vars = {};
             window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
@@ -408,19 +402,6 @@
             return vars;
         }, 
 
-        /**
-         * Custom function to create a new window. Has a lot of useful functionality that gets commonly used, 
-         * e.g. having every new window centered on the monitor, even accounting for dual monitor setups.
-         * @param {event} event - Event object (useful on links where you want to keep the middle-mouse clicks
-         *        and ctrl+left-clicks as new tabs as those are filtered and ignored).
-         * @param {String} url - Link URL.
-         * @param {String} name - New window name.
-         * @param {Number} width - Width in pixels.
-         * @param {Number} height - Height in pixels.
-         * @param {Boolean} [minimal] - If true forces hiding of menubar, statusbar, and location (although with
-         *        many modern browsers this has no effect).
-         * @returns {Window} The new window object.
-         */
         newWindow: function(event, url, name, width, height, minimal) {
             if(!event) event = window.event;
             if(event === undefined || !(event.which === 2 || (event.which === 1 && event.ctrlKey))) {
@@ -449,13 +430,6 @@
             }
         }, 
         
-        /**
-         * Adds the handling of adding/removing the 'grab' and 'grabbing' css classes on mouse drag events. 
-         * Originally for the map (as OpenLayers doesn't do this automatically) but useful for a lot of other 
-         * stuff, like custom dialog boxes/windows.
-         * @param {Element|NodeList|jQuery} element - Element to add functionality to. May be single element, 
-         *        a NodeList/Array of elements, or a jQuery selection.
-         */
         addGrabCursorFunctionality: function(element) {
             var elList = commonGlobals.getElementList(element);
             for(var i = 0; i < elList.length; ++i) {
@@ -542,57 +516,16 @@
         // #cm-modal-content) are added to the document body. These are required for the below functions to 
         // work.
         //****************************************************************************************************
-        /**
-         * Check whether modal is open.
-         * @returns {Boolean} Whether modal window is opened.
-         */
         isModalOpen: function() {
             if(!commonGlobals._modalsInit) return false;
             commonGlobals.modalOpened = document.querySelector("#cm-modal-outer").offsetParent !== null;
             return commonGlobals.modalOpened;
         }, 
 
-        /**
-         * Create (or destroy) a modal dialog.
-         * @param {String} content - The HTML content of the modal dialog.
-         * @param {Object} [options]
-         * @param {String} [options.id] - Whether to attach an ID to the modal content div.
-         * @param {Boolean} [options.hideCloser] - If set true, does not automatically apply a close modal "X"
-         *        to the top right of the content.
-         * @param {Boolean} [options.notExitable] - Modal content closes when clicking outside of modal, by 
-         *        default. Set true to override this (that is, modal can only be closed programmatically -- 
-         *        which by default is still allowed via the closer).
-         * @param {Boolean} [options.showBackground] - Whether to have a semi-transparent div over the 
-         *        background (so as to visually signify the modal status). Keep in mind in older browsers that
-         *        don't support transparency it'll just grey out the entire background.
-         * @param {Function} [options.onClose] - Function to run before closing modal. Note this does not run 
-         *        if simply changing/swapping out modal content.
-         * @return {Element} Element for modal container ("#cm-modal-outer .cm-modal-inner") or none if modal 
-         *         was closed.
-         */
         openModal: function(content, options) {
-            this.setModal(true, content, options);
+            return this.setModal(true, content, options);
         }, 
         
-        /**
-         * Create (or destroy) a modal dialog.
-         * @param {Boolean} visible - True creates, false closes.
-         * @param {String|Element|jQuery} content - The HTML content of the modal dialog.
-         * @param {Object} [options]
-         * @param {String} [options.id] - Whether to attach an ID to the modal content div.
-         * @param {Boolean} [options.hideCloser] - If set true, does not automatically apply a close modal "X"
-         *        to the top right of the content.
-         * @param {Boolean} [options.notExitable] - Modal content closes when clicking outside of modal, by 
-         *        default. Set true to override this (that is, modal can only be closed programmatically -- 
-         *        which by default is still allowed via the closer).
-         * @param {Boolean} [options.showBackground] - Whether to have a semi-transparent div over the 
-         *        background (so as to visually signify the modal status). Keep in mind in older browsers that
-         *        don't support transparency it'll just grey out the entire background.
-         * @param {Function} [options.onClose] - Function to run before closing modal. Note this does not run 
-         *        if simply changing/swapping out modal content.
-         * @return {Element} Element for modal container ("#cm-modal-outer .cm-modal-inner") or none if modal 
-         *          was closed.
-         */
         setModal: function(visible, content, options) {
             if(!commonGlobals._modalsInit) commonGlobals.initModalFunctionality();
             if(!options) { options = {}; }
@@ -639,30 +572,6 @@
             }
         }, 
         
-        /**
-         * Create (or destroy) a modal dialog with a default loading message (in this case: "Loading..").
-         * @param {Boolean} visible - True creates, false closes.
-         * @param {Object} options
-         * @param {String} [content="Loading.."] - The loading message string.
-         * @param {String} [options.imgUrl="images/loader.gif"] - The link to a loading image. If 
-         *        null/undefined, looks for "images/loader.gif". If false, does not append any loading image.
-         * @param {Boolean} [options.addDetails=true] - If true, adds paragraph with class `loading-details` 
-         *        for use of addition information.
-         * @param {String} [options.addDetailsText="Please wait.."] - If options.addDetails is true, loads 
-         *        this as loading details text.
-         * @param {String} [options.id="modal-loading-dialog"] - ID attached to modal content div.
-         * @param {Boolean} [options.showBackground=true] - Whether to hve a semi-transparent div over the 
-         *        background (so as to visually signify the modal status). Keep in mind in older browsers that
-         *        don't support transparency it'll just grey out the entire background.
-         * @param {Boolean} [options.notExitable=true] - Modal content closes when clicking outside of modal,
-         *        bt default.  Set true to override this (that is, modal can only be closed programmatically).
-         * @param {Boolean} [options.hideCloser=true] - If set true, does not automatically apply a close modal
-         *        "X" to the top right of the content.
-         * @param {Function} [options.onClose] - Function to run before closing modal. Note this does not run 
-         *        if simply changing/swapping out modal content.
-         * @return {Element} Element for modal container ("#cm-modal-outer .cm-modal-inner") or none if modal 
-         *         was closed.
-         */
         setModalAsLoading: function(visible, content, options) {
             if(!visible) {
                 this.setModal(false);
@@ -694,18 +603,6 @@
             }
         }, 
         
-        /**
-         * Change modal dialog content while leaving all other options the same. Added benefit of measures to 
-         * keep the content-size changes from being too jarring when swapping content. However, if there is an
-         * inline width/height defined in the style, these will be lost.
-         * @param {String} content - The HTML content of the modal dialog.
-         * @param {Function} [prepContentCallback] - If some prep work is needed before determining the new 
-         *        dimensions.
-         * @param {Boolean} [hideCloser] - Due to HTML refresh, closer will be readded unless this is set to 
-         *        true.
-         * @return {Element} Element for modal container ("#cm-modal-outer .cm-modal-inner") or none if modal 
-         *         was closed.
-         */
         changeModal: function(content, prepContentCallback, hideCloser) {
             if(!commonGlobals._modalsInit) commonGlobals.initModalFunctionality();
             if(!this.isModalOpen()) {
@@ -748,45 +645,17 @@
             return modalContent;
         }, 
         
-        /**
-         * Hide any currently visible modal. Same as closeModal().
-         * @param {Boolean} suppressOnClose - If true, suppresses onClose event, if one is attached.
-         */
         hideModal: function(suppressOnClose) {
             commonGlobals.closeModal(suppressOnClose);
         }, 
         
-        /**
-         * Hide any currently visible modal. Same as hideModal().
-         * @param {Boolean} suppressOnClose - If true, suppresses onClose event, if one is attached.
-         */
         closeModal: function(suppressOnClose) {
             commonGlobals.closeModal(suppressOnClose);
         }, 
-
-
+        
         //****************************************************************************************************
         // jQuery like functions
         //****************************************************************************************************
-        /**
-         * Asynchonrous Javascript and XML request. Mimics jQuery.ajax(), see: 
-         * http://api.jquery.com/jQuery.ajax/
-         * @param {Object} params
-         * @param {String} params.url - The URL of the request.
-         * @param {Boolean} [params.async] - Asynchronous. Defaults to true.
-         * @param {String} [params.method]- Defaults to "GET".
-         * @param {Object} [params.data] - Optional dictionary of data to send with request.
-         * @param {String} [params.dataType] - Type of returned data. See 
-         *        https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/responseType)
-         * @param {Function} [params.success] - Callback on success. Passes parameters of 
-         *        `XMLHttpRequest.responseText`, `XMLHttpRequest.statusText`, and the `XMLHttpRequest` instance itself.
-         * @param {Function} [params.error] - Callback on error. Passes parameters the `XMLHttpRequest` 
-         *        instance, `XMLHttpRequest.statusText`, and `XMLHttpRequest.responseText`.
-         * @param {Function} [params.complete] - Callback on completion (whether success or error). Passes 
-         *        parameters the `XMLHttpRequest` instance and `XMLHttpRequest.statusText`.
-         * @param {String} [params.user] - Optional username, if necessitated.
-         * @param {String} [params.password] - Optional password, if necessitated.
-         */
         ajax: function(params) {
             if(!params)          params = {};
             if(!params.url)      throw "No URL provided";
@@ -848,16 +717,6 @@
             }
         }, 
 
-        /**
-         * Mimics jQuery.animate() function using CSS3 transitions.
-         * @param {} element - The Element to animate.
-         * @param {} properties - CSS properties to animate to. Note not all properties are animatable. See 
-         *           https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animated_properties.
-         * @param {} duration - Duration of animation, in milliseconds.
-         * @param {} [timingFunction] - Timing/easing function, defaults to "ease". See 
-         *           https://developer.mozilla.org/en-US/docs/Web/CSS/transition-timing-function.
-         * @param {} [complete] - Optional callback to run on completion.
-         */
         animate: function(element, properties, duration, timingFunction, complete) {
             if(!(typeof duration === "number")) throw "Duration must be specified as numeric type in milliseconds.";
             duration = duration*0.001 + "s";
