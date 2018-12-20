@@ -332,7 +332,7 @@ Creates a new modal dialog with default values prepped for loading. `content` is
 | options.showBackground | `true` | `Boolean` | If true, creates a semi-transparent background over window. |
 | options.notExitable | `Boolean` | `true` | Normally modal closes on clicking anywhere outside modal dialog element. If true, this prevents this functionality. |
 | options.hideCloser | `Boolean` | `true` | If true, does not apply the automatically placed "X" to close dialog on upper-right. |
-| options.imgUrl | `String` | `images/loader.gif` | Id of inner modal dialog element. |
+| options.imgUrl | `String` | `"images/loader.gif"` | The source for a loading image. If `null` or `undefined`, looks for "images/loader.gif", If `false`, does not append any loading image. |
 | options.addDetails | `Boolean` | `true` | If true, creates a semi-trans |
 | options.addDetailsText | `String` | `"Please wait.."` | If true, creates a semi-trans |
 
@@ -428,7 +428,7 @@ Prepends table to element.
 | :--- | :---: | :--- |
 | container | `Element` | Element to prepend table in |
 
-#### `CommonTable.prototype.addColumn(group, title, key[, dateFormat[, hdrStyles[, colStyles[, onClick]]]])`** : 
+#### `CommonTable.prototype.addColumn(group, title, key[, dateFormat[, hdrStyles[, colStyles[, onClick]]]])` ####
 Add column. Parameters may either be specified as list of arguments, or formatted into single object literal with parameter names as below. Title and key are required.
 
 | Param | Type | Description |
@@ -478,15 +478,15 @@ tbl.addColumn(null, "Losses", "lossCount");
 tbl.addColumn(null, "Draws", "drawCount");
 
 var data = [
-	{
-		firstName: "Tony", 
-		nickName: "El Cucuy", 
-		lastName: "Ferguson", 
-		winCount: 24, 
-		lossCount: 3, 
-		drawCount: 0, 
-		birthDate: new Date(1984, 2, 12)
-	}, 
+    {
+        firstName: "Tony", 
+        nickName: "El Cucuy", 
+        lastName: "Ferguson", 
+        winCount: 24, 
+        lossCount: 3, 
+        drawCount: 0, 
+        birthDate: new Date(1984, 2, 12)
+    }, 
     {
         firstName: "Khabib", 
         nickName: "The Eagle", 
@@ -496,18 +496,18 @@ var data = [
         drawCount: 0, 
         birthDate: new Date(1988, 9, 20)
     }, 
-	// etc...
+    // etc...
 ];
 
 tbl.populateTable(
-	data, 
-	"winCount",  // sort by wins descending
-	false, 
-	// pass dateFormat function to use on birthdate, a good one to use is Steven Levithan's
-	// http://blog.stevenlevithan.com/archives/date-time-format
-	function(value, format) {
-		return dateFormat(value, format);
-	}
+    data, 
+    "winCount",  // sort by wins descending
+    false, 
+    // pass dateFormat function to use on birthdate, a good one to use is Steven Levithan's
+    // http://blog.stevenlevithan.com/archives/date-time-format
+    function(value, format) {
+        return dateFormat(value, format);
+    }
 );
 ````
 
