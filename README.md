@@ -14,18 +14,18 @@ Lawrence Sim © 2019
 
 ## Content ##
 
-* [Use][#use]
-* [Polyfills][#polyfill]
-* [Global Additions][#global-additions]
-* [Prototype Modifications][#prototype-modifications]
-* [Date (UTC) Modifications][#date-utc-modifications]
-* [jQuery Modifications][#jquery-modifications]
-* [Tooltips and Help Icons][#tooltips-and-help-icons]
-* [Common Object][#common-object]
-    * [Modal Dialogs][#modal-dialogs]
-    * [jQuery-like Functions][#jquery-like-functions]
-* [CommonTable Class][#commontable-class]
-* [Acknowledgments][#acknowledgments]
+* [Use](#use)
+* [Polyfills](polyfill)
+* [Global Additions](#global-additions)
+* [Prototype Modifications](#prototype-modifications)
+* [Date (UTC) Modifications](#date-utc-modifications)
+* [jQuery Modifications](#jquery-modifications)
+* [Tooltips and Help Icons](#tooltips-and-help-icons)
+* [Common Object](#common-object)
+    * [Modal Dialogs](#modal-dialogs)
+    * [jQuery-like Functions](#jquery-like-functions)
+* [CommonTable Class](#commontable-class)
+* [Acknowledgments](#acknowledgments)
 
 ## Use ##
 
