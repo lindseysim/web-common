@@ -2,7 +2,7 @@
   "name": "web-common",
   "author": "Lawrence Sim", 
   "license": "MIT", 
-  "version": "2.01",
+  "version": "2.04",
   "repository": {
     "type": "git",
     "url": "git+https://siml@bitbucket.org/siml/web-common.git"
