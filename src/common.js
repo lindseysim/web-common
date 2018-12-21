@@ -703,7 +703,7 @@
                 }
             };
             xhr.open(
-                method, 
+                params.method, 
                 params.url, 
                 params.async, 
                 params.user, 
