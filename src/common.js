@@ -691,11 +691,16 @@
             xhr.onreadystatechange  = function() {
                 if(xhr.readyState === 4) {
                     if(xhr.status === 200) {
-                        params.success(
-                            responseType !== "json" ? xhr.responseText : JSON.parse(xhr.responseText), 
-                            xhr.statusText, 
-                            xhr
-                        );
+                        var res = xhr.responseText;
+                        if(responseType === "json") {
+                            try {
+                                res = JSON.parse(res);
+                            } catch(e) {
+                                params.error(xhr, xhr.statusText, xhr.responseText);
+                            }
+                        } else {
+                            params.success(res, xhr.statusText, xhr);
+                        }
                     } else {
                         params.error(xhr, xhr.statusText, xhr.responseText);
                     }

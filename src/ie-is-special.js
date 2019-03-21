@@ -23,8 +23,7 @@
                     var argArr = Array.prototype.slice.call(arguments),
                         docFrag = document.createDocumentFragment();
                 argArr.forEach(function(argItem) {
-                    var isNode = argItem instanceof Node;
-                    docFrag.appendChild(isNode ? argItem : document.createTextNode(String(argItem)));
+                    docFrag.appendChild(argItem instanceof Node ? argItem : document.createTextNode(String(argItem)));
                 });
                 this.appendChild(docFrag);
             }
@@ -42,8 +41,7 @@
                     var argArr = Array.prototype.slice.call(arguments),
                         docFrag = document.createDocumentFragment();
                     argArr.forEach(function(argItem) {
-                        var isNode = argItem instanceof Node;
-                        docFrag.appendChild(isNode ? argItem : document.createTextNode(String(argItem)));
+                        docFrag.appendChild(argItem instanceof Node ? argItem : document.createTextNode(String(argItem)));
                     });
                     this.insertBefore(docFrag, this.firstChild);
                 }
@@ -87,9 +85,7 @@
                     arrIndexOf = Array[protoProp].indexOf || function (item) {
                         var i = 0, len = this.length;
                         for(; i < len; i++) {
-                            if(i in this && this[i] === item) {
-                                return i;
-                            }
+                            if(i in this && this[i] === item) return i;
                         }
                         return -1;
                     }, 
@@ -138,8 +134,7 @@
                             this.push(token);
                             updated = true;
                         }
-                    }
-                    while(++i < l);
+                    } while(++i < l);
                     if(updated) this._updateClassName();
                 };
                 classListProto.remove = function() {
@@ -157,8 +152,7 @@
                             updated = true;
                             index = checkTokenAndGetIndex(this, token);
                         }
-                    }
-                    while(++i < l);
+                    } while(++i < l);
                     if(updated) this._updateClassName();
                 };
                 classListProto.toggle = function(token, force) {
@@ -205,7 +199,7 @@
                     var original = DOMTokenList.prototype[method];
                     DOMTokenList.prototype[method] = function(token) {
                         var i, len = arguments.length;
-                        for (i = 0; i < len; i++) {
+                        for(i = 0; i < len; i++) {
                             token = arguments[i];
                             original.call(this, token);
                         }
@@ -257,12 +251,8 @@
             if(count !== count) return "";
             count = Math.floor(count);
             if(count === 0) return "";
-            if(count <= 0) {
-                throw new RangeError("repeat count must be non-negative");
-            }
-            if(count === Infinity) {
-                throw new RangeError("repeat count must be less than infinity");
-            }
+            if(count <= 0) throw new RangeError("repeat count must be non-negative");
+            if(count === Infinity) throw new RangeError("repeat count must be less than infinity");
             var str = "" + this;
             if(str.length === 0) return "";
             if(str.length * count >= 1 << 28) {
@@ -293,31 +283,17 @@
     if(!Array.prototype.find) {
         Object.defineProperty(Array.prototype, 'find', {
             value: function(predicate) {
-                // 1. Let O be ? ToObject(this value).
                 if(this == null) throw new TypeError('"this" is null or not defined');
-                var o = Object(this);
-                // 2. Let len be ? ToLength(? Get(O, "length")).
-                var len = o.length >>> 0;
-                // 3. If IsCallable(predicate) is false, throw a TypeError exception.
-                if (typeof predicate !== 'function') {
-                    throw new TypeError('predicate must be a function');
-                }
-                // 4. If thisArg was supplied, let T be thisArg; else let T be undefined.
-                var thisArg = arguments[1];
-                // 5. Let k be 0.
-                var k = 0;
-                // 6. Repeat, while k < len
+                if(typeof predicate !== 'function') throw new TypeError('predicate must be a function');
+                var o = Object(this), 
+                    len = o.length >>> 0, 
+                    thisArg = arguments[1], 
+                    k = 0;
                 while(k < len) {
-                    // a. Let Pk be ! ToString(k).
-                    // b. Let kValue be ? Get(O, Pk).
-                    // c. Let testResult be ToBoolean(? Call(predicate, T, « kValue, k, O »)).
-                    // d. If testResult is true, return kValue.
                     var kValue = o[k];
                     if(predicate.call(thisArg, kValue, k, o)) return kValue;
-                    // e. Increase k by 1.
                     k++;
                 }
-                // 7. Return undefined.
                 return undefined;
             },
             configurable: true,
