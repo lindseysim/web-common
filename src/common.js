@@ -35,6 +35,94 @@
         };
         
         /**
+         * Compare strings with numbers such that a "number" is not compared alphabetically by character but 
+         * as the numeric value. Right now only handles positive integers. Compares character by character 
+         * such that numbers encountered at the same "place" are compared. If numbers are of different 
+         * character length but equal numerically, continues reading strings, adjusting "place" for different 
+         * digit length. E.g. "a01b02" will compare as equal to "a1b2".
+         * @param {String} compare string
+         * @returns {Number} -1 if before, 0 if equal, 1 if after.
+         */
+        String.prototype.heuristicCompare = function(compareString) {
+            var cThis = 0, 
+                cThat = 0, 
+                thisChar, 
+                thatChar, 
+                thisIsNumber = false, 
+                thatIsNumber = false, 
+                thisInNumber = false, 
+                thatInNumber = false, 
+                thisNum = "", 
+                thatNum = "";
+            while(true) {
+                // grab character
+                thisChar = cThis < this.length ? this[cThis] : null;
+                thatChar = cThat < compareString.length ? compareString[cThat] : null;
+                // check numeric
+                thisIsNumber = thisChar !== null && /\d/.test(thisChar);
+                thatIsNumber = thatChar !== null && /\d/.test(thatChar);
+                // reached end of string for both
+                if(thisChar === null && thatChar === null) {
+                    if(thisInNumber || thatInNumber) {
+                        // was in numbers for both, end on numeric compare
+                        var compare = parseInt(thisNum) - parseInt(thatNum);
+                        return compare === 0 ? compare : compare < 0 ? -1 : 1;
+                    }
+                    return 0;
+                }
+                // reached end of string for one but not other
+                if(thisChar === null || thatChar === null) {
+                    // continue only if one is still parsing number
+                    if(!thisInNumber && !thatInNumber) {
+                        return thisIsChar === null ? -1 : 1;
+                    }
+                }
+                // neither tracking numeric previously
+                if(!thisInNumber && !thatInNumber) {
+                    if(thisIsNumber && thatIsNumber) {
+                        // begin tracking numbers
+                        thisNum = thisChar;
+                        thatNum = thatChar;
+                        thisInNumber = thatInNumber = true;
+                    } else {
+                        // compare lexicographically, continue only if not same
+                        var compare = thisChar.localeCompare(thatChar);
+                        if(compare) return compare;
+                    }
+                    ++cThis;
+                    ++cThat;
+                // at least one string is tracking number
+                } else {
+                    // if both numbers ended, compare
+                    if(!thisIsNumber && !thatIsNumber) {
+                        var compare = parseInt(thisNum) - parseInt(thatNum);
+                        // return only if not equal
+                        if(compare !== 0) return compare < 0 ? -1 : 1;
+                        thisNum = "";
+                        thatNum = "";
+                        ++cThis;
+                        ++cThat;
+                        thisInNumber = thatInNumber = false;
+                    // keep moving until end of both numbers
+                    } else {
+                        if(thisIsNumber) {
+                            thisNum += thisChar;
+                            ++cThis;
+                        } else {
+                            thisInNumber = false;
+                        }
+                        if(thatIsNumber) {
+                            thatNum += thatChar;
+                            ++cThat;
+                        } else {
+                            thatInNumber = false;
+                        }
+                    }
+                }
+            }
+        };
+
+        /**
          * Return string value of this number with commas added.
          * @param {Number} precision - Decimal precision.
          * @returns {String}
