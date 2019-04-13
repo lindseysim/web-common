@@ -44,82 +44,29 @@
          * @returns {Number} -1 if before, 0 if equal, 1 if after.
          */
         String.prototype.heuristicCompare = function(compareString) {
-            var cThis = 0, 
-                cThat = 0, 
-                thisChar, 
-                thatChar, 
-                thisIsNumber = false, 
-                thatIsNumber = false, 
-                thisInNumber = false, 
-                thatInNumber = false, 
-                thisNum = "", 
-                thatNum = "";
+            var thisChunks = this.match(/(\d+|[^\d]+)/g), 
+                thatChunks = compareString.match(/(\d+|[^\d]+)/g), 
+                i = 0;
             while(true) {
-                // grab character
-                thisChar = cThis < this.length ? this[cThis] : null;
-                thatChar = cThat < compareString.length ? compareString[cThat] : null;
-                // check numeric
-                thisIsNumber = thisChar !== null && /\d/.test(thisChar);
-                thatIsNumber = thatChar !== null && /\d/.test(thatChar);
-                // reached end of string for both
-                if(thisChar === null && thatChar === null) {
-                    if(thisInNumber || thatInNumber) {
-                        // was in numbers for both, end on numeric compare
-                        var compare = parseInt(thisNum) - parseInt(thatNum);
-                        return compare === 0 ? compare : compare < 0 ? -1 : 1;
-                    }
-                    return 0;
+                if(i === thisChunks.length) {
+                    return i === thatChunks.length ? 0 : -1;
+                } else if(i === thatChunks.length) {
+                    return 1;
                 }
-                // reached end of string for one but not other
-                if(thisChar === null || thatChar === null) {
-                    // continue only if one is still parsing number
-                    if(!thisInNumber && !thatInNumber) {
-                        return thisIsChar === null ? -1 : 1;
-                    }
-                }
-                // neither tracking numeric previously
-                if(!thisInNumber && !thatInNumber) {
-                    if(thisIsNumber && thatIsNumber) {
-                        // begin tracking numbers
-                        thisNum = thisChar;
-                        thatNum = thatChar;
-                        thisInNumber = thatInNumber = true;
-                    } else {
-                        // compare lexicographically, continue only if not same
-                        var compare = thisChar.localeCompare(thatChar);
-                        if(compare) return compare;
-                    }
-                    ++cThis;
-                    ++cThat;
-                // at least one string is tracking number
+                var chunkA = thisChunks[i], 
+                    chunkB = thatChunks[i], 
+                    aNumeric = /\d/.test(chunkA), 
+                    bothNumeric = aNumeric && /\d/.test(chunkB);
+                var compare;
+                if(bothNumeric) {
+                    compare = parseInt(chunkA) - parseInt(chunkB);
                 } else {
-                    // if both numbers ended, compare
-                    if(!thisIsNumber && !thatIsNumber) {
-                        var compare = parseInt(thisNum) - parseInt(thatNum);
-                        // return only if not equal
-                        if(compare !== 0) return compare < 0 ? -1 : 1;
-                        thisNum = "";
-                        thatNum = "";
-                        ++cThis;
-                        ++cThat;
-                        thisInNumber = thatInNumber = false;
-                    // keep moving until end of both numbers
-                    } else {
-                        if(thisIsNumber) {
-                            thisNum += thisChar;
-                            ++cThis;
-                        } else {
-                            thisInNumber = false;
-                        }
-                        if(thatIsNumber) {
-                            thatNum += thatChar;
-                            ++cThat;
-                        } else {
-                            thatInNumber = false;
-                        }
-                    }
+                    compare = chunkA.localeCompare(chunkB);
                 }
+                if(compare) return compare < 0 ? -1 : 1;
+                ++i;
             }
+            return compare;
         };
 
         /**
