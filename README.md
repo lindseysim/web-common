@@ -102,6 +102,9 @@ Check is given object is an object-type. That is, not a primitive, string, or ar
 
 Will capitalize the each word in the string (using whitespace to delineate words).
 
+**`String.prototype.heuristicCompare(compareString)`**
+Compare strings with numbers such that a "number" is not compared alphabetically by character but as the numeric value. Right now only handles positive integers. Compares character by character such that numbers encountered at the same "place" are compared. If numbers are of different character length but equal numerically, continues reading strings, adjusting "place" for different digit length. E.g. "a01b02" will compare as equal to "a1b2".
+
 **`Number.prototype.addCommas(precision)`** 
 
 Will convert a given number to a string, using the supplied precision, with commas.

@@ -35,6 +35,41 @@
         };
         
         /**
+         * Compare strings with numbers such that a "number" is not compared alphabetically by character but 
+         * as the numeric value. Right now only handles positive integers. Compares character by character 
+         * such that numbers encountered at the same "place" are compared. If numbers are of different 
+         * character length but equal numerically, continues reading strings, adjusting "place" for different 
+         * digit length. E.g. "a01b02" will compare as equal to "a1b2".
+         * @param {String} compare string
+         * @returns {Number} -1 if before, 0 if equal, 1 if after.
+         */
+        String.prototype.heuristicCompare = function(compareString) {
+            var thisChunks = this.match(/(\d+|[^\d]+)/g), 
+                thatChunks = compareString.match(/(\d+|[^\d]+)/g), 
+                i = 0;
+            while(true) {
+                if(i === thisChunks.length) {
+                    return i === thatChunks.length ? 0 : -1;
+                } else if(i === thatChunks.length) {
+                    return 1;
+                }
+                var chunkA = thisChunks[i], 
+                    chunkB = thatChunks[i], 
+                    aNumeric = /\d/.test(chunkA), 
+                    bothNumeric = aNumeric && /\d/.test(chunkB);
+                var compare;
+                if(bothNumeric) {
+                    compare = parseInt(chunkA) - parseInt(chunkB);
+                } else {
+                    compare = chunkA.localeCompare(chunkB);
+                }
+                if(compare) return compare < 0 ? -1 : 1;
+                ++i;
+            }
+            return compare;
+        };
+
+        /**
          * Return string value of this number with commas added.
          * @param {Number} precision - Decimal precision.
          * @returns {String}
