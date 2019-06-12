@@ -109,6 +109,10 @@ Compare strings with numbers such that a "number" is not compared alphabetically
 
 Will convert a given number to a string, using the supplied precision, with commas.
 
+**`Number.prototype.addCommasSmart([minimum=0.001])`** 
+
+Basically wraps `Number.prototype.addCommas()` with heuristic guessing on precision to use. As well, the `minimum` parameter rounds any value who's absolute value is less than this to zero. Look at the source code for exact behavior, but generally, evaluation to zero is always written as "0.0", less than 0.01 as exponential with three sig. figures, less than 0.1 as exponential with two sig. figures, less than 0.3 with three decimal places, less than 1.0 with two decimal places, less than 100 with one decimal place, and greater than or equal to 100 with no decimal places.
+
 **`Element.prototype.isVisible()`** 
 
 Simple is-visible check using `offsetParent` trick. Note it will have issues with elements in fixed positions.

@@ -88,6 +88,34 @@
         };
 
         /**
+         * Return string value of this number with commas added. Precision is handled dynamically based on my
+         * abitrary rules but generally maintains at least two significant digits. Values less than 0.1 are 
+         * presented in scientific notation.
+         * @param {Number} [minimum=0.001] - Minimum number (absoltue value), on which anything less than 
+         *        becomes zero.
+         * @returns {String}
+         */
+        Number.prototype.addCommasSmart = function(minimum) {
+            if(this === 0.0) return "0.0";
+            var n = Math.abs(this);
+            minimum = minimum || 0.001;
+            if(n < minimum) {
+                return "0.0";
+            } else if(n < 0.01) {
+                return this.toExponential(3);
+            } else if(n < 0.1) {
+                return this.toExponential(2);
+            } else if(n < 0.3) {
+                return this.addCommas(3);
+            } else if(n < 1.0) {
+                return this.addCommas(2);
+            } else if(n < 100.0) {
+                return this.addCommas(1);
+            }
+            return this.addCommas(0);
+        };
+
+        /**
          * Simple is-visible check using offsetParent trick. Note it will have issues with elements in fixed 
          * positions;
          * @returns {Boolean} True if visible.
