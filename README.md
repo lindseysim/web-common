@@ -94,20 +94,15 @@ The values/objects are added to the global namespace (under `window`).
 
 These useful functions are added to common object prototypes.
 
-**`Object.isObject(obj)`** 
+**`Array.getOverlaps(a, b)`** 
+**`Array.prototype.getOverlaps(arr)`** 
 
-Check is given object is an object-type. That is, not a primitive, string, or array. Useful for when parameters must be ensured is an object-literal/dictionary.
+Get overlapping values with second array. Can be called from array instance or `Array` global. Uses strict equality.
 
-**`String.prototype.capitalize()`** 
+**`Array.overlaps(a, b)`** 
+**`Array.overlaps(arr)`** 
 
-Will capitalize the each word in the string (using whitespace to delineate words).
-
-**`String.prototype.heuristicCompare(compareString)`**
-Compare strings with numbers such that a "number" is not compared alphabetically by character but as the numeric value. Right now only handles positive integers. Compares character by character such that numbers encountered at the same "place" are compared. If numbers are of different character length but equal numerically, continues reading strings, adjusting "place" for different digit length. E.g. "a01b02" will compare as equal to "a1b2".
-
-**`Number.prototype.addCommas(precision)`** 
-
-Will convert a given number to a string, using the supplied precision, with commas.
+Check if at least one value overlaps with second array. Can be called from array instance or `Array` global. Uses strict equality.
 
 **`Element.prototype.isVisible()`** 
 
@@ -124,6 +119,26 @@ Much like the JQuery css() function, sets inline style, either as style name and
 **`Element.prototype.center()`** 
 
 Will center an element on screen using absolute positioning.
+
+**`Number.prototype.addCommas(precision)`** 
+
+Will convert a given number to a string, using the supplied precision, with commas.
+
+**`Number.prototype.addCommasSmart([minimum=0.001])`** 
+
+Basically wraps `Number.prototype.addCommas()` with heuristic guessing on precision to use. As well, the `minimum` parameter rounds any value who's absolute value is less than this to zero. Look at the source code for exact behavior, but generally, evaluation to zero is always written as "0.0", less than 0.01 as exponential with three sig. figures, less than 0.1 as exponential with two sig. figures, less than 0.3 with three decimal places, less than 1.0 with two decimal places, less than 100 with one decimal place, and greater than or equal to 100 with no decimal places.
+
+**`Object.isObject(obj)`** 
+
+Check is given object is an object-type. That is, not a primitive, string, or array. Useful for when parameters must be ensured is an object-literal/dictionary.
+
+**`String.prototype.capitalize()`** 
+
+Will capitalize the each word in the string (using whitespace to delineate words).
+
+**`String.prototype.heuristicCompare(compareString)`**
+
+Compare strings with numbers such that a "number" is not compared alphabetically by character but as the numeric value. Right now only handles positive integers. Compares character by character such that numbers encountered at the same "place" are compared. If numbers are of different character length but equal numerically, continues reading strings, adjusting "place" for different digit length. E.g. "a01b02" will compare as equal to "a1b2".
 
 ## Date (UTC) Modifications ##
 

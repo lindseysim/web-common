@@ -17,6 +17,30 @@
         //****************************************************************************************************
         // Misc prototype extensions
         //****************************************************************************************************
+        /**
+         * Get overlapping values with second array. Uses strict equality.
+         * @param {Array} arr
+         * @returns {Array} Array of overlapping values.
+         */
+        Array.prototype.getOverlaps = function(arr) {
+            return this.filter(function(v) { return ~arr.indexOf(v); });
+        };
+        Array.getOverlaps = function(a, b) {
+            return a.getOverlaps(b);
+        };
+
+        /**
+         * Check if at least one value overlaps with second array. Uses strict equality.
+         * @param {Array} arr
+         * @returns {Boolean} True if overlaps.
+         */
+        Array.prototype.overlaps = function(arr) {
+            return !!this.find(function(v) { return ~arr.indexOf(v); });
+        };
+        Array.overlaps = function(a, b) {
+            return a.overlaps(b);
+        };
+
         /** Check is given object is an object-type. That is, not a primitive, string, or array. Useful for 
          * when parameters must be ensured is an object-literal/dictionary.
          * @param {anything} obj - The variable to be checked.
@@ -85,6 +109,34 @@
                 + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                 + (precision ? "." + Math.abs(n - number).toFixed(precision).slice(2) : "")
             );
+        };
+
+        /**
+         * Return string value of this number with commas added. Precision is handled dynamically based on my
+         * abitrary rules but generally maintains at least two significant digits. Values less than 0.1 are 
+         * presented in scientific notation.
+         * @param {Number} [minimum=0.001] - Minimum number (absoltue value), on which anything less than 
+         *        becomes zero.
+         * @returns {String}
+         */
+        Number.prototype.addCommasSmart = function(minimum) {
+            if(this === 0.0) return "0.0";
+            var n = Math.abs(this);
+            minimum = minimum || 0.001;
+            if(n < minimum) {
+                return "0.0";
+            } else if(n < 0.01) {
+                return this.toExponential(3);
+            } else if(n < 0.1) {
+                return this.toExponential(2);
+            } else if(n < 0.3) {
+                return this.addCommas(3);
+            } else if(n < 1.0) {
+                return this.addCommas(2);
+            } else if(n < 100.0) {
+                return this.addCommas(1);
+            }
+            return this.addCommas(0);
         };
 
         /**
@@ -327,14 +379,14 @@
         window.defaultErrorMessage = "This site is experiencing some technical difficulties. Please try again later. ";
         
         // note, none of these browser checks are future-proof, periodically update as necessary
-        var ua = navigator.userAgent.toLowerCase();
         window.browser = window.browserType = {};
-        window.browser.isOpera   = (!!window.opr && !!opr.addons) || !!window.opera || ua.indexOf(' opr/') >= 0;
+        window.browser.isOpera   = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
         window.browser.isFirefox = typeof InstallTrigger !== 'undefined';
-        window.browser.isSafari  = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
-        window.browser.isChrome  = !!window.chrome && !!window.chrome.webstore && !window.browser.isOpera;
+        window.browser.isSafari  = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));
+        window.browser.isChrome  = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
         window.browser.isIE      = /*@cc_on!@*/false || !!document.documentMode;
         window.browser.isEdge    = !window.browser.isIE && !!window.StyleMedia;
+        var ua = navigator.userAgent.toLowerCase();
         if(window.browser.isIE) {
             if(ua.indexOf('msie') >= 0) {
                 window.browser.ieVersion = parseInt(ua.split('msie')[1]);
