@@ -266,17 +266,22 @@
     
     // String startsWith and endsWith
     if(!String.prototype.startsWith) {
-        String.prototype.startsWith = function(search, pos) {
-            return this.substr(!pos || pos < 0 ? 0 : +pos, search.length) === search;
-        };
+        Object.defineProperty(String.prototype, 'startsWith', {
+            value: function(search, pos) {
+                pos = !pos || pos < 0 ? 0 : +pos;
+                return this.substring(pos, pos + search.length) === search;
+            }
+        });
     }
     if(!String.prototype.endsWith) {
-        String.prototype.endsWith = function(search, this_len) {
-            if(this_len === undefined || this_len > this.length) {
-                this_len = this.length;
+        Object.defineProperty(String.prototype, 'endsWith', {
+            value: function(search, this_len) {
+                if (this_len === undefined || this_len > this.length) {
+                    this_len = this.length;
+                }
+                return this.substring(this_len - search.length, this_len) === search;
             }
-            return this.substring(this_len - search.length, this_len) === search;
-        };
+        });
     }
     
     // Array.find  https://tc39.github.io/ecma262/#sec-array.prototype.find
