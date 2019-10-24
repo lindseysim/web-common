@@ -817,7 +817,7 @@
                         var res = xhr.responseText;
                         if(responseType === "json") {
                             try {
-                                res = JSON.parse(res);
+                                params.success(JSON.parse(res), xhr.statusText, xhr);
                             } catch(e) {
                                 params.error(xhr, xhr.statusText, xhr.responseText);
                             }
