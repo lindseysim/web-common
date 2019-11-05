@@ -229,10 +229,13 @@ export default {
             return;
         }
         var modalContent = document.querySelector("#cm-modal-outer").querySelector(".cm-modal-inner"), 
-            oldWidth  = modalContent.offsetWidth, 
-            oldHeight = modalContent.offsetHeight;
+            oldWidth  = modalContent.offsetWidth+"px", 
+            oldHeight = modalContent.offsetHeight+"px";
         // fix dimensions
-        modalContent.css({'width': oldWidth, 'height': oldHeight});
+        modalContent.css({
+            'width': oldWidth, 
+            'height': oldHeight
+        });
         // new content
         modalContent.innerHTML = content;
         if(prepContentCallback) prepContentCallback();
@@ -244,22 +247,41 @@ export default {
             modalContent.append(closer);
         }
         // fast store new dims before reverting
-        modalContent.css({'height': '', 'width': ''});
-        var newWidth  = modalContent.offsetWidth, 
-            newHeight = modalContent.offsetHeight;
-        modalContent.css({'width': oldWidth, 'height': oldHeight});
+        modalContent.css({
+            'height': '', 
+            'width': ''
+        });
+        var newWidth  = modalContent.offsetWidth+"px", 
+            newHeight = modalContent.offsetHeight+"px";
+        modalContent.css({
+            'width': oldWidth, 
+            'height': oldHeight, 
+            'overflow': 'hidden'
+        });
         // animate then reset to auto
-        var duration = 0.2;
-        var transitionValue = "width " + duration + "s ease 0, height " + duration + "s ease 0";
+        var duration = 0.2, 
+            transitionValue = "width " + duration + "s ease, height " + duration + "s ease";
         modalContent.css({
             '-webkit-transition': transitionValue, 
             '-moz-transition': transitionValue, 
             'transition': transitionValue
         });
-        modalContent.css({height: newHeight, width: newWidth});
-        window.setTimeout(duration, function() {
-            modalContent.css({'height': '', 'width': ''});
-        });
+        window.setTimeout(function() {
+                modalContent.css({
+                    height: newHeight, 
+                    width: newWidth
+                });
+                window.setTimeout(function() {
+                        modalContent.css({
+                            'height': '', 
+                            'width': '', 
+                            '-webkit-transition': transitionValue, 
+                            '-moz-transition': transitionValue, 
+                            'transition': transitionValue, 
+                            'overflow': ''
+                        });
+                    }, 1000*duration+10);
+            }, 10);
         return modalContent;
     }, 
     

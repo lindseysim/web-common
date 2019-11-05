@@ -138,23 +138,25 @@ export default {
         timingFunction = timingFunction || "ease";
         var transition = "";
         for(var key in properties) {
-            if(transition !== "") transition += ", ";
-            transition += key + " " + duration + " " + timingFunction + " 0";
+            if(!transition) transition += ", ";
+            transition += key + " " + duration + " " + timingFunction;
         }
         element.css({
             '-webkit-transition': transition, 
             '-moz-transition': transition, 
             'transition': transition
         });
-        element.css(properties);
-        window.setTimeout(duration, function() {
-            element.css({
-                '-webkit-transition': "", 
-                '-moz-transition': "", 
-                'transition': ""
-            });
-            if(complete) complete();
-        });
+        window.setTimeout(function() {
+                element.css(properties);
+                window.setTimeout(function() {
+                        element.css({
+                            '-webkit-transition': "", 
+                            '-moz-transition': "", 
+                            'transition': ""
+                        });
+                        if(complete) complete();
+                    }, duration+10);
+            }, 10);
     }
     
 };
