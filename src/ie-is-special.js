@@ -1,4 +1,4 @@
-(function() {
+export default (function() {
 
     // Element.remove()
     if(!Element.prototype.remove) {
@@ -305,5 +305,7 @@
             writable: true
       });
     }
+
+    return true;
 
 })();
