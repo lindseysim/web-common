@@ -1,5 +1,33 @@
+/* default overrides */
 input, select {
   cursor: pointer;
+}
+
+/* generic helper classes */
+.clickable {
+  cursor: pointer;
+}
+.semi-bold {
+  font-weight: bolder;
+}
+.indent {
+  text-indent: 0.8em;
+}
+.hanging-indent {
+  text-indent: -0.8em;
+  padding-left: 0.8em;
+}
+.code {
+  font-family: "Lucida Console", "Lucida Sans Typewriter", Monaco, "Bitstream Vera Sans Mono", monospace;
+  background: #6A7EBF;
+  color: #FFFFE9;
+  padding: 0.1em;
+  text-indent: 0;
+}
+
+/* disabled style */
+option:disabled {
+  font-style: italic;
 }
 .disabled {
   font-style: italic;
@@ -40,33 +68,6 @@ input, select {
   cursor: not-allowed;
 }
 
-/* generic form/inputs styles */
-select {
-  border-radius: 5px;
-  background: #f5f5f5;
-  padding: 1px;
-}
-option:disabled {
-  font-style: italic;
-}
-
-/* generic borders */
-.border {
-  border: 2px solid #b9cad8;
-}
-.left-border {
-  border-bottom: 2px solid #b9cad8;
-}
-.top-border {
-  border-right: 1px solid #b9cad8;
-}
-.bottom-border {
-  border-bottom: 2px solid #b9cad8;
-}
-.right-border {
-  border-right: 1px solid #b9cad8;
-}
-
 /* for grabbing functionality */
 .grab {
   cursor: move;
@@ -79,9 +80,4 @@ option:disabled {
   cursor: grabbing;
   cursor: -moz-grabbing;
   cursor: -webkit-grabbing;
-}
-
-/* jquery-ui overrides */
-.ui-autocomplete {
-  z-index: 9999;
 }
