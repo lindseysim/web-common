@@ -132,20 +132,21 @@ export default {
         return xhr;
     }, 
 
-    animate: function(element, properties, duration, timingFunction, complete) {
-        if(!(typeof duration === "number")) throw "Duration must be specified as numeric type in milliseconds.";
-        duration = duration*0.001 + "s";
+    animate: function(element, properties, durationMs, timingFunction, complete) {
+        if(!(typeof durationMs === "number")) throw "Duration must be specified as numeric type in milliseconds.";
         timingFunction = timingFunction || "ease";
-        var transition = "";
+        var durationSecs = durationMs*0.001 + "s", 
+            transition = "";
         for(var key in properties) {
             if(!transition) transition += ", ";
-            transition += key + " " + duration + " " + timingFunction;
+            transition += key + " " + durationSecs + " " + timingFunction;
         }
         element.css({
             '-webkit-transition': transition, 
             '-moz-transition': transition, 
             'transition': transition
         });
+        var delayMs = 10;
         window.setTimeout(function() {
                 element.css(properties);
                 window.setTimeout(function() {
@@ -155,8 +156,8 @@ export default {
                             'transition': ""
                         });
                         if(complete) complete();
-                    }, duration+10);
-            }, 10);
+                    }, durationMs+delayMs);
+            }, delayMs);
     }
     
 };

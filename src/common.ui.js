@@ -259,8 +259,9 @@ export default {
             'overflow': 'hidden'
         });
         // animate then reset to auto
-        var duration = 0.2, 
-            transitionValue = "width " + duration + "s ease, height " + duration + "s ease";
+        var durationSecs = 0.2, 
+            delayMs = 10, 
+            transitionValue = "width " + durationSecs + "s ease, height " + durationSecs + "s ease";
         modalContent.css({
             '-webkit-transition': transitionValue, 
             '-moz-transition': transitionValue, 
@@ -280,8 +281,8 @@ export default {
                             'transition': transitionValue, 
                             'overflow': ''
                         });
-                    }, 1000*duration+10);
-            }, 10);
+                    }, 1000*durationSecs+delayMs);
+            }, delayMs);
         return modalContent;
     }, 
     

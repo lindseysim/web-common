@@ -347,7 +347,7 @@ Returned as object if instantiated via CommonJS or AMD import. Otherwise appende
 
 &nbsp;  
 <a name="common-animate" href="#common-animate">#</a>
-*common*.**animate**(*element*, *properties*, *duration*[, *easing*[, *complete*]]])
+*common*.**animate**(*element*, *properties*, *durationMs*[, *easing*[, *complete*]]])
 
 > Mimics [jQuery.animate()](http://api.jquery.com/jQuery.animate/) function using CSS3 transitions.
 
@@ -355,7 +355,7 @@ Returned as object if instantiated via CommonJS or AMD import. Otherwise appende
 | :--- | :---: | :--- |
 | element | `Element` | The Element to animate. |
 | properties | `Object` | CSS properties to animate to. Note not all properties are animatable. See [animatable CSS properties](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animated_properties). |
-| duration | `Number` | Duration of animation, in milliseconds. |
+| durationMs | `Number` | Duration of animation, in milliseconds. |
 | timingFunction | `String` | Timing/easing function, defaults to "ease". See: [transition-timing-function](https://developer.mozilla.org/en-US/docs/Web/CSS/transition-timing-function). |
 | complete | `Callback` | Optional callback to run on completion. |
 
