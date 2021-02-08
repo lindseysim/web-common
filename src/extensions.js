@@ -58,7 +58,7 @@ if(!Object.isObject) {
  * whitespace, as such ignores second word in hyphenated compound words).
  * @returns {String} Capitalized version of this string.
  */
-if(!Object.prototype.capitalize) {
+if(!String.prototype.capitalize) {
     Object.defineProperty(String.prototype, 'capitalize', {
         value: function() {
             return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
@@ -75,7 +75,7 @@ if(!Object.prototype.capitalize) {
  * @param {String} compare string
  * @returns {Number} -1 if before, 0 if equal, 1 if after.
  */
-if(!Object.prototype.heuristicCompare) {
+if(!String.prototype.heuristicCompare) {
     Object.defineProperty(String.prototype, 'heuristicCompare', {
         value: function(compareString) {
             var thisChunks = this.match(/(\d+|[^\d]+)/g), 
@@ -110,7 +110,7 @@ if(!Object.prototype.heuristicCompare) {
  * @param {Number} precision - Decimal precision.
  * @returns {String}
  */
-if(!Object.prototype.addCommas) {
+if(!Number.prototype.addCommas) {
     Object.defineProperty(Number.prototype, 'addCommas', {
         value: function(precision){
             var n         = this, 
@@ -135,7 +135,7 @@ if(!Object.prototype.addCommas) {
  *        becomes zero.
  * @returns {String}
  */
-if(!Object.prototype.addCommasSmart) {
+if(!Number.prototype.addCommasSmart) {
     Object.defineProperty(Number.prototype, 'addCommasSmart', {
         value: function(minimum) {
             if(this === 0.0) return "0.0";
