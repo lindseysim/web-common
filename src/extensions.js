@@ -12,6 +12,8 @@ if(!Array.prototype.getOverlaps) {
             return this.filter(function(v) { return ~arr.indexOf(v); });
         }
     });
+}
+if(!Array.getOverlaps) {
     Object.defineProperty(Array, 'getOverlaps', {
         value: function(a, b) {
             return a.getOverlaps(b);
@@ -30,6 +32,8 @@ if(!Array.prototype.overlaps) {
             return !!this.find(function(v) { return ~arr.indexOf(v); });
         }
     });
+}
+if(!Array.overlaps) {
     Object.defineProperty(Array, 'overlaps', {
         value: function(a, b) {
             return a.overlaps(b);
@@ -41,7 +45,7 @@ if(!Array.prototype.overlaps) {
  * when parameters must be ensured is an object-literal/dictionary.
  * @param {anything} obj - The variable to be checked.
  */
-if(!Object.prototype.isObject) {
+if(!Object.isObject) {
     Object.defineProperty(Object, 'isObject', {
         value: function(obj) {
             return obj && obj.constructor === Object;
