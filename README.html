@@ -1057,7 +1057,7 @@ body .markdown-body
 .codehilite .gc{color:#999;background-color:#EAF2F5}
 </style><title>README</title></head><body><article class="markdown-body"><h1 id="web-common">Web Common<a class="headerlink" href="#web-common" title="Permanent link"></a></h1>
 <p>Web Common is a collection of polyfills, extentions, and modules I repeatedly found myself reapplying on new projects.</p>
-<p>Lawrence Sim © 2019</p>
+<p>Lawrence Sim © 2021</p>
 <h2 id="license">License<a class="headerlink" href="#license" title="Permanent link"></a></h2>
 <p><em>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the &ldquo;Software&rdquo;), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</em></p>
 <p><em>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</em></p>
@@ -1079,34 +1079,56 @@ body .markdown-body
 <li><a href="#acknowledgments">Acknowledgments</a></li>
 </ul>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link"></a></h2>
-<p>Import <code>common.min.css</code> to add all styles for all modules (optional if not using Common UI or Common Table).
+<p>Import <code>common.min.css</code> to add all styles for all modules (optional if not using Common UI or Common Table).<br />
 Import <code>common.min.js</code> for the base Common and Common UI modules.<br />
-Import <code>common.table.min.js</code> to add the table module.  </p>
+Import <code>common.table.min.js</code> to add the Common Table module.  </p>
 <p>Library is configured for import via CommonJS based API (e.g. NodeJS), AMD-based API (e.g. RequireJS), or simply regular instantiation.</p>
+<p>In regular script import, Common will be added as <code>common</code> and Common Table as <code>CommonTable</code> to the root (<code>window</code>).</p>
 <p>&nbsp;</p>
 <h2 id="polyfills">Polyfills<a class="headerlink" href="#polyfills" title="Permanent link"></a></h2>
-<p>Ensures the below functions exists, many of which are missing in (surprise, surprise) Internet Explorer and Edge.</p>
-<p><em>Array</em>.prototype.<strong>find</strong>(<em>callback</em>(<em>element</em>[, <em>index</em>[, <em>array</em>]])[, <em>thisArg</em>])</p>
-<p>&nbsp; &nbsp; <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find</a></p>
+<p>Ensures the below functions exists, many of which are missing in (surprise, surprise) Internet Explorer.</p>
+<p><em>Array</em>.prototype.<strong>find</strong>(<em>callback</em>[, <em>thisArg</em>])</p>
+<blockquote>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find</a></p>
+</blockquote>
 <p><em>Element</em>.prototype.<strong>remove</strong>()</p>
-<p>&nbsp; &nbsp; <a href="https://developer.mozilla.org/en-US/docs/Web/API/ChildNode/remove">https://developer.mozilla.org/en-US/docs/Web/API/ChildNode/remove</a></p>
+<blockquote>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/ChildNode/remove">https://developer.mozilla.org/en-US/docs/Web/API/ChildNode/remove</a></p>
+</blockquote>
 <p><em>Element</em>.prototype.<strong>append</strong>(<em>nodes</em>)</p>
-<p>&nbsp; &nbsp; <a href="https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/append">https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/append</a></p>
+<blockquote>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/append">https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/append</a></p>
+</blockquote>
 <p><em>Element</em>.prototype.<strong>prepend</strong>(<em>nodes</em>)</p>
-<p>&nbsp; &nbsp; <a href="https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/prepend">https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/prepend</a></p>
+<blockquote>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/prepend">https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/prepend</a></p>
+</blockquote>
 <p><em>Element</em>.prototype.<strong>closest</strong>(<em>selectors</em>)</p>
-<p>&nbsp; &nbsp; <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/closest">https://developer.mozilla.org/en-US/docs/Web/API/Element/closest</a></p>
+<blockquote>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/closest">https://developer.mozilla.org/en-US/docs/Web/API/Element/closest</a></p>
+</blockquote>
 <p><em>Element</em>.<strong>classList</strong> </p>
-<p>&nbsp; &nbsp; Ensures existence of <code>contains()</code>, <code>add()</code>, <code>remove()</code>, <code>toggle()</code>, and <code>replace()</code> functions.<br />
-&nbsp; &nbsp; <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/classList">https://developer.mozilla.org/en-US/docs/Web/API/Element/classList</a></p>
+<blockquote>
+<p>Ensures existence of <code>contains()</code>, <code>add()</code>, <code>remove()</code>, <code>toggle()</code>, and <code>replace()</code> functions.<br />
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/classList">https://developer.mozilla.org/en-US/docs/Web/API/Element/classList</a><br />
+Note that IE and Edge cannot support <code>classList</code> on SVG elements (no polyfill available).</p>
+</blockquote>
 <p><em>NodeList</em>.prototype.<strong>forEach</strong>(<em>callback</em>[, <em>thisArg]</em>)</p>
-<p>&nbsp; &nbsp; <a href="https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach">https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach</a></p>
+<blockquote>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach">https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach</a></p>
+</blockquote>
 <p><em>String</em>.prototype.<strong>startsWith</strong>(<em>searchString[, *position</em>])</p>
-<p>&nbsp; &nbsp; <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith</a></p>
+<blockquote>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith</a></p>
+</blockquote>
 <p><em>String</em>.prototype.<strong>endsWith</strong>(<em>searchString</em>[, <em>length</em>])</p>
-<p>&nbsp; &nbsp; <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith</a></p>
+<blockquote>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith</a></p>
+</blockquote>
 <p><em>String</em>.prototype.<strong>repeat</strong>(<em>count</em>)</p>
-<p>&nbsp; &nbsp; <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/repeat">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/repeat</a></p>
+<blockquote>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/repeat">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/repeat</a></p>
+</blockquote>
 <p>&nbsp;</p>
 <h2 id="global-additions">Global Additions<a class="headerlink" href="#global-additions" title="Permanent link"></a></h2>
 <p>The values/objects are added to the global namespace (under <code>window</code>).</p>
@@ -1118,10 +1140,6 @@ Import <code>common.table.min.js</code> to add the table module.  </p>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td><code>_webcmdefined</code></td>
-<td align="left">Simply stores if common module was init to avoid redefining things.</td>
-</tr>
 <tr>
 <td><code>browser</code></td>
 <td align="left">Stores information on browser type and version.</td>
@@ -1137,59 +1155,145 @@ Import <code>common.table.min.js</code> to add the table module.  </p>
 <p>These useful functions are added to common object prototypes.</p>
 <p><em>Array</em>.<strong>getOverlaps</strong>(<em>a</em>, <em>b</em>)<br />
 <em>Array</em>.prototype.<strong>getOverlaps</strong>(<em>arr</em>)</p>
-<p>&nbsp; &nbsp; Get overlapping values with second array. Can be called from array instance or <code>Array</code> global. Uses strict equality.</p>
+<blockquote>
+<p>Get overlapping values with second array. Can be called from array instance or <code>Array</code> global. Uses strict equality.</p>
+</blockquote>
+<p>&nbsp; &nbsp; <strong>Returns:</strong> <code>Array</code></p>
 <p><em>Array</em>.<strong>overlaps</strong>(<em>a</em>, <em>b</em>)<br />
-<em>Array</em>.<strong>overlaps</strong>(<em>arr</em>)</p>
-<p>&nbsp; &nbsp; Check if at least one value overlaps with second array. Can be called from array instance or <code>Array</code> global. Uses strict equality.</p>
+<em>Array</em>.prototype.<strong>overlaps</strong>(<em>arr</em>)</p>
+<blockquote>
+<p>Check if at least one value overlaps with second array. Can be called from array instance or <code>Array</code> global. Uses strict equality.</p>
+</blockquote>
+<p>&nbsp; &nbsp; <strong>Returns:</strong> <code>Boolean</code></p>
 <p><em>Element</em>.prototype.<strong>isVisible</strong>()</p>
-<p>&nbsp; &nbsp; Simple is-visible check using <code>offsetParent</code> trick. Note it will have issues with elements in fixed positions.
-&nbsp; &nbsp; <strong>Returns:</strong> <code>Boolean</code></p>
+<blockquote>
+<p>Simple is-visible check using <code>offsetParent</code> trick. Note it will have issues with elements in fixed positions.</p>
+</blockquote>
+<p>&nbsp; &nbsp; <strong>Returns:</strong> <code>Boolean</code></p>
 <p><em>Element</em>.prototype.<strong>setAttributes</strong>(<em>attrs</em>)</p>
-<p>&nbsp; &nbsp; Sets multiple attributes (given as dictionary) at once.</p>
+<blockquote>
+<p>Sets multiple attributes (given as dictionary) at once.</p>
+</blockquote>
 <p><em>Element</em>.prototype.<strong>css</strong>(<em>style</em>[, <em>value</em>])</p>
-<p>&nbsp; &nbsp; Much like the JQuery css() function, sets inline style, either as style name and value provided as strings, or given a dictionary of style names and values and key-value pairs. </p>
+<blockquote>
+<p>Much like the JQuery css() function, sets inline style, either as style name and value provided as strings, or given a dictionary of style names and values and key-value pairs. </p>
+</blockquote>
 <p><em>Element</em>.prototype.<strong>center</strong>()</p>
-<p>&nbsp; &nbsp; Will center an element on screen using absolute positioning.</p>
+<blockquote>
+<p>Will center an element on screen using absolute positioning.</p>
+</blockquote>
 <p><em>Number</em>.prototype.<strong>addCommas</strong>(<em>precision</em>)</p>
-<p>&nbsp; &nbsp; Will convert a given number to a string, using the supplied precision, with commas.
-&nbsp; &nbsp; <strong>Returns:</strong> <code>String</code></p>
+<blockquote>
+<p>Will convert a given number to a string, using the supplied precision, with commas.</p>
+</blockquote>
+<p>&nbsp; &nbsp; <strong>Returns:</strong> <code>String</code></p>
 <p><em>Number</em>.prototype.<strong>addCommasSmart</strong>([<em>minimum=0.001</em>])</p>
-<p>&nbsp; &nbsp; Basically wraps <code>Number.prototype.addCommas()</code> with heuristic guessing on precision to use. As well, the <code>minimum</code> parameter rounds any value who&rsquo;s absolute value is less than this to zero. Look at the source code for exact behavior, but generally, evaluation to zero is always written as &ldquo;0.0&rdquo;, less than 0.01 as exponential with three sig. figures, less than 0.1 as exponential with two sig. figures, less than 0.3 with three decimal places, less than 1.0 with two decimal places, less than 100 with one decimal place, and greater than or equal to 100 with no decimal places.
-&nbsp; &nbsp; <strong>Returns:</strong> <code>String</code></p>
+<blockquote>
+<p>Basically wraps <code>Number.prototype.addCommas()</code> with heuristic guessing on precision to use. As well, the <code>minimum</code> parameter rounds any value who&rsquo;s absolute value is less than this to zero. Look at the source code for exact behavior, but generally, evaluation to zero is always written as &ldquo;0.0&rdquo;, less than 0.01 as exponential with three sig. figures, less than 0.1 as exponential with two sig. figures, less than 0.3 with three decimal places, less than 1.0 with two decimal places, less than 100 with one decimal place, and greater than or equal to 100 with no decimal places.</p>
+</blockquote>
+<p>&nbsp; &nbsp; <strong>Returns:</strong> <code>String</code></p>
 <p><em>Object</em>.<strong>isObject</strong>(<em>obj</em>)</p>
-<p>&nbsp; &nbsp; Check is given object is an object-type. That is, not a primitive, string, or array. Useful for when parameters must be ensured is an object-literal/dictionary.
-&nbsp; &nbsp; <strong>Returns:</strong> <code>Boolean</code></p>
+<blockquote>
+<p>Check is given object is an object-type. That is, not a primitive, string, or array. Useful for when parameters must be ensured is an object-literal/dictionary.</p>
+</blockquote>
+<p>&nbsp; &nbsp; <strong>Returns:</strong> <code>Boolean</code></p>
 <p><em>String</em>.prototype.<strong>capitalize</strong>()</p>
-<p>&nbsp; &nbsp; Will capitalize the each word in the string (using whitespace to delineate words).<br />
-&nbsp; &nbsp; <strong>Returns:</strong> <code>String</code></p>
+<blockquote>
+<p>Will capitalize the each word in the string (using whitespace to delineate words).</p>
+</blockquote>
+<p>&nbsp; &nbsp; <strong>Returns:</strong> <code>String</code></p>
 <p><em>String</em>.prototype.<strong>heuristicCompare</strong>(<em>compareString</em>)</p>
-<p>&nbsp; &nbsp; Compare strings with numbers such that a &ldquo;number&rdquo; is not compared alphabetically by character but as the numeric value. Right now only handles positive integers. Compares character by character such that numbers encountered at the same &ldquo;place&rdquo; are compared. If numbers are of different character length but equal numerically, continues reading strings, adjusting &ldquo;place&rdquo; for different digit length. E.g. &ldquo;a01b02&rdquo; will compare as equal to &ldquo;a1b2&rdquo;.<br />
-&nbsp; &nbsp; <strong>Returns:</strong> <code>Number</code> -1 if this object comes before, 1 if after, and 0 if equal.</p>
+<blockquote>
+<p>Compare strings with numbers such that a &ldquo;number&rdquo; is not compared alphabetically by character but as the numeric value. </p>
+<p>Compares character by character such that numbers encountered at the same &ldquo;place&rdquo; are compared. If numbers are of different character length but equal numerically, continues reading strings, adjusting &ldquo;place&rdquo; for different digit length.</p>
+<p><strong>Currently does not support negative numbers.</strong></p>
+<p>Returns numeric indicating whether <code>this</code> string comes before (-1), after (1), or is equal (0) to compared string.</p>
+</blockquote>
+<p>&nbsp; &nbsp; <strong>Returns:</strong> <code>Number</code></p>
+<div class="codehilite"><pre><span class="s2">&quot;a01b02&quot;</span><span class="p">.</span><span class="nx">heuristicCompare</span><span class="p">(</span><span class="s2">&quot;a1b2&quot;</span><span class="p">);</span>  <span class="c1">// 0</span>
+<span class="s2">&quot;ab20&quot;</span><span class="p">.</span><span class="nx">heuristicCompare</span><span class="p">(</span><span class="s2">&quot;ab1&quot;</span><span class="p">);</span>     <span class="c1">// 1</span>
+<span class="s2">&quot;ab9&quot;</span><span class="p">.</span><span class="nx">heuristicCompare</span><span class="p">(</span><span class="s2">&quot;ab999&quot;</span><span class="p">);</span>    <span class="c1">// -1</span>
+<span class="s2">&quot;ba20&quot;</span><span class="p">.</span><span class="nx">heuristicCompare</span><span class="p">(</span><span class="s2">&quot;ab1&quot;</span><span class="p">);</span>     <span class="c1">// 1</span>
+</pre></div>
+
 <p>&nbsp;</p>
 <h2 id="date-utc-modifications">Date (UTC) Modifications<a class="headerlink" href="#date-utc-modifications" title="Permanent link"></a></h2>
 <p>Additional functions for handling basic Date objects are added. Specifically to ensure UTC handling.</p>
 <p><strong>DateUTC</strong>(<em>year</em>, <em>month</em>, <em>day</em>[, <em>hour</em>[, <em>min</em>[, <em>sec</em>]]])</p>
-<p>&nbsp; &nbsp; Creates a datetime, forced as UTC. Note that month is 1-12 (unlike traditional Date constructor as 0-11).</p>
+<blockquote>
+<p>Creates a datetime, forced as UTC. <strong>Note that month must be indicated as 1-12</strong> (unlike traditional Date constructor as 0-11).</p>
+</blockquote>
+<p>&nbsp; &nbsp; <strong>Returns:</strong> <code>Date</code></p>
 <p><em>Date</em>.prototype.<strong>asUTC</strong>()</p>
-<p>&nbsp; &nbsp; Converts datetime to UTC.<br />
-&nbsp; &nbsp; <strong>Returns:</strong> <code>DateUTC</code></p>
-<p><em>Date</em>.prototype.<strong>asUTCDate</strong>()<br />
-<em>Date</em>.prototype.<strong>toUTCDate</strong>()</p>
-<p>&nbsp; &nbsp; Converts date only to UTC, dropping all time information.<br />
-&nbsp; &nbsp; <strong>Returns:</strong> <code>DateUTC</code></p>
+<blockquote>
+<p>Converts datetime to UTC assuming time given (assumed localtime) was actually meant as UTC time. That is to say, the date/time in localtime will be kept as the UTC date/time, only changing timezone.</p>
+</blockquote>
+<p>&nbsp; &nbsp; <strong>Returns:</strong> <code>Date</code></p>
+<div class="codehilite"><pre><span class="nx">d</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>  <span class="c1">// Tue Jan 01 2019 20:00:00 GMT-0800 (Pacific Standard Time)</span>
+<span class="nx">d</span><span class="p">.</span><span class="nx">asUTC</span><span class="p">();</span>                     <span class="c1">// Tue Jan 01 2019 12:00:00 GMT-0800 (Pacific Standard Time)</span>
+<span class="c1">// Assumed Jan 1 2019 at 20:00 was meant as UTC</span>
+<span class="c1">// Converted back to PST is 8 hours earlier, which is what it prints</span>
+</pre></div>
+
+<p><em>Date</em>.prototype.<strong>toUTC</strong>()</p>
+<blockquote>
+<p>Creates new <code>DateUTC</code> using the UTC datetime of this object, converted from localtime.</p>
+</blockquote>
+<p>&nbsp; &nbsp; <strong>Returns:</strong> <code>Date</code></p>
+<div class="codehilite"><pre><span class="nx">d</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>  <span class="c1">// Tue Jan 01 2019 20:00:00 GMT-0800 (Pacific Standard Time)</span>
+<span class="nx">d</span><span class="p">.</span><span class="nx">toUTC</span><span class="p">();</span>                     <span class="c1">// Tue Jan 01 2019 20:00:00 GMT-0800 (Pacific Standard Time)</span>
+<span class="c1">// No change, as printing is always done in localtime, conversion is mostly symbolic</span>
+<span class="c1">// This function only left in for clarity, but really doesn&#39;t do anything</span>
+</pre></div>
+
+<p><em>Date</em>.prototype.<strong>asUTCDate</strong>()  </p>
+<blockquote>
+<p>Converts date dropping any time information and assuming 12:00 AM UTC. Does not convert localtime, assuming it was given incorrectly.</p>
+</blockquote>
+<p>&nbsp; &nbsp; <strong>Returns:</strong> <code>Date</code></p>
+<div class="codehilite"><pre><span class="nx">d</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>  <span class="c1">// Tue Jan 01 2019 20:00:00 GMT-0800 (Pacific Standard Time)</span>
+<span class="nx">d</span><span class="p">.</span><span class="nx">asUTCDate</span><span class="p">();</span>                 <span class="c1">// Mon Dec 31 2018 16:00:00 GMT-0800 (Pacific Standard Time)</span>
+<span class="c1">// Assumes Jan 1, 2019 (date-only) in UTC time (though constructed with localtime)</span>
+<span class="c1">// Drops time information, making it Jan 1, 2019 at 00:00 UTC</span>
+<span class="c1">// Which is 16:00 PST the previous day in PST, which is what it prints</span>
+</pre></div>
+
+<p><em>Date</em>.prototype.<strong>toUTCDate</strong>()</p>
+<blockquote>
+<p>Converts date dropping any time information and assuming 12:00 AM UTC. Uses local date of instance converted to UTC.</p>
+</blockquote>
+<p>&nbsp; &nbsp; <strong>Returns:</strong> <code>DateUTC</code></p>
+<div class="codehilite"><pre><span class="nx">d</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="mi">2019</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>  <span class="c1">// Tue Jan 01 2019 20:00:00 GMT-0800 (Pacific Standard Time)</span>
+<span class="nx">d</span><span class="p">.</span><span class="nx">toUTCDate</span><span class="p">();</span>                 <span class="c1">// Tue Jan 01 2019 16:00:00 GMT-0800 (Pacific Standard Time)</span>
+<span class="c1">// Jan 1, 2019 at 20:00 in PST is Jan 2, 2019 at 04:00 in UTC</span>
+<span class="c1">// UTC date taken as is, time is dropped, leaving it at Jan 2, 2019 at 00:00 in UTC</span>
+<span class="c1">// Which is 16:00 PST the previous day in PST, which is what it prints</span>
+</pre></div>
+
 <p><em>Date</em>.prototype.<strong>addDays</strong>(<em>days</em>)</p>
-<p>&nbsp; &nbsp; Returns new date with days added (or removed if negative).<br />
-&nbsp; &nbsp; <strong>Returns:</strong> <code>DateUTC</code></p>
+<blockquote>
+<p>Returns new date with days added (or removed if negative).</p>
+</blockquote>
+<p>&nbsp; &nbsp; <strong>Returns:</strong> <code>DateUTC</code></p>
+<p><em>Date</em>.prototype.<strong>monthOfYear</strong>()</p>
+<blockquote>
+<p>Returns the month of the year as 1-12 number (as opposed to 0-11 for <code>getMonth()</code>).</p>
+</blockquote>
+<p>&nbsp; &nbsp; <strong>Returns:</strong> <code>Number</code></p>
 <p><em>Date</em>.prototype.<strong>daysInMonth</strong>()</p>
-<p>&nbsp; &nbsp; Returns number of days in the month for this date.<br />
-&nbsp; &nbsp; <strong>Returns:</strong> <code>Number</code></p>
+<blockquote>
+<p>Returns number of days in the month for this date.</p>
+</blockquote>
+<p>&nbsp; &nbsp; <strong>Returns:</strong> <code>Number</code></p>
 <p>&nbsp;</p>
 <h2 id="common-object">Common Object<a class="headerlink" href="#common-object" title="Permanent link"></a></h2>
 <p>Returned as object if instantiated via CommonJS or AMD import. Otherwise appended to root as common (e.g. <code>window.common</code>).</p>
 <p>&nbsp;<br />
 <a name="common-getElementList" href="#common-getElementList">#</a>
 <em>common</em>.<strong>getElementList</strong>(<em>element</em>)</p>
+<blockquote>
 <p>Given an object, returns an iterable list. If single <code>Element</code> is provided, simply returns it wrapped in an array. If <code>NodeList</code>, array, or other iterable is provided, returns it as is. If <code>jQuery</code> object is provided, returns <a href="https://api.jquery.com/get/"><code>element.get()</code></a>. If string is provided, returns result of <code>document.querySelectorAll(element)</code>.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -1206,10 +1310,11 @@ Import <code>common.table.min.js</code> to add the table module.  </p>
 </tr>
 </tbody>
 </table>
-<p><strong>Returns:</strong> <code>NodeList</code>|<code>Element[]</code></p>
+<p>&nbsp; &nbsp; <strong>Returns:</strong> <code>NodeList</code>|<code>Element[]</code></p>
 <p>&nbsp;<br />
 <a name="common-extend" href="#common-extend">#</a>
 <em>common</em>.<strong>extend</strong>(<em>obj</em>, <em>extend</em>[, <em>allowOverwrite</em>[, <em>deepCopy</em>]])</p>
+<blockquote>
 <p>Copy given object and extended with new values. Unless specified otherwise by <code>deepCopy</code> parameter behavior varies as follows:</p>
 <ul>
 <li>If <code>extend</code> is null, <code>obj</code> is simply returned as is (no copy, original passed value).</li>
@@ -1217,6 +1322,7 @@ Import <code>common.table.min.js</code> to add the table module.  </p>
 <li>Values in first level of <code>obj</code> are passed to a clone. Thus primitive types are copied by value, but objects will be copied by reference. </li>
 </ul>
 <p>Deep copy is done via <code>JSON.parse(JSON.stringify())</code>.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -1248,16 +1354,20 @@ Import <code>common.table.min.js</code> to add the table module.  </p>
 </tr>
 </tbody>
 </table>
-<p><strong>Returns:</strong> <code>Object</code></p>
+<p>&nbsp; &nbsp; <strong>Returns:</strong> <code>Object</code></p>
 <p>&nbsp;<br />
 <a name="common-getUrlGetVars" href="#common-getUrlGetVars">#</a>
 <em>common</em>.<strong>getUrlGetVars</strong>()</p>
+<blockquote>
 <p>Retrieve GET parameters in current URL as object literal (dictionary format).</p>
-<p><strong>Returns:</strong> <code>Object</code></p>
+</blockquote>
+<p>&nbsp; &nbsp; <strong>Returns:</strong> <code>Object</code></p>
 <p>&nbsp;<br />
 <a name="common-newWindow" href="#common-newWindow">#</a>
 <em>common</em>.<strong>newWindow</strong>(<em>event</em>, <em>url</em>, <em>name</em>, <em>width</em>, <em>height</em>[, <em>minimal</em>])</p>
+<blockquote>
 <p>Creates a new, centered window, even accounting for dual screen monitors.. The <code>event</code> object, if not provided, is grabbed from window.event. This is used to screen against middle-mouse clicks and ctrl+left-clicks which should be handled separately to create a new tab. If <code>minimal</code> is true, attempts to hide menubar, statusbar, and location &ndash; though many modern browsers may prevent some or all of this.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -1299,11 +1409,13 @@ Import <code>common.table.min.js</code> to add the table module.  </p>
 </tr>
 </tbody>
 </table>
-<p><strong>Returns:</strong> <code>Window</code></p>
+<p>&nbsp; &nbsp; <strong>Returns:</strong> <code>Window</code></p>
 <p>&nbsp;<br />
 <a name="common-ajax" href="#common-ajax">#</a>
 <em>common</em>.<strong>ajax</strong>(<em>params</em>)</p>
+<blockquote>
 <p>Mimics <a href="http://api.jquery.com/jQuery.ajax/">jQuery.ajax()</a> function call.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -1376,11 +1488,13 @@ Import <code>common.table.min.js</code> to add the table module.  </p>
 </tr>
 </tbody>
 </table>
-<p><strong>Returns:</strong> <code>XMLHttpRequest</code></p>
+<p>&nbsp; &nbsp; <strong>Returns:</strong> <code>XMLHttpRequest</code></p>
 <p>&nbsp;<br />
 <a name="common-animate" href="#common-animate">#</a>
-<em>common</em>.<strong>animate</strong>(<em>element</em>, <em>properties</em>, <em>duration</em>[, <em>easing</em>[, <em>complete</em>]]])</p>
+<em>common</em>.<strong>animate</strong>(<em>element</em>, <em>properties</em>, <em>durationMs</em>[, <em>easing</em>[, <em>complete</em>]]])</p>
+<blockquote>
 <p>Mimics <a href="http://api.jquery.com/jQuery.animate/">jQuery.animate()</a> function using CSS3 transitions.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -1401,7 +1515,7 @@ Import <code>common.table.min.js</code> to add the table module.  </p>
 <td align="left">CSS properties to animate to. Note not all properties are animatable. See <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animated_properties">animatable CSS properties</a>.</td>
 </tr>
 <tr>
-<td align="left">duration</td>
+<td align="left">durationMs</td>
 <td align="center"><code>Number</code></td>
 <td align="left">Duration of animation, in milliseconds.</td>
 </tr>
@@ -1425,7 +1539,9 @@ Import <code>common.table.min.js</code> to add the table module.  </p>
 <p>&nbsp;<br />
 <a name="common-addGrabCursorFunctionality" href="#common-addGrabCursorFunctionality">#</a>
 <em>common</em>.<em>ui</em>.<strong>addGrabCursorFunctionality</strong>(<em>element</em>)</p>
+<blockquote>
 <p>Adds grab cursor functionality to draggable element. Element may be single element, a NodeList/Array of elements, or a jQuery selection.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -1445,7 +1561,9 @@ Import <code>common.table.min.js</code> to add the table module.  </p>
 <p>&nbsp;<br />
 <a name="common-createDropdown" href="#common-createDropdown">#</a>
 <em>common</em>.<em>ui</em>.<strong>createDropdown</strong>(<em>element</em>, <em>menu</em>)</p>
+<blockquote>
 <p>Create a dropdown menu on an element. <em>menu</em> parameter is an array of object literals defining the menu. The parameters &lsquo;id&rsquo;, &lsquo;class&rsquo;, &lsquo;style&rsquo;, and &lsquo;text&rsquo;, if they exist, are applied. For functionality, either add &lsquo;href&rsquo; and optionally &lsquo;target&rsquo; parameters or supply a callback to an &lsquo;onClick&rsquo; parameter. To create a submenu, simply add a &lsquo;menu&rsquo; parameter with the same nested structure. </p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -1467,7 +1585,7 @@ Import <code>common.table.min.js</code> to add the table module.  </p>
 </tr>
 </tbody>
 </table>
-<p>&nbsp; &nbsp; Example usage:</p>
+<p><em>Example usage:</em></p>
 <div class="codehilite"><pre><span class="nx">common</span><span class="p">.</span><span class="nx">createDropdown</span><span class="p">(</span><span class="s2">&quot;#menu&quot;</span><span class="p">,</span> 
     <span class="p">[</span>
         <span class="p">{</span>
@@ -1493,7 +1611,9 @@ Import <code>common.table.min.js</code> to add the table module.  </p>
 <p>&nbsp;<br />
 <a name="common-clearDropdown" href="#common-clearDropdown">#</a>
 <em>common</em>.<em>ui</em>.<strong>clearDropdown</strong>(<em>element</em>)</p>
+<blockquote>
 <p>Remove dropdown menu functionality from an element.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -1517,7 +1637,9 @@ Import <code>common.table.min.js</code> to add the table module.  </p>
 <p>&nbsp;<br />
 <a name="common-addTooltip" href="#common-addTooltip">#</a>
 <em>common</em>.<em>ui</em>.<strong>addTooltip</strong>(<em>element</em>, <em>message</em>[, <em>direction</em>[, <em>force</em>]])</p>
+<blockquote>
 <p>Add hover tooltip to element(s).</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -1552,7 +1674,9 @@ Import <code>common.table.min.js</code> to add the table module.  </p>
 <p>&nbsp;<br />
 <a name="common-removeTooltip" href="#common-removeTooltip">#</a>
 <em>common</em>.<em>ui</em>.<strong>removeTooltip</strong>(<em>element</em>)</p>
+<blockquote>
 <p>Remove hover tooltip from element(s).</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -1572,7 +1696,9 @@ Import <code>common.table.min.js</code> to add the table module.  </p>
 <p>&nbsp;<br />
 <a name="common-appendHelpIcon" href="#common-appendHelpIcon">#</a>
 <em>common</em>.<em>ui</em>.<strong>appendHelpIcon</strong>(<em>element</em>, <em>message</em>[, <em>direction</em>[, <em>style</em>[, <em>force</em>]]])</p>
+<blockquote>
 <p>Add help icon to element(s) as (?) styled icon with tooltip.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -1612,7 +1738,9 @@ Import <code>common.table.min.js</code> to add the table module.  </p>
 <p>&nbsp;<br />
 <a name="common-removeHelpIcon" href="#common-removeHelpIcon">#</a>
 <em>common</em>.<em>ui</em>.<strong>removeHelpIcon</strong>(<em>element</em>)</p>
+<blockquote>
 <p>Remove help icon from element(s).</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -1631,19 +1759,24 @@ Import <code>common.table.min.js</code> to add the table module.  </p>
 </table>
 <p>&nbsp;  </p>
 <h4 id="modal-dialogs">Modal dialogs<a class="headerlink" href="#modal-dialogs" title="Permanent link"></a></h4>
-<p>When a modal function is first called, this library appends a hidden div to the body to handle modals. The below functionality handles this built-in modal. Modal functionality is quite simple, opening a centered modal dialog in the window. Various options are provided, but by default there is a closer &lsquo;x&rsquo; in the upper-right corner and clicking outside the modal box will also close the dialog. Only one modal may be open at a time. Opening another modal will override the current one.</p>
 <p>For modal dialog usage, ensure your dependency-manager/import-function is caching requires/imports of the <code>common</code> object, or that you are passing the object by reference. Calling multiple instances of <code>common.ui</code> in the same window can result in odd behavior for modal management.</p>
+<p>When a modal function is first called, this library appends a hidden div to <code>body</code> to handle modals/dialogs. This includes a container div (<code>#cm-modal-container</code>), an outer modal div (<code>#cm-modal-outer</code>) with absolute positioning, and an inner div (<code>.cm-modal-inner</code>) which represents the actual dialog.</p>
+<p>Only one modal may be open at a time. Opening another modal will replace the current one.</p>
 <p>&nbsp;<br />
 <a name="common-isModalOpen" href="#common-isModalOpen">#</a>
 <em>common</em>.<em>ui</em>.<strong>isModalOpen</strong>()</p>
+<blockquote>
 <p>Check whether modal is open.</p>
-<p><strong>Returns:</strong> <code>Boolean</code></p>
+</blockquote>
+<p>&nbsp; &nbsp; <strong>Returns:</strong> <code>Boolean</code></p>
 <p>&nbsp;<br />
 <a name="common-setModal" href="#common-setModal">#</a>
 <em>common</em>.<em>ui</em>.<strong>setModal</strong>(<em>visible</em>, <em>content</em>, <em>options</em>]])<br />
 &nbsp; &nbsp;<em>common</em>.<em>ui</em>.<strong>openModal</strong>(<em>content</em>[, <em>options</em>])</p>
-<p>Creates a new modal dialog (or closes, if visible=false).* Content* is the HTML content of the inner dialog element. Function <code>openModal()</code> is the same with <code>visible</code> defaulted to <code>true</code>.</p>
-<p><strong>Returns:</strong> <code>Element</code> of modal content div (<code>.cm-modal-inner</code>).</p>
+<blockquote>
+<p>Creates a new modal dialog (or closes, if visible=false). Function <code>openModal()</code> is the same with <code>visible</code> defaulted to <code>true</code>.</p>
+</blockquote>
+<p>&nbsp; &nbsp; <strong>Returns:</strong> <code>Element</code> of modal content div (<code>.cm-modal-inner</code>).</p>
 <table>
 <thead>
 <tr>
@@ -1698,8 +1831,10 @@ Import <code>common.table.min.js</code> to add the table module.  </p>
 <p>&nbsp;<br />
 <a name="common-setModalAsLoading" href="#common-setModalAsLoading">#</a>
 <em>common</em>.<em>ui</em>.<strong>setModalAsLoading</strong>([<em>content</em>[, <em>options</em>]])</p>
+<blockquote>
 <p>Creates a new modal dialog with default values prepped for loading. <code>content</code> is optional and defaults to <code>"Loading.."</code>. In addition to same <code>options</code> available for <a href="#common-setModal"><code>common.setModal()</code></a>, extended <code>options</code> are:</p>
-<p><strong>Returns:</strong> <code>Element</code> of modal content div (<code>.cm-modal-inner</code>).</p>
+</blockquote>
+<p>&nbsp; &nbsp; <strong>Returns:</strong> <code>Element</code> of modal content div (<code>.cm-modal-inner</code>).</p>
 <table>
 <thead>
 <tr>
@@ -1763,8 +1898,10 @@ Import <code>common.table.min.js</code> to add the table module.  </p>
 <p>&nbsp;<br />
 <a name="common-changeModal" href="#common-changeModal">#</a>
 <em>common</em>.<em>ui</em>.<strong>changeModal</strong>(<em>content</em>[, <em>prepContentCallback</em>[, <em>hideCloser</em>]])  </p>
-<p>Change modal dialog content while leaving all other options the same. Added benefit of measures to keep the content-size changes from being too jarring when swapping content. However, if there is an inline width/height defined in the style, these will be lost.</p>
-<p><strong>Returns:</strong> <code>Element</code> of modal content div (<code>.cm-modal-inner</code>).</p>
+<blockquote>
+<p>Change modal dialog content while leaving all other options the same. Keeps the content-size changes from being too jarring when swapping content by adding small CSS animation to fit new size. If there was a custom width/height defined in the modal&rsquo;s style, these will be lost.</p>
+</blockquote>
+<p>&nbsp; &nbsp; <strong>Returns:</strong> <code>Element</code> of modal content div (<code>.cm-modal-inner</code>).</p>
 <table>
 <thead>
 <tr>
@@ -1795,7 +1932,9 @@ Import <code>common.table.min.js</code> to add the table module.  </p>
 <a name="common-closeModal" href="#common-closeModal">#</a>
 <em>common</em>.<em>ui</em>.<strong>closeModal</strong>([<em>suppressOnClose</em>])<br />
 &nbsp; &nbsp;<em>common</em>.<em>ui</em>.<strong>hideModal</strong>([<em>suppressOnClose</em>])</p>
+<blockquote>
 <p>Hide any currently visible modal.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -1819,9 +1958,11 @@ Import <code>common.table.min.js</code> to add the table module.  </p>
 <p>To use, begin by creating instance and adding columns with <code>addColumn()</code>. The <code>key</code> parameter defines how to assign the data to each column. Other parameters allow various style and formatting methods. Once all columns are added, add data and draw the table with <code>populateTable()</code>. The data, sent as an array of object literals/dictionaries, is mapped to the columns automatically with the <code>key</code> defined for each column.</p>
 <p>And example usage script provided at bottom.    </p>
 <p>&nbsp;<br />
-<a name="CommonTable" href="C:/Users/LawrenceS/Documents/ProjectsWeb/web-common/CommonTable">#</a>
+<a name="CommonTable" href="D:/ProjectsWeb/web-common/CommonTable">#</a>
 <strong>CommonTable</strong>(<em>tableId</em>[, <em>tableClass</em>[, <em>container</em>]])**</p>
+<blockquote>
 <p>Creates new CommonTable with id and class (if provided, default class is &ldquo;cm-table&rdquo;) and appends to container (if provided).</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -1849,9 +1990,11 @@ Import <code>common.table.min.js</code> to add the table module.  </p>
 </tbody>
 </table>
 <p>&nbsp;<br />
-<a name="CommonTable-appendTo" href="C:/Users/LawrenceS/Documents/ProjectsWeb/web-common/CommonTable-appendTo">#</a>
+<a name="CommonTable-appendTo" href="D:/ProjectsWeb/web-common/CommonTable-appendTo">#</a>
 <em>CommonTable</em>.prototype.<strong>appendTo</strong>(<em>container</em>)</p>
+<blockquote>
 <p>Appends table to element.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -1869,9 +2012,11 @@ Import <code>common.table.min.js</code> to add the table module.  </p>
 </tbody>
 </table>
 <p>&nbsp;<br />
-<a name="CommonTable-prependTo" href="C:/Users/LawrenceS/Documents/ProjectsWeb/web-common/CommonTable-prependTo">#</a>
+<a name="CommonTable-prependTo" href="D:/ProjectsWeb/web-common/CommonTable-prependTo">#</a>
 <em>CommonTable</em>.prototype.<strong>prependTo</strong>(<em>container</em>)</p>
+<blockquote>
 <p>Prepends table to element.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -1889,9 +2034,11 @@ Import <code>common.table.min.js</code> to add the table module.  </p>
 </tbody>
 </table>
 <p>&nbsp;<br />
-<a name="CommonTable-addColumn" href="C:/Users/LawrenceS/Documents/ProjectsWeb/web-common/CommonTable-addColumn">#</a>
+<a name="CommonTable-addColumn" href="D:/ProjectsWeb/web-common/CommonTable-addColumn">#</a>
 <em>CommonTable</em>.prototype.<strong>addColumn</strong>(<em>group</em>, <em>title</em>, <em>key</em>[, <em>options</em>])</p>
+<blockquote>
 <p>Add column. Parameters may either be specified as list of arguments, or formatted into single object literal with parameter names as below. Title and key are required.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -1949,9 +2096,11 @@ Import <code>common.table.min.js</code> to add the table module.  </p>
 </tbody>
 </table>
 <p>&nbsp;<br />
-<a name="CommonTable-createHeaders" href="C:/Users/LawrenceS/Documents/ProjectsWeb/web-common/CommonTable-createHeaders">#</a>
+<a name="CommonTable-createHeaders" href="D:/ProjectsWeb/web-common/CommonTable-createHeaders">#</a>
 <em>CommonTable</em>.prototype.<strong>createHeaders</strong>([<em>sortOnKey</em>[, <em>ascending</em>]])</p>
+<blockquote>
 <p>[Re]draw table. Unlike <code>populateTable()</code>, this only redraws the headers (rest of the rows are lost).</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -1974,9 +2123,11 @@ Import <code>common.table.min.js</code> to add the table module.  </p>
 </tbody>
 </table>
 <p>&nbsp;<br />
-<a name="CommonTable-populateTable" href="C:/Users/LawrenceS/Documents/ProjectsWeb/web-common/CommonTable-populateTable">#</a>
+<a name="CommonTable-populateTable" href="D:/ProjectsWeb/web-common/CommonTable-populateTable">#</a>
 <em>CommonTable</em>.prototype.<strong>populateTable</strong>(<em>tableData</em>[, <em>sortOnKey</em>[, <em>ascending</em>]]])</p>
+<blockquote>
 <p>Populate and [re]draw table.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
@@ -2006,51 +2157,54 @@ Import <code>common.table.min.js</code> to add the table module.  </p>
 <p>&nbsp;</p>
 <hr />
 <p><em>Example usage:</em></p>
-<p>```javascript
-var tbl = new CommonTable(&ldquo;my-table-id&rdquo;, &ldquo;my-table-class&rdquo;);
-tbl.appendTo(document.body);</p>
-<p>// first three columns under &ldquo;Name&rdquo; header group
-tbl.addColumn(&ldquo;Name&rdquo;, &ldquo;First&rdquo;, &ldquo;firstName&rdquo;);
-tbl.addColumn(&ldquo;Name&rdquo;, &ldquo;Nickname&rdquo;, &ldquo;nickName&rdquo;);
-tbl.addColumn(&ldquo;Name&rdquo;, &ldquo;Last&rdquo;, &ldquo;lastName&rdquo;);
-// add generic meta-data (to be used later)
-tbl.addColumn(
-    null, 
-    &ldquo;Birthday&rdquo;, 
-    &ldquo;birthDate&rdquo;, 
-    {
-        format: function(val) {
-            return (val.getMonth()+1).toString() + &ldquo;/&rdquo; + val.getDate().toString() + &ldquo;/&rdquo; + val.getFullYear().toString()
-        }
-    }
-);
-// other columns
-tbl.addColumn(null, &ldquo;Wins&rdquo;, &ldquo;winCount&rdquo;);
-tbl.addColumn(null, &ldquo;Losses&rdquo;, &ldquo;lossCount&rdquo;);
-tbl.addColumn(null, &ldquo;Draws&rdquo;, &ldquo;drawCount&rdquo;);</p>
-<p>var data = [
-    {
-        firstName: &ldquo;Tony&rdquo;, 
-        nickName: &ldquo;El Cucuy&rdquo;, 
-        lastName: &ldquo;Ferguson&rdquo;, 
-        winCount: 25, 
-        lossCount: 3, 
-        drawCount: 0, 
-        birthDate: new DateUTC(1984, 2, 12)
-    }, 
-    {
-        firstName: &ldquo;Khabib&rdquo;, 
-        nickName: &ldquo;The Eagle&rdquo;, 
-        lastName: &ldquo;Nurmagomedov&rdquo;, 
-        winCount: 28, 
-        lossCount: 0, 
-        drawCount: 0, 
-        birthDate: new DateUTC(1988, 9, 20)
-    }, 
-    // etc&hellip;
-];</p>
-<p>tbl.populateTable(data, &ldquo;winCount&rdquo;, false);  // sort by wins descending
-````</p>
+<div class="codehilite"><pre><span class="kd">var</span> <span class="nx">tbl</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">CommonTable</span><span class="p">(</span><span class="s2">&quot;my-table-id&quot;</span><span class="p">,</span> <span class="s2">&quot;my-table-class&quot;</span><span class="p">);</span>
+<span class="nx">tbl</span><span class="p">.</span><span class="nx">appendTo</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">);</span>
+
+<span class="c1">// first three columns under &quot;Name&quot; header group</span>
+<span class="nx">tbl</span><span class="p">.</span><span class="nx">addColumn</span><span class="p">(</span><span class="s2">&quot;Name&quot;</span><span class="p">,</span> <span class="s2">&quot;First&quot;</span><span class="p">,</span> <span class="s2">&quot;firstName&quot;</span><span class="p">);</span>
+<span class="nx">tbl</span><span class="p">.</span><span class="nx">addColumn</span><span class="p">(</span><span class="s2">&quot;Name&quot;</span><span class="p">,</span> <span class="s2">&quot;Nickname&quot;</span><span class="p">,</span> <span class="s2">&quot;nickName&quot;</span><span class="p">);</span>
+<span class="nx">tbl</span><span class="p">.</span><span class="nx">addColumn</span><span class="p">(</span><span class="s2">&quot;Name&quot;</span><span class="p">,</span> <span class="s2">&quot;Last&quot;</span><span class="p">,</span> <span class="s2">&quot;lastName&quot;</span><span class="p">);</span>
+<span class="c1">// add generic meta-data (to be used later)</span>
+<span class="nx">tbl</span><span class="p">.</span><span class="nx">addColumn</span><span class="p">(</span>
+    <span class="kc">null</span><span class="p">,</span> 
+    <span class="s2">&quot;Birthday&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;birthDate&quot;</span><span class="p">,</span> 
+    <span class="p">{</span>
+        <span class="nx">format</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="p">(</span><span class="nx">val</span><span class="p">.</span><span class="nx">getMonth</span><span class="p">()</span><span class="o">+</span><span class="mi">1</span><span class="p">).</span><span class="nx">toString</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nx">val</span><span class="p">.</span><span class="nx">getDate</span><span class="p">().</span><span class="nx">toString</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nx">val</span><span class="p">.</span><span class="nx">getFullYear</span><span class="p">().</span><span class="nx">toString</span><span class="p">()</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">);</span>
+<span class="c1">// other columns</span>
+<span class="nx">tbl</span><span class="p">.</span><span class="nx">addColumn</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="s2">&quot;Wins&quot;</span><span class="p">,</span> <span class="s2">&quot;winCount&quot;</span><span class="p">);</span>
+<span class="nx">tbl</span><span class="p">.</span><span class="nx">addColumn</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="s2">&quot;Losses&quot;</span><span class="p">,</span> <span class="s2">&quot;lossCount&quot;</span><span class="p">);</span>
+<span class="nx">tbl</span><span class="p">.</span><span class="nx">addColumn</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="s2">&quot;Draws&quot;</span><span class="p">,</span> <span class="s2">&quot;drawCount&quot;</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="nx">firstName</span><span class="o">:</span> <span class="s2">&quot;Tony&quot;</span><span class="p">,</span> 
+        <span class="nx">nickName</span><span class="o">:</span> <span class="s2">&quot;El Cucuy&quot;</span><span class="p">,</span> 
+        <span class="nx">lastName</span><span class="o">:</span> <span class="s2">&quot;Ferguson&quot;</span><span class="p">,</span> 
+        <span class="nx">winCount</span><span class="o">:</span> <span class="mi">25</span><span class="p">,</span> 
+        <span class="nx">lossCount</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span> 
+        <span class="nx">drawCount</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> 
+        <span class="nx">birthDate</span><span class="o">:</span> <span class="k">new</span> <span class="nx">DateUTC</span><span class="p">(</span><span class="mi">1984</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+    <span class="p">},</span> 
+    <span class="p">{</span>
+        <span class="nx">firstName</span><span class="o">:</span> <span class="s2">&quot;Khabib&quot;</span><span class="p">,</span> 
+        <span class="nx">nickName</span><span class="o">:</span> <span class="s2">&quot;The Eagle&quot;</span><span class="p">,</span> 
+        <span class="nx">lastName</span><span class="o">:</span> <span class="s2">&quot;Nurmagomedov&quot;</span><span class="p">,</span> 
+        <span class="nx">winCount</span><span class="o">:</span> <span class="mi">28</span><span class="p">,</span> 
+        <span class="nx">lossCount</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> 
+        <span class="nx">drawCount</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> 
+        <span class="nx">birthDate</span><span class="o">:</span> <span class="k">new</span> <span class="nx">DateUTC</span><span class="p">(</span><span class="mi">1988</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+    <span class="p">},</span> 
+    <span class="c1">// etc...</span>
+<span class="p">];</span>
+
+<span class="nx">tbl</span><span class="p">.</span><span class="nx">populateTable</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="s2">&quot;winCount&quot;</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>  <span class="c1">// sort by wins descending</span>
+</pre></div>
+
 <hr />
 <h3 id="acknowledgments">Acknowledgments<a class="headerlink" href="#acknowledgments" title="Permanent link"></a></h3>
 <p>A huge bulk of this library was built on solutions found through the Mozilla Developers Network, StackOverflow, and many other smart folks. I would also like to thank SFEI, Bill Burr, and coffee. </p></article></body></html>
