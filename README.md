@@ -2,7 +2,7 @@
 
 Web Common is a collection of polyfills, extentions, and modules I repeatedly found myself reapplying on new projects.
 
-Lawrence Sim © 2019
+Lawrence Sim © 2021
 
 ## License ##
 
