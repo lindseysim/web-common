@@ -173,7 +173,7 @@ Object.defineProperty(Element.prototype, 'setAttributes', {
  */
 Object.defineProperty(Element.prototype, 'css', {
     value: function(style, value) {
-        if(style instanceof String && value instanceof String) {
+        if(typeof style === "string" && typeof value === "string") {
             this.style[style] = value;
         } else if(style && style.constructor === Object) {
             for(var key in style) this.style[key] = style[key];
