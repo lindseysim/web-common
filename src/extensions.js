@@ -6,53 +6,61 @@
  * @param {Array} arr
  * @returns {Array} Array of overlapping values.
  */
-Object.defineProperty(Array.prototype, 'getOverlaps', {
-    value: function(arr) {
-        return this.filter(function(v) { return ~arr.indexOf(v); });
-    }
-});
-Object.defineProperty(Array, 'getOverlaps', {
-    value: function(a, b) {
-        return a.getOverlaps(b);
-    }
-});
+if(!Array.prototype.getOverlaps) {
+    Object.defineProperty(Array.prototype, 'getOverlaps', {
+        value: function(arr) {
+            return this.filter(function(v) { return ~arr.indexOf(v); });
+        }
+    });
+    Object.defineProperty(Array, 'getOverlaps', {
+        value: function(a, b) {
+            return a.getOverlaps(b);
+        }
+    });
+}
 
 /**
  * Check if at least one value overlaps with second array. Uses strict equality.
  * @param {Array} arr
  * @returns {Boolean} True if overlaps.
  */
-Object.defineProperty(Array.prototype, 'overlaps', {
-    value: function(arr) {
-        return !!this.find(function(v) { return ~arr.indexOf(v); });
-    }
-});
-Object.defineProperty(Array, 'overlaps', {
-    value: function(a, b) {
-        return a.overlaps(b);
-    }
-});
+if(!Array.prototype.overlap) {
+    Object.defineProperty(Array.prototype, 'overlaps', {
+        value: function(arr) {
+            return !!this.find(function(v) { return ~arr.indexOf(v); });
+        }
+    });
+    Object.defineProperty(Array, 'overlaps', {
+        value: function(a, b) {
+            return a.overlaps(b);
+        }
+    });
+}
 
 /** Check is given object is an object-type. That is, not a primitive, string, or array. Useful for 
  * when parameters must be ensured is an object-literal/dictionary.
  * @param {anything} obj - The variable to be checked.
  */
-Object.defineProperty(Object, 'isObject', {
-    value: function(obj) {
-        return obj && obj.constructor === Object;
-    }
-});
+if(!Object.prototype.isObject) {
+    Object.defineProperty(Object, 'isObject', {
+        value: function(obj) {
+            return obj && obj.constructor === Object;
+        }
+    });
+}
 
 /**
  * Capitalize the first letter of every word. (A word is determined by any string preceded by 
  * whitespace, as such ignores second word in hyphenated compound words).
  * @returns {String} Capitalized version of this string.
  */
-Object.defineProperty(String.prototype, 'capitalize', {
-    value: function() {
-        return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
-    }
-});
+if(!Object.prototype.capitalize) {
+    Object.defineProperty(String.prototype, 'capitalize', {
+        value: function() {
+            return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
+        }
+    });
+}
 
 /**
  * Compare strings with numbers such that a "number" is not compared alphabetically by character but 
@@ -63,53 +71,57 @@ Object.defineProperty(String.prototype, 'capitalize', {
  * @param {String} compare string
  * @returns {Number} -1 if before, 0 if equal, 1 if after.
  */
-Object.defineProperty(String.prototype, 'heuristicCompare', {
-    value: function(compareString) {
-        var thisChunks = this.match(/(\d+|[^\d]+)/g), 
-            thatChunks = compareString.match(/(\d+|[^\d]+)/g), 
-            i = 0;
-        while(true) {
-            if(i === thisChunks.length) {
-                return i === thatChunks.length ? 0 : -1;
-            } else if(i === thatChunks.length) {
-                return 1;
+if(!Object.prototype.heuristicCompare) {
+    Object.defineProperty(String.prototype, 'heuristicCompare', {
+        value: function(compareString) {
+            var thisChunks = this.match(/(\d+|[^\d]+)/g), 
+                thatChunks = compareString.match(/(\d+|[^\d]+)/g), 
+                i = 0;
+            while(true) {
+                if(i === thisChunks.length) {
+                    return i === thatChunks.length ? 0 : -1;
+                } else if(i === thatChunks.length) {
+                    return 1;
+                }
+                var chunkA = thisChunks[i], 
+                    chunkB = thatChunks[i], 
+                    aNumeric = /\d/.test(chunkA), 
+                    bothNumeric = aNumeric && /\d/.test(chunkB);
+                var compare;
+                if(bothNumeric) {
+                    compare = parseInt(chunkA) - parseInt(chunkB);
+                } else {
+                    compare = chunkA.localeCompare(chunkB);
+                }
+                if(compare) return compare < 0 ? -1 : 1;
+                ++i;
             }
-            var chunkA = thisChunks[i], 
-                chunkB = thatChunks[i], 
-                aNumeric = /\d/.test(chunkA), 
-                bothNumeric = aNumeric && /\d/.test(chunkB);
-            var compare;
-            if(bothNumeric) {
-                compare = parseInt(chunkA) - parseInt(chunkB);
-            } else {
-                compare = chunkA.localeCompare(chunkB);
-            }
-            if(compare) return compare < 0 ? -1 : 1;
-            ++i;
+            return compare;
         }
-        return compare;
-    }
-});
+    });
+}
 
 /**
  * Return string value of this number with commas added.
  * @param {Number} precision - Decimal precision.
  * @returns {String}
  */
-Object.defineProperty(Number.prototype, 'addCommas', {
-    value: function(precision){
-        var n         = this, 
-            precision = isNaN(precision = Math.abs(precision)) ? 0 : precision, 
-            sign      = n < 0 ? "-" : "", 
-            number    = parseInt(n = Math.abs(+n || 0).toFixed(precision)) + "", 
-            digits    = (digits = number.length) > 3 ? digits % 3 : 0;
-        return (
-            sign
-            + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-            + (precision ? "." + Math.abs(n - number).toFixed(precision).slice(2) : "")
-        );
-    }
-});
+if(!Object.prototype.addCommas) {
+    Object.defineProperty(Number.prototype, 'addCommas', {
+        value: function(precision){
+            var n         = this, 
+                precision = isNaN(precision = Math.abs(precision)) ? 0 : precision, 
+                sign      = n < 0 ? "-" : "", 
+                number    = parseInt(n = Math.abs(+n || 0).toFixed(precision)) + "", 
+                digits    = (digits = number.length) > 3 ? digits % 3 : 0;
+            return (
+                sign
+                + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                + (precision ? "." + Math.abs(n - number).toFixed(precision).slice(2) : "")
+            );
+        }
+    });
+}
 
 /**
  * Return string value of this number with commas added. Precision is handled dynamically based on my
@@ -119,51 +131,57 @@ Object.defineProperty(Number.prototype, 'addCommas', {
  *        becomes zero.
  * @returns {String}
  */
-Object.defineProperty(Number.prototype, 'addCommasSmart', {
-    value: function(minimum) {
-        if(this === 0.0) return "0.0";
-        var n = Math.abs(this);
-        minimum = minimum || 0.001;
-        if(n < minimum) {
-            return "0.0";
-        } else if(n < 0.01) {
-            return this.toExponential(3);
-        } else if(n < 0.1) {
-            return this.toExponential(2);
-        } else if(n < 0.3) {
-            return this.addCommas(3);
-        } else if(n < 1.0) {
-            return this.addCommas(2);
-        } else if(n < 100.0) {
-            return this.addCommas(1);
+if(!Object.prototype.addCommasSmart) {
+    Object.defineProperty(Number.prototype, 'addCommasSmart', {
+        value: function(minimum) {
+            if(this === 0.0) return "0.0";
+            var n = Math.abs(this);
+            minimum = minimum || 0.001;
+            if(n < minimum) {
+                return "0.0";
+            } else if(n < 0.01) {
+                return this.toExponential(3);
+            } else if(n < 0.1) {
+                return this.toExponential(2);
+            } else if(n < 0.3) {
+                return this.addCommas(3);
+            } else if(n < 1.0) {
+                return this.addCommas(2);
+            } else if(n < 100.0) {
+                return this.addCommas(1);
+            }
+            return this.addCommas(0);
         }
-        return this.addCommas(0);
-    }
-});
+    });
+}
 
 /**
  * Simple is-visible check using offsetParent trick. Note it will have issues with elements in fixed 
  * positions;
  * @returns {Boolean} True if visible.
  */
-Object.defineProperty(Element.prototype, 'isVisible', {
-    value: function() {
-        return (
-            this.offsetParent !== null 
-            && (!this.style.visibility || this.style.visibility.toLowerCase() !== "hidden")
-        );
-    }
-});
+if(!Element.prototype.isVisible) {
+    Object.defineProperty(Element.prototype, 'isVisible', {
+        value: function() {
+            return (
+                this.offsetParent !== null 
+                && (!this.style.visibility || this.style.visibility.toLowerCase() !== "hidden")
+            );
+        }
+    });
+}
 
 /**
  * Quickly set multiple attributes at once.
  * @param {Object} attrs - Literal of key-value attribute pairs.
  */
-Object.defineProperty(Element.prototype, 'setAttributes', {
-    value: function(attrs) {
-        for(var key in attrs) this.setAttribute(key, attrs[key]);
-    }
-});
+if(!Element.prototype.setAttributes) {
+    Object.defineProperty(Element.prototype, 'setAttributes', {
+        value: function(attrs) {
+            for(var key in attrs) this.setAttribute(key, attrs[key]);
+        }
+    });
+}
 
 /**
  * Shortcut for setting CSS styles.
@@ -171,28 +189,32 @@ Object.defineProperty(Element.prototype, 'setAttributes', {
  *        an object literal of multiple styles as key-value pairs.
  * @param {String} [value] - If style is key/string, the value for said CSS style.
  */
-Object.defineProperty(Element.prototype, 'css', {
-    value: function(style, value) {
-        if(typeof style === "string" && typeof value === "string") {
-            this.style[style] = value;
-        } else if(style && style.constructor === Object) {
-            for(var key in style) this.style[key] = style[key];
+if(!Element.prototype.css) {
+    Object.defineProperty(Element.prototype, 'css', {
+        value: function(style, value) {
+            if(style && style.constructor === Object) {
+                for(var key in style) this.style[key] = style[key];
+            } else {
+                this.style[style] = value;
+            }
         }
-    }
-});
+    });
+}
 
 /**
  * Center itself in the window with absolute positioning.
  */
-Object.defineProperty(Element.prototype, 'center', {
-    value: function() {
-        this.css({
-            position: "absolute", 
-            top:  Math.max(0, ((window.innerHeight - this.offsetHeight) / 2) + (window.scrollY || window.pageYOffset)),
-            left: Math.max(0, ((window.innerWidth  - this.offsetWidth)  / 2) + (window.scrollX || window.pageXOffset))
-        });
-    }
-});
+if(!Element.prototype.center) {
+    Object.defineProperty(Element.prototype, 'center', {
+        value: function() {
+            this.css({
+                position: "absolute", 
+                top:  Math.max(0, ((window.innerHeight - this.offsetHeight) / 2) + (window.scrollY || window.pageYOffset)),
+                left: Math.max(0, ((window.innerWidth  - this.offsetWidth)  / 2) + (window.scrollX || window.pageXOffset))
+            });
+        }
+    });
+}
 
 //****************************************************************************************************
 // Date prototype extensions
@@ -209,68 +231,82 @@ window.DateUTC = function(year, month, day, hour, min, sec) {
     ));
 };
 
-Object.defineProperty(Date.prototype, 'asUTC', {
-    value: function() {
-        return new Date(Date.UTC(
-            this.getFullYear(), 
-            this.getMonth(), 
-            this.getDate(), 
-            this.getHours(), 
-            this.getMinutes(), 
-            this.getSeconds()
-        ));
-    }
-});
+if(!Date.prototype.asUTC) {
+    Object.defineProperty(Date.prototype, 'asUTC', {
+        value: function() {
+            return new Date(Date.UTC(
+                this.getFullYear(), 
+                this.getMonth(), 
+                this.getDate(), 
+                this.getHours(), 
+                this.getMinutes(), 
+                this.getSeconds()
+            ));
+        }
+    });
+}
 
-Object.defineProperty(Date.prototype, 'toUTC', {
-    value: function() {
-        return new Date(Date.UTC(
-            this.getUTCFullYear(), 
-            this.getUTCMonth(), 
-            this.getUTCDate(), 
-            this.getUTCHours(), 
-            this.getUTCMinutes(), 
-            this.getUTCSeconds()
-        ));
-    }
-});
+if(!Date.prototype.toUTC) {
+    Object.defineProperty(Date.prototype, 'toUTC', {
+        value: function() {
+            return new Date(Date.UTC(
+                this.getUTCFullYear(), 
+                this.getUTCMonth(), 
+                this.getUTCDate(), 
+                this.getUTCHours(), 
+                this.getUTCMinutes(), 
+                this.getUTCSeconds()
+            ));
+        }
+    });
+}
 
-Object.defineProperty(Date.prototype, 'asUTCDate', {
-    value: function() {
-        return new Date(Date.UTC(
-            this.getFullYear(), 
-            this.getMonth(), 
-            this.getDate()
-        ));
-    }
-});
+if(!Date.prototype.asUTCDate) {
+    Object.defineProperty(Date.prototype, 'asUTCDate', {
+        value: function() {
+            return new Date(Date.UTC(
+                this.getFullYear(), 
+                this.getMonth(), 
+                this.getDate()
+            ));
+        }
+    });
+}
 
-Object.defineProperty(Date.prototype, 'toUTCDate', {
-    value: function() {
-        return new Date(Date.UTC(
-            this.getUTCFullYear(), 
-            this.getUTCMonth(), 
-            this.getUTCDate()
-        ));
-    }
-});
+if(!Date.prototype.toUTCDate) {
+    Object.defineProperty(Date.prototype, 'toUTCDate', {
+        value: function() {
+            return new Date(Date.UTC(
+                this.getUTCFullYear(), 
+                this.getUTCMonth(), 
+                this.getUTCDate()
+            ));
+        }
+    });
+}
 
-Object.defineProperty(Date.prototype, 'addDays', {
-    value: function(days) {
-        return new Date(this.getTime() + days*86400000);
-    }
-});
+if(!Date.prototype.addDays) {
+    Object.defineProperty(Date.prototype, 'addDays', {
+        value: function(days) {
+            return new Date(this.getTime() + days*86400000);
+        }
+    });
+}
 
-Object.defineProperty(Date.prototype, 'monthOfYear', {
-    value: function() {
-        return this.getMonth()+1;
-    }
-});
+if(!Date.prototype.monthOfYear) {
+    Object.defineProperty(Date.prototype, 'monthOfYear', {
+        value: function() {
+            return this.getMonth()+1;
+        }
+    });
+}
 
-Object.defineProperty(Date.prototype, 'daysInMonth', {
-    value: function() {
-        return (new Date(this.getFullYear(), this.getMonth(), 0)).getDate();
-    }
-});
+if(!Date.prototype.daysInMonth) {
+    Object.defineProperty(Date.prototype, 'daysInMonth', {
+        value: function() {
+            return (new Date(this.getFullYear(), this.getMonth(), 0)).getDate();
+        }
+    });
+}
 
 export default true;
