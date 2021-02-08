@@ -24,7 +24,7 @@ if(!Array.prototype.getOverlaps) {
  * @param {Array} arr
  * @returns {Boolean} True if overlaps.
  */
-if(!Array.prototype.overlap) {
+if(!Array.prototype.overlaps) {
     Object.defineProperty(Array.prototype, 'overlaps', {
         value: function(arr) {
             return !!this.find(function(v) { return ~arr.indexOf(v); });

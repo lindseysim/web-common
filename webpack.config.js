@@ -14,7 +14,7 @@ module.exports = {
         libraryTarget: 'umd', 
         libraryExport: 'default', 
         path: path.join(path.resolve(__dirname), "dist"), 
-        filename: (chunkData) => {
+        filename: chunkData => {
             return (
                 chunkData.chunk.name
                     .match(/([A-Z]?[^A-Z]*)/g).slice(0,-1)  // split words by capitals, handle camelcase
@@ -42,12 +42,12 @@ module.exports = {
     }, 
     plugins: [
         {
-            apply: (compiler) => {
+            apply: compiler => {
                 new CleanCSS().minify(
                     ['./src/common.css'], 
-                    function(err, out) {
+                    (err, out) => {
                         if(err) return console.log(err);
-                        fs.writeFile('./dist/common.min.css', out.styles, function(err) {
+                        fs.writeFile('./dist/common.min.css', out.styles, err => {
                             if(err) console.log(err);
                         });
                     }
