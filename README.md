@@ -37,13 +37,13 @@ Libraries can be imported with ES6 syntax as follows:
 
 ```javascript
 import common from '@lawrencesim/web-common';
-import '@lawrencesim/web-common/styles.css';
+import '@lawrencesim/web-common/style.css';
 import CommonTable from '@lawrencesim/web-common/CommonTable';
 ```
 
 The first import will bring in the common module, including polyfills/extensions, and the UI submodule. If using the UI submodule or CommonTable module, you will also need to load the styles (second line). Note that depending on build configuration (e.g. Webpack) you may need proper style handles to load the CSS styles. The final line loads the optional CommonTable class.
 
-If using regular imports in the HTML document, use the paths to 'common.js', 'styles.css', and/or 'CommonTable.js' in the main directory. The main module will be added as `common` and CommonTable as `CommonTable` to the root/global namespace.
+If using regular imports in the HTML document, use the paths to 'common.js', 'style.css', and/or 'CommonTable.js' in the main directory. The main module will be added as `common` and CommonTable as `CommonTable` to the root/global namespace.
 
 &nbsp;
 

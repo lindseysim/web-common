@@ -39,7 +39,7 @@ module.exports = {
                     ['./src/common.css'], 
                     (err, out) => {
                         if(err) return console.log(err);
-                        fs.writeFile('./styles.css', out.styles, err => {
+                        fs.writeFile('./style.css', out.styles, err => {
                             if(err) console.log(err);
                         });
                     }

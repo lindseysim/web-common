@@ -167,12 +167,11 @@ export default {
 
     animate: function(element, properties, durationMs, timingFunction, complete) {
         if(typeof durationMs !== "number") throw "Duration must be specified as numeric type in milliseconds.";
-        timingFunction = timingFunction || "ease";
         let durationSecs = durationMs*0.001 + "s", 
             transition = "";
         for(let key in properties) {
             if(transition) transition += ", ";
-            transition += key + " " + durationSecs + " " + timingFunction;
+            transition += key + " " + durationSecs + " " + (timingFunction || "ease");
         }
         element.css({
             '-webkit-transition': transition, 

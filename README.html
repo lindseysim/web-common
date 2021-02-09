@@ -1086,15 +1086,19 @@ body .markdown-body
 <p><code>npm install @lawrencesim/web-common</code></p>
 <p>Libraries can be imported with ES6 syntax as follows:</p>
 <div class="codehilite"><pre><span class="kr">import</span> <span class="nx">common</span> <span class="nx">from</span> <span class="s1">&#39;@lawrencesim/web-common&#39;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="s1">&#39;@lawrencesim/web-common/styles.css&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s1">&#39;@lawrencesim/web-common/style.css&#39;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="nx">CommonTable</span> <span class="nx">from</span> <span class="s1">&#39;@lawrencesim/web-common/CommonTable&#39;</span><span class="p">;</span>
 </pre></div>
 
 <p>The first import will bring in the common module, including polyfills/extensions, and the UI submodule. If using the UI submodule or CommonTable module, you will also need to load the styles (second line). Note that depending on build configuration (e.g. Webpack) you may need proper style handles to load the CSS styles. The final line loads the optional CommonTable class.</p>
-<p>If using regular imports in the HTML document, use the paths to &lsquo;common.js&rsquo;, &lsquo;styles.css&rsquo;, and/or &lsquo;CommonTable.js&rsquo; in the main directory. The main module will be added as <code>common</code> and CommonTable as <code>CommonTable</code> to the root/global namespace.</p>
+<p>If using regular imports in the HTML document, use the paths to &lsquo;common.js&rsquo;, &lsquo;style.css&rsquo;, and/or &lsquo;CommonTable.js&rsquo; in the main directory. The main module will be added as <code>common</code> and CommonTable as <code>CommonTable</code> to the root/global namespace.</p>
 <p>&nbsp;</p>
 <h2 id="polyfills">Polyfills<a class="headerlink" href="#polyfills" title="Permanent link"></a></h2>
 <p>Ensures the below functions exists, many of which are missing in (surprise, surprise) Internet Explorer.</p>
+<p><em>Array</em>.<strong>from</strong>(<em>arrayLike</em>[, <em>mapFn</em>[, <em>thisArg</em>]])</p>
+<blockquote>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from</a></p>
+</blockquote>
 <p><em>Array</em>.prototype.<strong>find</strong>(<em>callback</em>[, <em>thisArg</em>])</p>
 <blockquote>
 <p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find</a></p>
@@ -1317,7 +1321,7 @@ Note that IE and Edge cannot support <code>classList</code> on SVG elements (no 
 <a name="common-getElement" href="#common-getElement">#</a>
 <em>common</em>.<strong>getElement</strong>(<em>element</em>)</p>
 <blockquote>
-<p>Given an object, returns an <code>Element</code>. If single <code>Element</code> is provided, simply returns it. If <code>NodeList</code>, array, or other iterable is provided, returns value of <code>next()</code> or null if done. If <code>jQuery</code> object is provided, returns first result in <a href="https://api.jquery.com/get/"><code>element.get()</code></a>, or null if no results. If string is provided, returns result of <code>document.querySelector(element)</code>.</p>
+<p>Given an object, returns an <code>Element</code>. If single <code>Element</code> is provided, simply returns it. If <code>NodeList</code>, array, or other iterable is provided, returns value of <code>next()</code> or null if done. If <code>jQuery</code> object is provided, returns first result in <a href="https://api.jquery.com/get/"><code>element.get()</code></a>, or null if no results. If string is provided, returns result of <code>document.querySelector(element)</code>. If none of the above apply, returns null;</p>
 </blockquote>
 <table>
 <thead>
@@ -1331,7 +1335,7 @@ Note that IE and Edge cannot support <code>classList</code> on SVG elements (no 
 <tr>
 <td align="left">element</td>
 <td align="center"><code>Element</code> | <code>jQuery</code> | <code>String</code></td>
-<td align="left">Object to convert to array or <code>NodeList</code>.</td>
+<td align="left">Object to convert to <code>Element</code>.</td>
 </tr>
 </tbody>
 </table>
@@ -1340,7 +1344,7 @@ Note that IE and Edge cannot support <code>classList</code> on SVG elements (no 
 <a name="common-getElementList" href="#common-getElementList">#</a>
 <em>common</em>.<strong>getElementList</strong>(<em>element</em>)</p>
 <blockquote>
-<p>Given an object, returns an iterable list. If single <code>Element</code> is provided, simply returns it wrapped in an array. If <code>NodeList</code>, array, or other iterable is provided, returns it as is. If <code>jQuery</code> object is provided, returns <a href="https://api.jquery.com/get/"><code>element.get()</code></a>. If string is provided, returns result of <code>document.querySelectorAll(element)</code>.</p>
+<p>Given an object, returns an iterable list. If single <code>Element</code> is provided, simply returns it wrapped in an array. If <code>NodeList</code>, array, or other iterable is provided, converts to an array via <code>Array.from()</code>. If <code>jQuery</code> object is provided, returns <a href="https://api.jquery.com/get/"><code>element.get()</code></a>. If string is provided, returns result of <code>document.querySelectorAll(element)</code>. If none of the above apply, returns and empty list.</p>
 </blockquote>
 <table>
 <thead>
@@ -1358,7 +1362,7 @@ Note that IE and Edge cannot support <code>classList</code> on SVG elements (no 
 </tr>
 </tbody>
 </table>
-<p>&nbsp; &nbsp; <strong>Returns:</strong> <code>NodeList</code>|<code>Element[]</code></p>
+<p>&nbsp; &nbsp; <strong>Returns:</strong> <code>Element[]</code></p>
 <p>&nbsp;<br />
 <a name="common-extend" href="#common-extend">#</a>
 <em>common</em>.<strong>extend</strong>(<em>obj</em>, <em>extend</em>[, <em>allowOverwrite</em>[, <em>deepCopy</em>]])</p>
