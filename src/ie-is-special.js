@@ -49,7 +49,7 @@ export default (function() {
         });
     })([Element.prototype, Document.prototype, DocumentFragment.prototype]);
 
-    // Element.closest()
+    // Element.matches() and Element.closest()
     if(!Element.prototype.matches) {
         Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
     }
@@ -304,6 +304,63 @@ export default (function() {
             configurable: true,
             writable: true
       });
+    }
+
+    // Array.from()
+    if(!Array.from) {
+        Array.from = (function() {
+            var symbolIterator;
+            try {
+                symbolIterator = Symbol.iterator ? Symbol.iterator : 'Symbol(Symbol.iterator)';
+            } catch(e) {
+                symbolIterator = 'Symbol(Symbol.iterator)';
+            }
+            var toStr = Object.prototype.toString, 
+                isCallable = fn => typeof fn === 'function' || toStr.call(fn) === '[object Function]';
+                toNumber = value => {
+                    var number = Number(value);
+                    return isNaN(number) || !isFinite(number) ? 0 : Math.floor(Math.abs(number));
+                }, 
+                setGetItemHandler = (isIterator, items) => {
+                    var iterator = isIterator && items[symbolIterator]();
+                    return k => isIterator ? iterator.next() : items[k];
+                }, 
+                getArray = (T, A, len, getItem, isIterator, mapFn) => {
+                    var k = 0;
+                    while(k < len || isIterator) {
+                        var item = getItem(k), 
+                            kValue = isIterator ? item.value : item;
+                        if(isIterator && item.done) {
+                            return A;
+                        } else if(mapFn) {
+                            A[k] = typeof T === 'undefined' ? mapFn(kValue, k) : mapFn.call(T, kValue, k);
+                        } else {
+                            A[k] = kValue;
+                        }
+                        k += 1;
+                    }
+                    if(isIterator) throw new TypeError('Array.from: provided arrayLike or iterator has length more then 2 ** 52 - 1');
+                    A.length = len;
+                    return A;
+                };
+            return function(arrayLikeOrIterator /*, mapFn, thisArg */) {
+                var C = this, 
+                    items = Object(arrayLikeOrIterator), 
+                    isIterator = isCallable(items[symbolIterator]);
+                if(arrayLikeOrIterator == null && !isIterator) {
+                    throw new TypeError('Array.from requires an array-like object or iterator - not null or undefined');
+                }
+                var mapFn = arguments.length > 1 ? arguments[1] : void undefined, 
+                    T;
+                if(typeof mapFn !== 'undefined') {
+                    if(!isCallable(mapFn)) throw new TypeError('Array.from: when provided, the second argument must be a function');
+                    if(arguments.length > 2) T = arguments[2];
+                }
+                var len = toNumber(items.length), 
+                    A = isCallable(C) ? Object(new C(len)) : new Array(len);
+                return getArray(T, A, len, setGetItemHandler(isIterator, items), isIterator, mapFn);
+            };
+        })();
     }
 
     return true;

@@ -1,6 +1,6 @@
 # Web Common #
 
-Web Common is a collection of polyfills, extentions, and modules I repeatedly found myself reapplying on new projects.
+Web Common is a collection of polyfills, extensions, and modules I repeatedly found myself reapplying on new projects.
 
 Lawrence Sim © 2021
 
@@ -16,31 +16,44 @@ Lawrence Sim © 2021
 
 * [Usage](#usage)
 * [Polyfills](#polyfills)
+    * [Promises](#promises)
 * [Global Additions](#global-additions)
 * [Prototype Modifications](#prototype-modifications)
 * [Date (UTC) Modifications](#date-utc-modifications)
 * [Common](#common-object)
 * [Common UI](#common-ui)
-	* [Tooltips and Help Icons](#tooltips-help-icons)
+    * [Tooltips and Help Icons](#tooltips-help-icons)
     * [Modal Dialogs](#modal-dialogs)
 * [CommonTable](#commontable-class)
 * [Acknowledgments](#acknowledgments)
 
 ## Usage ##
 
-Import `common.min.css` to add all styles for all modules (optional if not using Common UI or Common Table).  
-Import `common.min.js` for the base Common and Common UI modules.  
-Import `common.table.min.js` to add the Common Table module.  
+Installation is best handled via NPM:
 
-Library is configured for import via CommonJS based API (e.g. NodeJS), AMD-based API (e.g. RequireJS), or simply regular instantiation.
+`npm install @lawrencesim/web-common`
 
-In regular script import, Common will be added as `common` and Common Table as `CommonTable` to the root (`window`).
+Libraries can be imported with ES6 syntax as follows:
+
+```javascript
+import common from '@lawrencesim/web-common';
+import '@lawrencesim/web-common/styles.css';
+import CommonTable from '@lawrencesim/web-common/CommonTable';
+```
+
+The first import will bring in the common module, including polyfills/extensions, and the UI submodule. If using the UI submodule or CommonTable module, you will also need to load the styles (second line). Note that depending on build configuration (e.g. Webpack) you may need proper style handles to load the CSS styles. The final line loads the optional CommonTable class.
+
+If using regular imports in the HTML document, use the paths to 'common.js', 'styles.css', and/or 'CommonTable.js' in the main directory. The main module will be added as `common` and CommonTable as `CommonTable` to the root/global namespace.
 
 &nbsp;
 
 ## Polyfills ##
 
 Ensures the below functions exists, many of which are missing in (surprise, surprise) Internet Explorer.
+
+*Array*.**from**(*arrayLike*[, *mapFn*[, *thisArg*]])
+
+> [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from)
 
 *Array*.prototype.**find**(*callback*[, *thisArg*])
 
@@ -57,6 +70,10 @@ Ensures the below functions exists, many of which are missing in (surprise, surp
 *Element*.prototype.**prepend**(*nodes*)
 
 > [https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/prepend](https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/prepend)
+
+*Element*.prototype.**matches**(*selectors*)
+
+> [https://developer.mozilla.org/en-US/docs/Web/API/Element/matches](https://developer.mozilla.org/en-US/docs/Web/API/Element/matches)
 
 *Element*.prototype.**closest**(*selectors*)
 
@@ -86,14 +103,33 @@ Ensures the below functions exists, many of which are missing in (surprise, surp
 
 &nbsp;
 
+#### Promises ####
+
+Internally, [taylorhakes/promise-polyfill](https://github.com/taylorhakes/promise-polyfill) is used, if necessary, to polyfill for [Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise). However, it is only used locally and not added to the global namespace. As it's very lightweight (and I don't want to simply wrap/repackage his work), I recommend installing his library directly to your projects if you need a polyfill for Promises.
+
+&nbsp;
+
 ## Global Additions ##
 
-The values/objects are added to the global namespace (under `window`).
+The values/objects are added to the global namespace (under `window`). 
 
 | Param | Description |
 | --- | :--- |
 | `browser` | Stores information on browser type and version. |
 | `browserType` |  Alias for `window.browser`, left for backwards compatibility. |
+
+Note there are two formats in which data exists as browser information. One is a simple parse of the user agent and version as key name and value. Note that for certain user agents this may return multiple results. However there may exist a secondary 'is' variable, which is heuristically determined, that will give the specific browser.
+
+E.g. for Opera browsers, with an example user agent of `"Mozilla/5.0 (Windows NT 10.0; WOW64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36 OPR/74.0.3911.75"`, the `browser` object will show three separate browser versions and an `isOpera` variable:
+
+```javacript
+{
+  chrome: 88, 
+  safari: 537, 
+  opera: 74, 
+  isOpera: true
+}
+```
 
 &nbsp;
 
@@ -141,7 +177,7 @@ These useful functions are added to common object prototypes.
 
 *Number*.prototype.**addCommasSmart**([*minimum=0.001*])
 
-> Basically wraps `Number.prototype.addCommas()` with heuristic guessing on precision to use. As well, the `minimum` parameter rounds any value who's absolute value is less than this to zero. Look at the source code for exact behavior, but generally, evaluation to zero is always written as "0.0", less than 0.01 as exponential with three sig. figures, less than 0.1 as exponential with two sig. figures, less than 0.3 with three decimal places, less than 1.0 with two decimal places, less than 100 with one decimal place, and greater than or equal to 100 with no decimal places.
+> Basically wraps `Number.prototype.addCommas()` with heuristic guessing on precision to use. As well, the `minimum` parameter rounds any value whose absolute value is less than this to zero. Look at the source code for exact behavior, but generally, evaluation to zero is always written as "0.0", less than 0.01 as exponential with three sig. figures, less than 0.1 as exponential with two sig. figures, less than 0.3 with three decimal places, less than 1.0 with two decimal places, less than 100 with one decimal place, and greater than or equal to 100 with no decimal places.
 
 &nbsp; &nbsp; **Returns:** `String`
 
@@ -267,16 +303,28 @@ d.toUTCDate();                 // Tue Jan 01 2019 16:00:00 GMT-0800 (Pacific Sta
 Returned as object if instantiated via CommonJS or AMD import. Otherwise appended to root as common (e.g. `window.common`).
 
 &nbsp;  
+<a name="common-getElement" href="#common-getElement">#</a>
+*common*.**getElement**(*element*)
+
+> Given an object, returns an `Element`. If single `Element` is provided, simply returns it. If `NodeList`, array, or other iterable is provided, returns value of `next()` or null if done. If `jQuery` object is provided, returns first result in [`element.get()`](https://api.jquery.com/get/), or null if no results. If string is provided, returns result of `document.querySelector(element)`. If none of the above apply, returns null;
+
+| Param | Type | Description |
+| :--- | :---: | :--- |
+| element | `Element` \| `jQuery` \| `String` | Object to convert to `Element`. |
+
+&nbsp; &nbsp; **Returns:** `Element`
+
+&nbsp;  
 <a name="common-getElementList" href="#common-getElementList">#</a>
 *common*.**getElementList**(*element*)
 
-> Given an object, returns an iterable list. If single `Element` is provided, simply returns it wrapped in an array. If `NodeList`, array, or other iterable is provided, returns it as is. If `jQuery` object is provided, returns [`element.get()`](https://api.jquery.com/get/). If string is provided, returns result of `document.querySelectorAll(element)`.
+> Given an object, returns an iterable list. If single `Element` is provided, simply returns it wrapped in an array. If `NodeList`, array, or other iterable is provided, converts to an array via `Array.from()`. If `jQuery` object is provided, returns [`element.get()`](https://api.jquery.com/get/). If string is provided, returns result of `document.querySelectorAll(element)`. If none of the above apply, returns and empty list.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
 | element | `Element` \| `NodeList` \| `jQuery` \| `String` | Object to convert to array or `NodeList`. |
 
-&nbsp; &nbsp; **Returns:** `NodeList`\|`Element[]`
+&nbsp; &nbsp; **Returns:** `Element[]`
 
 &nbsp;  
 <a name="common-extend" href="#common-extend">#</a>
@@ -309,13 +357,12 @@ Returned as object if instantiated via CommonJS or AMD import. Otherwise appende
 
 &nbsp;  
 <a name="common-newWindow" href="#common-newWindow">#</a>
-*common*.**newWindow**(*event*, *url*, *name*, *width*, *height*[, *minimal*])
+*common*.**newWindow**(*url*, *name*, *width*, *height*[, *minimal*])
 
 > Creates a new, centered window, even accounting for dual screen monitors.. The `event` object, if not provided, is grabbed from window.event. This is used to screen against middle-mouse clicks and ctrl+left-clicks which should be handled separately to create a new tab. If `minimal` is true, attempts to hide menubar, statusbar, and location -- though many modern browsers may prevent some or all of this.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| event | `Event` | The event object. Useful on links where you want to keep the middle-mouse clicks and ctrl+left-clicks as new tabs as those are filtered and ignored. If null or undefined `window.event` is used. |
 | url | `String` | URL for new window |
 | name | `String` | New window name |
 | width | `Number` | Width in pixels |
@@ -342,8 +389,9 @@ Returned as object if instantiated via CommonJS or AMD import. Otherwise appende
 | params.complete | `Callback` |  | Callback on completion (whether success or error). Passes parameters the `XMLHttpRequest` instance and `XMLHttpRequest.statusText`. |
 | params.user | `String` |  | Optional username, if necessitated. |
 | params.password | `String` |  | Optional password, if necessitated. |
+| params.promise | `Boolean` |  | Optionally return as Promise that resolves when the request resolves. |
 
-&nbsp; &nbsp; **Returns:** `XMLHttpRequest`
+&nbsp; &nbsp; **Returns:** `XMLHttpRequest` | `Promise`
 
 &nbsp;  
 <a name="common-animate" href="#common-animate">#</a>
@@ -358,6 +406,8 @@ Returned as object if instantiated via CommonJS or AMD import. Otherwise appende
 | durationMs | `Number` | Duration of animation, in milliseconds. |
 | timingFunction | `String` | Timing/easing function, defaults to "ease". See: [transition-timing-function](https://developer.mozilla.org/en-US/docs/Web/CSS/transition-timing-function). |
 | complete | `Callback` | Optional callback to run on completion. |
+
+&nbsp; &nbsp; **Returns:** `Promise`
 
 &nbsp;
 
@@ -394,24 +444,24 @@ For modal dialog usage, ensure your dependency-manager/import-function is cachin
 
 ```javascript
 common.createDropdown("#menu", 
-	[
-		{
-			id: "menu-btn-1", 
-			text: "Homepage", 
-			href: "index.html", 
-			style: {"font-weight": "bold"}, 
-			onClick: function() { console.log("menu item 1 clicked"); }
-		}, 
-		{
-			id: "submenu", 
-			text: "Totally Work Related", 
-			style: {"font-style": "italic"}, 
-			menu: [
-				{text: "Business Stuff", href: "https://facebook.com"},
-				{text: "Web Dev. Stuff", href: "https://reddit.com"} 
-			]
-		}
-	]
+  [
+    {
+      id: "menu-btn-1", 
+      text: "Homepage", 
+      href: "index.html", 
+      style: {"font-weight": "bold"}, 
+      onClick: function() { console.log("menu item 1 clicked"); }
+    }, 
+    {
+      id: "submenu", 
+      text: "Totally Work Related", 
+      style: {"font-style": "italic"}, 
+      menu: [
+        {text: "Business Stuff", href: "https://facebook.com"},
+        {text: "Web Dev. Stuff", href: "https://reddit.com"} 
+      ]
+    }
+  ]
 );
 ```
 
@@ -570,7 +620,7 @@ Must be separately imported. Returned as object if instantiated via CommonJS or 
 
 To use, begin by creating instance and adding columns with `addColumn()`. The `key` parameter defines how to assign the data to each column. Other parameters allow various style and formatting methods. Once all columns are added, add data and draw the table with `populateTable()`. The data, sent as an array of object literals/dictionaries, is mapped to the columns automatically with the `key` defined for each column.
 
-And example usage script provided at bottom.	
+And example usage script provided at bottom.  
 
 &nbsp;  
 <a name="CommonTable" href="CommonTable">#</a>
@@ -661,14 +711,14 @@ tbl.addColumn("Name", "Nickname", "nickName");
 tbl.addColumn("Name", "Last", "lastName");
 // add generic meta-data (to be used later)
 tbl.addColumn(
-	null, 
-	"Birthday", 
-	"birthDate", 
-	{
-		format: function(val) {
-			return (val.getMonth()+1).toString() + "/" + val.getDate().toString() + "/" + val.getFullYear().toString()
-		}
-	}
+  null, 
+  "Birthday", 
+  "birthDate", 
+  {
+    format: function(val) {
+      return (val.getMonth()+1).toString() + "/" + val.getDate().toString() + "/" + val.getFullYear().toString()
+    }
+  }
 );
 // other columns
 tbl.addColumn(null, "Wins", "winCount");
@@ -681,7 +731,7 @@ var data = [
         nickName: "El Cucuy", 
         lastName: "Ferguson", 
         winCount: 25, 
-        lossCount: 3, 
+        lossCount: 5, 
         drawCount: 0, 
         birthDate: new DateUTC(1984, 2, 12)
     }, 
@@ -689,7 +739,7 @@ var data = [
         firstName: "Khabib", 
         nickName: "The Eagle", 
         lastName: "Nurmagomedov", 
-        winCount: 28, 
+        winCount: 29, 
         lossCount: 0, 
         drawCount: 0, 
         birthDate: new DateUTC(1988, 9, 20)

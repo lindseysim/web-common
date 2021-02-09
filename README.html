@@ -1056,7 +1056,7 @@ body .markdown-body
 .codehilite .il{color:#009999}
 .codehilite .gc{color:#999;background-color:#EAF2F5}
 </style><title>README</title></head><body><article class="markdown-body"><h1 id="web-common">Web Common<a class="headerlink" href="#web-common" title="Permanent link"></a></h1>
-<p>Web Common is a collection of polyfills, extentions, and modules I repeatedly found myself reapplying on new projects.</p>
+<p>Web Common is a collection of polyfills, extensions, and modules I repeatedly found myself reapplying on new projects.</p>
 <p>Lawrence Sim © 2021</p>
 <h2 id="license">License<a class="headerlink" href="#license" title="Permanent link"></a></h2>
 <p><em>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the &ldquo;Software&rdquo;), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</em></p>
@@ -1065,7 +1065,10 @@ body .markdown-body
 <h2 id="content">Content<a class="headerlink" href="#content" title="Permanent link"></a></h2>
 <ul>
 <li><a href="#usage">Usage</a></li>
-<li><a href="#polyfills">Polyfills</a></li>
+<li><a href="#polyfills">Polyfills</a><ul>
+<li><a href="#promises">Promises</a></li>
+</ul>
+</li>
 <li><a href="#global-additions">Global Additions</a></li>
 <li><a href="#prototype-modifications">Prototype Modifications</a></li>
 <li><a href="#date-utc-modifications">Date (UTC) Modifications</a></li>
@@ -1079,11 +1082,16 @@ body .markdown-body
 <li><a href="#acknowledgments">Acknowledgments</a></li>
 </ul>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link"></a></h2>
-<p>Import <code>common.min.css</code> to add all styles for all modules (optional if not using Common UI or Common Table).<br />
-Import <code>common.min.js</code> for the base Common and Common UI modules.<br />
-Import <code>common.table.min.js</code> to add the Common Table module.  </p>
-<p>Library is configured for import via CommonJS based API (e.g. NodeJS), AMD-based API (e.g. RequireJS), or simply regular instantiation.</p>
-<p>In regular script import, Common will be added as <code>common</code> and Common Table as <code>CommonTable</code> to the root (<code>window</code>).</p>
+<p>Installation is best handled via NPM:</p>
+<p><code>npm install @lawrencesim/web-common</code></p>
+<p>Libraries can be imported with ES6 syntax as follows:</p>
+<div class="codehilite"><pre><span class="kr">import</span> <span class="nx">common</span> <span class="nx">from</span> <span class="s1">&#39;@lawrencesim/web-common&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="s1">&#39;@lawrencesim/web-common/styles.css&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="nx">CommonTable</span> <span class="nx">from</span> <span class="s1">&#39;@lawrencesim/web-common/CommonTable&#39;</span><span class="p">;</span>
+</pre></div>
+
+<p>The first import will bring in the common module, including polyfills/extensions, and the UI submodule. If using the UI submodule or CommonTable module, you will also need to load the styles (second line). Note that depending on build configuration (e.g. Webpack) you may need proper style handles to load the CSS styles. The final line loads the optional CommonTable class.</p>
+<p>If using regular imports in the HTML document, use the paths to &lsquo;common.js&rsquo;, &lsquo;styles.css&rsquo;, and/or &lsquo;CommonTable.js&rsquo; in the main directory. The main module will be added as <code>common</code> and CommonTable as <code>CommonTable</code> to the root/global namespace.</p>
 <p>&nbsp;</p>
 <h2 id="polyfills">Polyfills<a class="headerlink" href="#polyfills" title="Permanent link"></a></h2>
 <p>Ensures the below functions exists, many of which are missing in (surprise, surprise) Internet Explorer.</p>
@@ -1102,6 +1110,10 @@ Import <code>common.table.min.js</code> to add the Common Table module.  </p>
 <p><em>Element</em>.prototype.<strong>prepend</strong>(<em>nodes</em>)</p>
 <blockquote>
 <p><a href="https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/prepend">https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/prepend</a></p>
+</blockquote>
+<p><em>Element</em>.prototype.<strong>matches</strong>(<em>selectors</em>)</p>
+<blockquote>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/matches">https://developer.mozilla.org/en-US/docs/Web/API/Element/matches</a></p>
 </blockquote>
 <p><em>Element</em>.prototype.<strong>closest</strong>(<em>selectors</em>)</p>
 <blockquote>
@@ -1130,8 +1142,11 @@ Note that IE and Edge cannot support <code>classList</code> on SVG elements (no 
 <p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/repeat">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/repeat</a></p>
 </blockquote>
 <p>&nbsp;</p>
+<h4 id="promises">Promises<a class="headerlink" href="#promises" title="Permanent link"></a></h4>
+<p>Internally, <a href="https://github.com/taylorhakes/promise-polyfill">taylorhakes/promise-polyfill</a> is used, if necessary, to polyfill for <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promises</a>. However, it is only used locally and not added to the global namespace. As it&rsquo;s very lightweight (and I don&rsquo;t want to simply wrap/repackage his work), I recommend installing his library directly to your projects if you need a polyfill for Promises.</p>
+<p>&nbsp;</p>
 <h2 id="global-additions">Global Additions<a class="headerlink" href="#global-additions" title="Permanent link"></a></h2>
-<p>The values/objects are added to the global namespace (under <code>window</code>).</p>
+<p>The values/objects are added to the global namespace (under <code>window</code>). </p>
 <table>
 <thead>
 <tr>
@@ -1150,6 +1165,16 @@ Note that IE and Edge cannot support <code>classList</code> on SVG elements (no 
 </tr>
 </tbody>
 </table>
+<p>Note there are two formats in which data exists as browser information. One is a simple parse of the user agent and version as key name and value. Note that for certain user agents this may return multiple results. However there may exist a secondary &lsquo;is&rsquo; variable, which is heuristically determined, that will give the specific browser.</p>
+<p>E.g. for Opera browsers, with an example user agent of <code>"Mozilla/5.0 (Windows NT 10.0; WOW64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36 OPR/74.0.3911.75"</code>, the <code>browser</code> object will show three separate browser versions and an <code>isOpera</code> variable:</p>
+<div class="codehilite"><pre>{
+  chrome: 88, 
+  safari: 537, 
+  opera: 74, 
+  isOpera: true
+}
+</pre></div>
+
 <p>&nbsp;</p>
 <h2 id="prototype-modifications">Prototype Modifications<a class="headerlink" href="#prototype-modifications" title="Permanent link"></a></h2>
 <p>These useful functions are added to common object prototypes.</p>
@@ -1189,7 +1214,7 @@ Note that IE and Edge cannot support <code>classList</code> on SVG elements (no 
 <p>&nbsp; &nbsp; <strong>Returns:</strong> <code>String</code></p>
 <p><em>Number</em>.prototype.<strong>addCommasSmart</strong>([<em>minimum=0.001</em>])</p>
 <blockquote>
-<p>Basically wraps <code>Number.prototype.addCommas()</code> with heuristic guessing on precision to use. As well, the <code>minimum</code> parameter rounds any value who&rsquo;s absolute value is less than this to zero. Look at the source code for exact behavior, but generally, evaluation to zero is always written as &ldquo;0.0&rdquo;, less than 0.01 as exponential with three sig. figures, less than 0.1 as exponential with two sig. figures, less than 0.3 with three decimal places, less than 1.0 with two decimal places, less than 100 with one decimal place, and greater than or equal to 100 with no decimal places.</p>
+<p>Basically wraps <code>Number.prototype.addCommas()</code> with heuristic guessing on precision to use. As well, the <code>minimum</code> parameter rounds any value whose absolute value is less than this to zero. Look at the source code for exact behavior, but generally, evaluation to zero is always written as &ldquo;0.0&rdquo;, less than 0.01 as exponential with three sig. figures, less than 0.1 as exponential with two sig. figures, less than 0.3 with three decimal places, less than 1.0 with two decimal places, less than 100 with one decimal place, and greater than or equal to 100 with no decimal places.</p>
 </blockquote>
 <p>&nbsp; &nbsp; <strong>Returns:</strong> <code>String</code></p>
 <p><em>Object</em>.<strong>isObject</strong>(<em>obj</em>)</p>
@@ -1289,6 +1314,29 @@ Note that IE and Edge cannot support <code>classList</code> on SVG elements (no 
 <h2 id="common-object">Common Object<a class="headerlink" href="#common-object" title="Permanent link"></a></h2>
 <p>Returned as object if instantiated via CommonJS or AMD import. Otherwise appended to root as common (e.g. <code>window.common</code>).</p>
 <p>&nbsp;<br />
+<a name="common-getElement" href="#common-getElement">#</a>
+<em>common</em>.<strong>getElement</strong>(<em>element</em>)</p>
+<blockquote>
+<p>Given an object, returns an <code>Element</code>. If single <code>Element</code> is provided, simply returns it. If <code>NodeList</code>, array, or other iterable is provided, returns value of <code>next()</code> or null if done. If <code>jQuery</code> object is provided, returns first result in <a href="https://api.jquery.com/get/"><code>element.get()</code></a>, or null if no results. If string is provided, returns result of <code>document.querySelector(element)</code>.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="left">Param</th>
+<th align="center">Type</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">element</td>
+<td align="center"><code>Element</code> | <code>jQuery</code> | <code>String</code></td>
+<td align="left">Object to convert to array or <code>NodeList</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp; &nbsp; <strong>Returns:</strong> <code>Element</code></p>
+<p>&nbsp;<br />
 <a name="common-getElementList" href="#common-getElementList">#</a>
 <em>common</em>.<strong>getElementList</strong>(<em>element</em>)</p>
 <blockquote>
@@ -1364,7 +1412,7 @@ Note that IE and Edge cannot support <code>classList</code> on SVG elements (no 
 <p>&nbsp; &nbsp; <strong>Returns:</strong> <code>Object</code></p>
 <p>&nbsp;<br />
 <a name="common-newWindow" href="#common-newWindow">#</a>
-<em>common</em>.<strong>newWindow</strong>(<em>event</em>, <em>url</em>, <em>name</em>, <em>width</em>, <em>height</em>[, <em>minimal</em>])</p>
+<em>common</em>.<strong>newWindow</strong>(<em>url</em>, <em>name</em>, <em>width</em>, <em>height</em>[, <em>minimal</em>])</p>
 <blockquote>
 <p>Creates a new, centered window, even accounting for dual screen monitors.. The <code>event</code> object, if not provided, is grabbed from window.event. This is used to screen against middle-mouse clicks and ctrl+left-clicks which should be handled separately to create a new tab. If <code>minimal</code> is true, attempts to hide menubar, statusbar, and location &ndash; though many modern browsers may prevent some or all of this.</p>
 </blockquote>
@@ -1377,11 +1425,6 @@ Note that IE and Edge cannot support <code>classList</code> on SVG elements (no 
 </tr>
 </thead>
 <tbody>
-<tr>
-<td align="left">event</td>
-<td align="center"><code>Event</code></td>
-<td align="left">The event object. Useful on links where you want to keep the middle-mouse clicks and ctrl+left-clicks as new tabs as those are filtered and ignored. If null or undefined <code>window.event</code> is used.</td>
-</tr>
 <tr>
 <td align="left">url</td>
 <td align="center"><code>String</code></td>
@@ -1486,9 +1529,15 @@ Note that IE and Edge cannot support <code>classList</code> on SVG elements (no 
 <td align="center"></td>
 <td align="left">Optional password, if necessitated.</td>
 </tr>
+<tr>
+<td align="left">params.promise</td>
+<td align="center"><code>Boolean</code></td>
+<td align="center"></td>
+<td align="left">Optionally return as Promise that resolves when the request resolves.</td>
+</tr>
 </tbody>
 </table>
-<p>&nbsp; &nbsp; <strong>Returns:</strong> <code>XMLHttpRequest</code></p>
+<p>&nbsp; &nbsp; <strong>Returns:</strong> <code>XMLHttpRequest</code> | <code>Promise</code></p>
 <p>&nbsp;<br />
 <a name="common-animate" href="#common-animate">#</a>
 <em>common</em>.<strong>animate</strong>(<em>element</em>, <em>properties</em>, <em>durationMs</em>[, <em>easing</em>[, <em>complete</em>]]])</p>
@@ -1531,6 +1580,7 @@ Note that IE and Edge cannot support <code>classList</code> on SVG elements (no 
 </tr>
 </tbody>
 </table>
+<p>&nbsp; &nbsp; <strong>Returns:</strong> <code>Promise</code></p>
 <p>&nbsp;</p>
 <h2 id="common-ui">Common UI<a class="headerlink" href="#common-ui" title="Permanent link"></a></h2>
 <p>Packaged with <code>common</code> as <code>common.ui</code>.</p>
@@ -1587,24 +1637,24 @@ Note that IE and Edge cannot support <code>classList</code> on SVG elements (no 
 </table>
 <p><em>Example usage:</em></p>
 <div class="codehilite"><pre><span class="nx">common</span><span class="p">.</span><span class="nx">createDropdown</span><span class="p">(</span><span class="s2">&quot;#menu&quot;</span><span class="p">,</span> 
-    <span class="p">[</span>
-        <span class="p">{</span>
-            <span class="nx">id</span><span class="o">:</span> <span class="s2">&quot;menu-btn-1&quot;</span><span class="p">,</span> 
-            <span class="nx">text</span><span class="o">:</span> <span class="s2">&quot;Homepage&quot;</span><span class="p">,</span> 
-            <span class="nx">href</span><span class="o">:</span> <span class="s2">&quot;index.html&quot;</span><span class="p">,</span> 
-            <span class="nx">style</span><span class="o">:</span> <span class="p">{</span><span class="s2">&quot;font-weight&quot;</span><span class="o">:</span> <span class="s2">&quot;bold&quot;</span><span class="p">},</span> 
-            <span class="nx">onClick</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;menu item 1 clicked&quot;</span><span class="p">);</span> <span class="p">}</span>
-        <span class="p">},</span> 
-        <span class="p">{</span>
-            <span class="nx">id</span><span class="o">:</span> <span class="s2">&quot;submenu&quot;</span><span class="p">,</span> 
-            <span class="nx">text</span><span class="o">:</span> <span class="s2">&quot;Totally Work Related&quot;</span><span class="p">,</span> 
-            <span class="nx">style</span><span class="o">:</span> <span class="p">{</span><span class="s2">&quot;font-style&quot;</span><span class="o">:</span> <span class="s2">&quot;italic&quot;</span><span class="p">},</span> 
-            <span class="nx">menu</span><span class="o">:</span> <span class="p">[</span>
-                <span class="p">{</span><span class="nx">text</span><span class="o">:</span> <span class="s2">&quot;Business Stuff&quot;</span><span class="p">,</span> <span class="nx">href</span><span class="o">:</span> <span class="s2">&quot;https://facebook.com&quot;</span><span class="p">},</span>
-                <span class="p">{</span><span class="nx">text</span><span class="o">:</span> <span class="s2">&quot;Web Dev. Stuff&quot;</span><span class="p">,</span> <span class="nx">href</span><span class="o">:</span> <span class="s2">&quot;https://reddit.com&quot;</span><span class="p">}</span> 
-            <span class="p">]</span>
-        <span class="p">}</span>
-    <span class="p">]</span>
+  <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nx">id</span><span class="o">:</span> <span class="s2">&quot;menu-btn-1&quot;</span><span class="p">,</span> 
+      <span class="nx">text</span><span class="o">:</span> <span class="s2">&quot;Homepage&quot;</span><span class="p">,</span> 
+      <span class="nx">href</span><span class="o">:</span> <span class="s2">&quot;index.html&quot;</span><span class="p">,</span> 
+      <span class="nx">style</span><span class="o">:</span> <span class="p">{</span><span class="s2">&quot;font-weight&quot;</span><span class="o">:</span> <span class="s2">&quot;bold&quot;</span><span class="p">},</span> 
+      <span class="nx">onClick</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;menu item 1 clicked&quot;</span><span class="p">);</span> <span class="p">}</span>
+    <span class="p">},</span> 
+    <span class="p">{</span>
+      <span class="nx">id</span><span class="o">:</span> <span class="s2">&quot;submenu&quot;</span><span class="p">,</span> 
+      <span class="nx">text</span><span class="o">:</span> <span class="s2">&quot;Totally Work Related&quot;</span><span class="p">,</span> 
+      <span class="nx">style</span><span class="o">:</span> <span class="p">{</span><span class="s2">&quot;font-style&quot;</span><span class="o">:</span> <span class="s2">&quot;italic&quot;</span><span class="p">},</span> 
+      <span class="nx">menu</span><span class="o">:</span> <span class="p">[</span>
+        <span class="p">{</span><span class="nx">text</span><span class="o">:</span> <span class="s2">&quot;Business Stuff&quot;</span><span class="p">,</span> <span class="nx">href</span><span class="o">:</span> <span class="s2">&quot;https://facebook.com&quot;</span><span class="p">},</span>
+        <span class="p">{</span><span class="nx">text</span><span class="o">:</span> <span class="s2">&quot;Web Dev. Stuff&quot;</span><span class="p">,</span> <span class="nx">href</span><span class="o">:</span> <span class="s2">&quot;https://reddit.com&quot;</span><span class="p">}</span> 
+      <span class="p">]</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
 <span class="p">);</span>
 </pre></div>
 
@@ -1956,7 +2006,7 @@ Note that IE and Edge cannot support <code>classList</code> on SVG elements (no 
 <p>Table handling object which handles data formatting, grouped column, column sorting, and basic styling.</p>
 <p>Must be separately imported. Returned as object if instantiated via CommonJS or AMD import. Otherwise appended to root as CommonTable class. Require base Common module to have been imported, as it depends on some the prototype modifications defined there.</p>
 <p>To use, begin by creating instance and adding columns with <code>addColumn()</code>. The <code>key</code> parameter defines how to assign the data to each column. Other parameters allow various style and formatting methods. Once all columns are added, add data and draw the table with <code>populateTable()</code>. The data, sent as an array of object literals/dictionaries, is mapped to the columns automatically with the <code>key</code> defined for each column.</p>
-<p>And example usage script provided at bottom.    </p>
+<p>And example usage script provided at bottom.  </p>
 <p>&nbsp;<br />
 <a name="CommonTable" href="D:/ProjectsWeb/web-common/CommonTable">#</a>
 <strong>CommonTable</strong>(<em>tableId</em>[, <em>tableClass</em>[, <em>container</em>]])**</p>
@@ -2166,14 +2216,14 @@ Note that IE and Edge cannot support <code>classList</code> on SVG elements (no 
 <span class="nx">tbl</span><span class="p">.</span><span class="nx">addColumn</span><span class="p">(</span><span class="s2">&quot;Name&quot;</span><span class="p">,</span> <span class="s2">&quot;Last&quot;</span><span class="p">,</span> <span class="s2">&quot;lastName&quot;</span><span class="p">);</span>
 <span class="c1">// add generic meta-data (to be used later)</span>
 <span class="nx">tbl</span><span class="p">.</span><span class="nx">addColumn</span><span class="p">(</span>
-    <span class="kc">null</span><span class="p">,</span> 
-    <span class="s2">&quot;Birthday&quot;</span><span class="p">,</span> 
-    <span class="s2">&quot;birthDate&quot;</span><span class="p">,</span> 
-    <span class="p">{</span>
-        <span class="nx">format</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="p">(</span><span class="nx">val</span><span class="p">.</span><span class="nx">getMonth</span><span class="p">()</span><span class="o">+</span><span class="mi">1</span><span class="p">).</span><span class="nx">toString</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nx">val</span><span class="p">.</span><span class="nx">getDate</span><span class="p">().</span><span class="nx">toString</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nx">val</span><span class="p">.</span><span class="nx">getFullYear</span><span class="p">().</span><span class="nx">toString</span><span class="p">()</span>
-        <span class="p">}</span>
+  <span class="kc">null</span><span class="p">,</span> 
+  <span class="s2">&quot;Birthday&quot;</span><span class="p">,</span> 
+  <span class="s2">&quot;birthDate&quot;</span><span class="p">,</span> 
+  <span class="p">{</span>
+    <span class="nx">format</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="p">(</span><span class="nx">val</span><span class="p">.</span><span class="nx">getMonth</span><span class="p">()</span><span class="o">+</span><span class="mi">1</span><span class="p">).</span><span class="nx">toString</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nx">val</span><span class="p">.</span><span class="nx">getDate</span><span class="p">().</span><span class="nx">toString</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nx">val</span><span class="p">.</span><span class="nx">getFullYear</span><span class="p">().</span><span class="nx">toString</span><span class="p">()</span>
     <span class="p">}</span>
+  <span class="p">}</span>
 <span class="p">);</span>
 <span class="c1">// other columns</span>
 <span class="nx">tbl</span><span class="p">.</span><span class="nx">addColumn</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="s2">&quot;Wins&quot;</span><span class="p">,</span> <span class="s2">&quot;winCount&quot;</span><span class="p">);</span>
@@ -2186,7 +2236,7 @@ Note that IE and Edge cannot support <code>classList</code> on SVG elements (no 
         <span class="nx">nickName</span><span class="o">:</span> <span class="s2">&quot;El Cucuy&quot;</span><span class="p">,</span> 
         <span class="nx">lastName</span><span class="o">:</span> <span class="s2">&quot;Ferguson&quot;</span><span class="p">,</span> 
         <span class="nx">winCount</span><span class="o">:</span> <span class="mi">25</span><span class="p">,</span> 
-        <span class="nx">lossCount</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span> 
+        <span class="nx">lossCount</span><span class="o">:</span> <span class="mi">5</span><span class="p">,</span> 
         <span class="nx">drawCount</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> 
         <span class="nx">birthDate</span><span class="o">:</span> <span class="k">new</span> <span class="nx">DateUTC</span><span class="p">(</span><span class="mi">1984</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
     <span class="p">},</span> 
@@ -2194,7 +2244,7 @@ Note that IE and Edge cannot support <code>classList</code> on SVG elements (no 
         <span class="nx">firstName</span><span class="o">:</span> <span class="s2">&quot;Khabib&quot;</span><span class="p">,</span> 
         <span class="nx">nickName</span><span class="o">:</span> <span class="s2">&quot;The Eagle&quot;</span><span class="p">,</span> 
         <span class="nx">lastName</span><span class="o">:</span> <span class="s2">&quot;Nurmagomedov&quot;</span><span class="p">,</span> 
-        <span class="nx">winCount</span><span class="o">:</span> <span class="mi">28</span><span class="p">,</span> 
+        <span class="nx">winCount</span><span class="o">:</span> <span class="mi">29</span><span class="p">,</span> 
         <span class="nx">lossCount</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> 
         <span class="nx">drawCount</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> 
         <span class="nx">birthDate</span><span class="o">:</span> <span class="k">new</span> <span class="nx">DateUTC</span><span class="p">(</span><span class="mi">1988</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>

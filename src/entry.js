@@ -1,46 +1,53 @@
-import polyfills  from "./ie-is-special.js";
-import extensions from "./extensions.js";
-import common     from "./common.js";
-import commonUI   from "./common.ui.js";
+import polyfills   from "./ie-is-special.js";
+import extensions  from "./extensions.js";
+import common      from "./common.js";
+import ui          from "./common.ui.js";
 
 //****************************************************************************************************
 // Misc. Globals
 //****************************************************************************************************
-// note, none of these browser checks are future-proof, periodically update as necessary
-window.browser = window.browserType = {};
-window.browser.isOpera   = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
-window.browser.isFirefox = typeof InstallTrigger !== 'undefined';
-window.browser.isSafari  = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));
-window.browser.isChrome  = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
-window.browser.isIE      = /*@cc_on!@*/false || !!document.documentMode;
-window.browser.isEdge    = !window.browser.isIE && !!window.StyleMedia;
-var ua = navigator.userAgent.toLowerCase();
-if(window.browser.isIE) {
-    if(ua.indexOf('msie') >= 0) {
-        window.browser.ieVersion = parseInt(ua.split('msie')[1]);
-    } else if(ua.indexOf('trident/') >= 0) {
-        window.browser.ieVersion = parseInt(ua.split('rv:')[1]);
+if(navigator) {
+    // note, none of these browser checks are future-proof, periodically update as necessary
+    var browser = {};
+    if(!String.prototype.matchAll) {
+        let match = navigator.userAgent.toLowerCase().match(/(msie|trident(?=\/))\/?\s*(\d+)/);
+        if(match[1] === "msie") {
+            browser.isIE = true;
+            browser.ieVersion = parseInt(match[2]);
+            browser.ie = browser.ieVersion;
+        } else if(match[1] === "trident") {
+            browser.isIE = true;
+            browser.ieVersion = parseInt(ua.split('rv:')[1]);
+            browser.ie = browser.ieVersion;
+        }
     } else {
-        window.browser.ieVersion = 9999;
+        let matchAll = navigator.userAgent.toLowerCase().matchAll(/(opera|chrome|safari|firefox|msie|trident|edge|edg(?=\/))\/?\s*(\d+)/g), 
+            match = matchAll.next(), 
+            matches = {};
+        while(!match.done) {
+            browser[match.value[1]] = parseInt(match.value[2]);
+            match = matchAll.next();
+        }
     }
-} else if(window.browser.isEdge) {
-    var match = ua.match(/edge\/([0-9]+)\./);
-    window.browser.edgeVersion = match ? parseInt(match[1]) : 9999;
-} else if(window.browser.isChrome) {
-    var match = ua.match(/chrom(e|ium)\/([0-9]+)\./);
-    window.browser.chromeVersion = match ? parseInt(match[2]) : 9999;
-} else if(window.browser.isFirefox) {
-    var match = ua.match(/firefox\/([0-9]+)\./);
-    window.browser.firefoxVersion = match ? parseInt(match[1]) : 9999;
-} else if(window.browser.isSafari) {
-    var match = ua.match(/safari\/([0-9]+)\./);
-    window.browser.safariVersion = match ? parseInt(match[1]) : 9999;
-} else if(window.browser.isOpera) {
-    var match = ua.match(/opera|opr\/([0-9]+)\./);
-    window.browser.operaVersion = match ? parseInt(match[1]) : 9999;
+    if(browser.opera || browser.opr) {
+        if(!browser.opera) browser.opera = browser.opr;
+        delete browser.opr;
+        browser.isOpera = true;
+    } else if(browser.edg || browser.edge) {
+        if(!browser.edge) browser.edge = browser.edg;
+        delete browser.edg;
+        browser.isEdge = true;
+    } else if(browser.chrome) {
+        browser.isChrome = true;
+    } else if(browser.safari) {
+        browser.isSafari = true;
+    } else if(browser.firefox) {
+        browser.isFirefox = true;
+    }
+    if(window) window.browser = window.browserType = browser;
 }
 
-commonUI.getElementList = common.getElementList;
-common.ui = commonUI;
+ui.getElementList = common.getElementList;
+common.ui = ui;
 
 export default common;
