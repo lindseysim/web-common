@@ -131,7 +131,7 @@ export default {
         };
         if(params.promise) {
             return new (Promise || require('promise-polyfill').default)(resolve => {
-                xhr.onreadystatechange = onReadyStateChange.bind(resolve);
+                xhr.onreadystatechange = evt => onReadyStateChange(resolve);
                 xhr.open(
                     params.method, 
                     params.url, 
@@ -147,7 +147,7 @@ export default {
                 }
             });
         } else {
-            xhr.onreadystatechange = onReadyStateChange.bind(null);
+            xhr.onreadystatechange = evt => onReadyStateChange();
             xhr.open(
                 params.method, 
                 params.url, 
