@@ -1,5 +1,21 @@
 export default {
 
+    getElement: function(element) {
+        if(!element) return null;
+        if(typeof element === "string") {
+            return document.querySelector(element);
+        }
+        if(typeof jQuery !== "undefined" && element instanceof jQuery) {
+            var get = element.get();
+            return get.length ? get[0] : null;
+        }
+        if(element[Symbol.iterator] === "function") {
+            var next = element.next();
+            return next.done ? null : next.value;
+        }
+        return element;
+    }, 
+
     getElementList: function(element) {
         if(!element) return [];
         if(typeof element === "string") {
@@ -9,7 +25,7 @@ export default {
             return element.get();
         }
         if(element[Symbol.iterator] === "function") {
-            return element;
+            return Array.from(element);
         }
         return [element];
     }, 
@@ -37,31 +53,23 @@ export default {
         return vars;
     }, 
 
-    newWindow: function(event, url, name, width, height, minimal) {
-        if(!event) event = window.event;
-        if(event === undefined || !(event.which === 2 || (event.which === 1 && event.ctrlKey))) {
-            // center window, from http://www.xtf.dk/2011/08/center-new-popup-window-even-on.html
-            // Fixes dual-screen position                          Most browsers       Firefox
-            var dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : screen.left, 
-                dualScreenTop  = window.screenTop  !== undefined ? window.screenTop  : screen.top, 
-                winWidth  = window.innerWidth  ? window.innerWidth  : document.documentElement.clientWidth  ? document.documentElement.clientWidth  : screen.width, 
-                winHeight = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height, 
-                left = dualScreenLeft + 0.5*(winWidth - width), 
-                top  = dualScreenTop  + 0.5*(winHeight - height), 
-                options = "width=" + width + ", height=" + height + ", left=" + left + ", top=" + top;
-            if(minimal) {
-                options += ", scrollbars=yes, menubar=no, statusbar=no, location=no";
-            } else {
-                options += ", scrollbars=yes, menubar=yes, statusbar=yes, location=yes";
-            }
-            var newWin = window.open(url, '', options);
-            if(!newWin || newWin.closed || typeof newWin.closed === 'undefined') {
-                alert("Could not open new window, to view '" + name + "' allow an exception for this domain in your pop-up blocker's settings.");
-                return null;
-            } else {
-                if(newWin) { newWin.focus(); }
-                return newWin;
-            }
+    newWindow: function(url, name, width, height, minimal) {
+        // center window, from http://www.xtf.dk/2011/08/center-new-popup-window-even-on.html
+        // Fixes dual-screen position                          Most browsers       Firefox
+        let dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : screen.left, 
+            dualScreenTop  = window.screenTop  !== undefined ? window.screenTop  : screen.top, 
+            winWidth  = window.innerWidth  ? window.innerWidth  : document.documentElement.clientWidth  ? document.documentElement.clientWidth  : screen.width, 
+            winHeight = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height, 
+            left = dualScreenLeft + 0.5*(winWidth - width), 
+            top  = dualScreenTop  + 0.5*(winHeight - height), 
+            options = "width=" + width + ", height=" + height + ", left=" + left + ", top=" + top;
+        if(minimal) options += ", toolbar=no, menubar=no, status=no, location=no";
+        var newWin = window.open(url, '', options);
+        if(!newWin || newWin.closed || typeof newWin.closed === 'undefined') {
+            alert("Could not open new window, to view '" + name + "' allow an exception for this domain in your pop-up blocker's settings.");
+        } else {
+            if(newWin) newWin.focus();
+            return newWin;
         }
     }, 
 
@@ -71,16 +79,23 @@ export default {
         if(!params.method)   params.method = "GET";
         if(!params.dataType) params.dataType = "";
         if(!params.async)    params.async = true;
-        if(!params.success)  params.success = function() {};
-        if(!params.error)    params.error = function() {};
-        if(!params.complete) params.complete = function() {};
+        if(!params.success)  params.success = () => {};
+        if(!params.error)    params.error = () => {};
 
-        var reqParams = "", 
+        var complete = function(resolve, xhr, statusText) {
+            try {
+                if(params.complete) params.complete(xhr, statusText);
+            } finally {
+                if(resolve) resolve();
+            }
+        };
+
+        let reqParams = "", 
             methodIsPost = params.method.toUpperCase() === "POST";
         if(params.data) {
-            var first = true;
+            let first = true;
             if(!params.url.endsWith("?")) reqParams += "?";
-            for(var key in params.data) {
+            for(let key in params.data) {
                 if(first) {
                     reqParams += "&";
                 } else {
@@ -94,10 +109,8 @@ export default {
         var xhr = new XMLHttpRequest();
         // json response type not supported in IE, Edge, or Opera
         var responseType = params.dataType.toLowerCase();
-        if(responseType !== "json") {
-            xhr.responseType = params.dataType;
-        }
-        xhr.onreadystatechange  = function() {
+        if(responseType !== "json") xhr.responseType = params.dataType;
+        var onReadyStateChange = resolve => {
             if(xhr.readyState === 4) {
                 if(xhr.status === 200) {
                     var res = xhr.responseText;
@@ -113,51 +126,78 @@ export default {
                 } else {
                     params.error(xhr, xhr.statusText, xhr.responseText);
                 }
-                params.complete(xhr, xhr.statusText);
+                complete(resolve, xhr, xhr.statusText);
             }
         };
-        xhr.open(
-            params.method, 
-            params.url, 
-            params.async, 
-            params.user, 
-            params.password
-        );
-        if(methodIsPost) {
-            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xhr.send(reqParams);
+        if(params.promise) {
+            return new (Promise || require('promise-polyfill').default)(resolve => {
+                xhr.onreadystatechange = evt => onReadyStateChange(resolve);
+                xhr.open(
+                    params.method, 
+                    params.url, 
+                    params.async, 
+                    params.user, 
+                    params.password
+                );
+                if(methodIsPost) {
+                    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                    xhr.send(reqParams);
+                } else {
+                    xhr.send();
+                }
+            });
         } else {
-            xhr.send();
+            xhr.onreadystatechange = evt => onReadyStateChange();
+            xhr.open(
+                params.method, 
+                params.url, 
+                params.async, 
+                params.user, 
+                params.password
+            );
+            if(methodIsPost) {
+                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhr.send(reqParams);
+            } else {
+                xhr.send();
+            }
+            return xhr;
         }
-        return xhr;
     }, 
 
     animate: function(element, properties, durationMs, timingFunction, complete) {
-        if(!(typeof durationMs === "number")) throw "Duration must be specified as numeric type in milliseconds.";
-        timingFunction = timingFunction || "ease";
-        var durationSecs = durationMs*0.001 + "s", 
+        if(typeof durationMs !== "number") throw "Duration must be specified as numeric type in milliseconds.";
+        let durationSecs = durationMs*0.001 + "s", 
             transition = "";
-        for(var key in properties) {
-            if(!transition) transition += ", ";
-            transition += key + " " + durationSecs + " " + timingFunction;
+        for(let key in properties) {
+            if(transition) transition += ", ";
+            transition += key + " " + durationSecs + " " + (timingFunction || "ease");
         }
         element.css({
             '-webkit-transition': transition, 
             '-moz-transition': transition, 
             'transition': transition
         });
-        var delayMs = 10;
-        window.setTimeout(function() {
+        var PO = Promise || require('promise-polyfill').default, 
+            delayMs = 5;
+        return new PO(resolve => {
+            window.setTimeout(() => {
                 element.css(properties);
-                window.setTimeout(function() {
-                        element.css({
-                            '-webkit-transition': "", 
-                            '-moz-transition': "", 
-                            'transition': ""
-                        });
-                        if(complete) complete();
-                    }, durationMs+delayMs);
+                resolve();
             }, delayMs);
+        }).then(() => {
+            return new PO(resolve => {
+                window.setTimeout(() => {
+                    element.css({
+                        '-webkit-transition': "", 
+                        '-moz-transition': "", 
+                        'transition': ""
+                    });
+                    if(complete) complete();
+                    resolve();
+                }, durationMs+delayMs);
+            });
+        });
     }
     
 };

@@ -13,16 +13,8 @@ module.exports = {
         library: '[name]', 
         libraryTarget: 'umd', 
         libraryExport: 'default', 
-        path: path.join(path.resolve(__dirname), "dist"), 
-        filename: chunkData => {
-            return (
-                chunkData.chunk.name
-                    .match(/([A-Z]?[^A-Z]*)/g).slice(0,-1)  // split words by capitals, handle camelcase
-                    .map((word) => word.toLowerCase())      // to lowercase
-                    .join(".")                              // join by period
-                + ".min.js"
-            );
-        }
+        path: path.resolve(__dirname), 
+        filename: '[name].js'
     },
     module: {
         rules: [
@@ -47,7 +39,7 @@ module.exports = {
                     ['./src/common.css'], 
                     (err, out) => {
                         if(err) return console.log(err);
-                        fs.writeFile('./dist/common.min.css', out.styles, err => {
+                        fs.writeFile('./style.css', out.styles, err => {
                             if(err) console.log(err);
                         });
                     }

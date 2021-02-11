@@ -1,8 +1,8 @@
 {
   "name": "@lawrencesim/web-common",
-  "version": "3.2.3",
+  "version": "4.0.0",
   "description": "Web Common is a collection of polyfills, extentions, and modules I repeatedly found myself reapplying on new projects.",
-  "main": "dist/common.min.js",
+  "main": "common.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lawrencesim/web-common.git"
@@ -18,5 +18,7 @@
     "webpack": "^4.46.0",
     "webpack-cli": "^3.3.12"
   },
-  "dependencies": {}
+  "dependencies": {
+    "promise-polyfill": "8.2.0"
+  }
 }
