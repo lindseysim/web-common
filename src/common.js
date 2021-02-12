@@ -116,10 +116,11 @@ export default {
                     var res = xhr.responseText;
                     if(responseType === "json") {
                         try {
-                            params.success(JSON.parse(res), xhr.statusText, xhr);
+                            res = JSON.parse(res);
                         } catch(e) {
                             params.error(xhr, xhr.statusText, xhr.responseText);
                         }
+                        params.success(res, xhr.statusText, xhr);
                     } else {
                         params.success(res, xhr.statusText, xhr);
                     }
