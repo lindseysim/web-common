@@ -89,7 +89,7 @@ Ensures the below functions exists, many of which are missing in (surprise, surp
 
 > [https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach](https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach)
 
-*String*.prototype.**startsWith**(*searchString[, *position*])
+*String*.prototype.**startsWith**(*searchString*[, *position*])
 
 > [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith)
 
@@ -318,7 +318,7 @@ Returned as object if instantiated via CommonJS or AMD import. Otherwise appende
 <a name="common-getElementList" href="#common-getElementList">#</a>
 *common*.**getElementList**(*element*)
 
-> Given an object, returns an iterable list. If single `Element` is provided, simply returns it wrapped in an array. If `NodeList`, array, or other iterable is provided, converts to an array via `Array.from()`. If `jQuery` object is provided, returns [`element.get()`](https://api.jquery.com/get/). If string is provided, returns result of `document.querySelectorAll(element)`. If none of the above apply, returns and empty list.
+> Given an object, returns an iterable list. If single `Element` is provided, simply returns it wrapped in an array. If `NodeList`, array, or other iterable is provided, converts to an array via `Array.from()`. If `jQuery` object is provided, returns [`element.get()`](https://api.jquery.com/get/). If string is provided, returns result of `document.querySelectorAll(element)`. If none of the above apply, returns an empty list.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
@@ -415,7 +415,7 @@ Returned as object if instantiated via CommonJS or AMD import. Otherwise appende
 
 Packaged with `common` as `common.ui`.
 
-The Common UI modules allow for some simple, commonly-used UI functinoality, mostly thought CSS. As such, `common.min.css` is required.
+The Common UI modules allow for some simple, commonly-used UI functionality, mostly through CSS. As such, `common.min.css` is required.
 
 For modal dialog usage, ensure your dependency-manager/import-function is caching requires/imports of the `common` object, or that you are passing the object by reference. Calling multiple instances of `common.ui` in the same window can result in odd behavior for modal management.
 
@@ -731,7 +731,7 @@ var data = [
         nickName: "El Cucuy", 
         lastName: "Ferguson", 
         winCount: 25, 
-        lossCount: 5, 
+        lossCount: 6, 
         drawCount: 0, 
         birthDate: new DateUTC(1984, 2, 12)
     }, 
