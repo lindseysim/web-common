@@ -1,43 +1,46 @@
 export default {
 
-    getElement: function(element) {
-        if(!element) return null;
+    getElement(element) {
+        if(!element) return undefined;
         if(typeof element === "string") {
             return document.querySelector(element);
         }
         if(typeof jQuery !== "undefined" && element instanceof jQuery) {
-            var get = element.get();
-            return get.length ? get[0] : null;
+            let get = element.get();
+            return get.length ? get[0] : undefined;
         }
         if(element[Symbol.iterator] === "function") {
-            var next = element.next();
-            return next.done ? null : next.value;
+            if(Array.isArray(element)) {
+                return element.length && element[0] || undefined;
+            }
+            let next = element.next();
+            return next.done ? undefined : next.value;
         }
         return element;
     }, 
 
-    getElementList: function(element) {
+    getElementList(element) {
         if(!element) return [];
         if(typeof element === "string") {
-            return document.querySelectorAll(element);
+            return Array.from(document.querySelectorAll(element));
+        }
+        if(element[Symbol.iterator] === "function") {
+            return Array.isArray(element) ? element : Array.from(element);
         }
         if(typeof jQuery !== "undefined" && element instanceof jQuery) {
             return element.get();
         }
-        if(element[Symbol.iterator] === "function") {
-            return Array.from(element);
-        }
         return [element];
     }, 
 
-    extend: function(obj, extend, allowOverwrite, deepCopy) {
+    extend(obj, extend, allowOverwrite, deepCopy) {
         if(!extend) return !deepCopy ? obj : JSON.parse(JSON.stringify(obj));
         if(!obj) return !deepCopy ? extend : JSON.parse(JSON.stringify(extend));
-        var clone = {};
-        for(var key in obj) {
+        let clone = {};
+        for(let key in obj) {
             clone[key] = !deepCopy ? obj[key] : JSON.parse(JSON.stringify(obj[key]));
         }
-        for(var key in extend) {
+        for(let key in extend) {
             if(allowOverwrite || !(key in clone)) {
                 clone[key] = !deepCopy ? extend[key] : JSON.parse(JSON.stringify(extend[key]));
             }
@@ -45,15 +48,22 @@ export default {
         return clone;
     }, 
     
-    getUrlGetVars: function() {
+    getUrlGetVars() {
         var vars = {};
-        window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
-            vars[key] = value;
-        });
+        window.location.href.replace(
+            /[?&]+([^=&]+)=([^&]*)/gi, 
+            (m,key,value) => { vars[key] = value; }
+        );
         return vars;
     }, 
 
-    newWindow: function(url, name, width, height, minimal) {
+    newWindow(url, name, width, height, minimal) {
+        if(Object.isObject(url)) {
+            if(typeof name === "undefined") name = url.name;
+            if(typeof width === "undefined") width = url.width;
+            if(typeof height === "undefined") height = url.height;
+            if(typeof minimal === "undefined") minimal = url.minimal;
+        }
         // center window, from http://www.xtf.dk/2011/08/center-new-popup-window-even-on.html
         // Fixes dual-screen position                          Most browsers       Firefox
         let dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : screen.left, 
@@ -73,7 +83,8 @@ export default {
         }
     }, 
 
-    ajax: function(params) {
+    // note, we could update this to use fetch() API, but at that point, easier to just use fetch API
+    ajax(params) {
         if(!params)          params = {};
         if(!params.url)      throw "No URL provided";
         if(!params.method)   params.method = "GET";
@@ -82,7 +93,7 @@ export default {
         if(!params.success)  params.success = () => {};
         if(!params.error)    params.error = () => {};
 
-        var complete = function(resolve, xhr, statusText) {
+        var complete = (resolve, xhr, statusText) => {
             try {
                 if(params.complete) params.complete(xhr, statusText);
             } finally {
@@ -90,25 +101,19 @@ export default {
             }
         };
 
-        let reqParams = "", 
-            methodIsPost = params.method.toUpperCase() === "POST";
-        if(params.data) {
-            let first = true;
-            if(!params.url.endsWith("?")) reqParams += "?";
+        let methodIsPost = params.method.toUpperCase() === "POST";
+        if(!methodIsPost && params.data) {
+            if(!params.url.endsWith("?")) params.url += "?";
+            let reqParams = [];
             for(let key in params.data) {
-                if(first) {
-                    reqParams += "&";
-                } else {
-                    first = false;
-                }
-                reqParams += encodeURI(key + '=' + params.data[key]);
+                reqParams.push(encodeURI(key + '=' + params.data[key]));
             }
-            params.url += reqParams;
+            params.url += reqParams.join("&");
         }
 
-        var xhr = new XMLHttpRequest();
-        // json response type not supported in IE, Edge, or Opera
-        var responseType = params.dataType.toLowerCase();
+        var xhr = new XMLHttpRequest(), 
+            responseType = params.dataType.toLowerCase();
+        // NOTE: json response type not supported in IE, Edge, or Opera
         if(responseType !== "json") xhr.responseType = params.dataType;
         var onReadyStateChange = resolve => {
             if(xhr.readyState === 4) {
@@ -130,25 +135,8 @@ export default {
                 complete(resolve, xhr, xhr.statusText);
             }
         };
-        if(params.promise) {
-            return new (Promise || require('promise-polyfill').default)(resolve => {
-                xhr.onreadystatechange = evt => onReadyStateChange(resolve);
-                xhr.open(
-                    params.method, 
-                    params.url, 
-                    params.async, 
-                    params.user, 
-                    params.password
-                );
-                if(methodIsPost) {
-                    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                    xhr.send(reqParams);
-                } else {
-                    xhr.send();
-                }
-            });
-        } else {
-            xhr.onreadystatechange = evt => onReadyStateChange();
+        var finishXHR = resolve => {
+            xhr.onreadystatechange = evt => onReadyStateChange(resolve);
             xhr.open(
                 params.method, 
                 params.url, 
@@ -162,11 +150,23 @@ export default {
             } else {
                 xhr.send();
             }
+        };
+        if(params.promise) {
+            return new (Promise || require('promise-polyfill').default)(finishXHR);
+        } else {
+            finishXHR();
             return xhr;
         }
     }, 
 
-    animate: function(element, properties, durationMs, timingFunction, complete) {
+    animate(element, properties, durationMs, timingFunction, complete) {
+        if(Object.isObject(element)) {
+            if(typeof properties === "undefined") properties = element.properties;
+            if(typeof durationMs === "undefined") durationMs = element.durationMs || element.duration;
+            if(typeof timingFunction === "undefined") timingFunction = element.timingFunction || element.timing;
+            if(typeof complete === "undefined") complete = element.complete;
+        }
+
         if(typeof durationMs !== "number") throw "Duration must be specified as numeric type in milliseconds.";
         let durationSecs = durationMs*0.001 + "s", 
             transition = "";
