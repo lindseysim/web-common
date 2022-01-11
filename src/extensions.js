@@ -8,16 +8,14 @@
  */
 if(!Array.prototype.getOverlaps) {
     Object.defineProperty(Array.prototype, 'getOverlaps', {
-        value: function(arr) {
-            return this.filter(function(v) { return ~arr.indexOf(v); });
+        value(arr) {
+            return this.filter(v => ~arr.indexOf(v));
         }
     });
 }
 if(!Array.getOverlaps) {
     Object.defineProperty(Array, 'getOverlaps', {
-        value: function(a, b) {
-            return a.getOverlaps(b);
-        }
+        value: (a, b) => a.getOverlaps(b)
     });
 }
 
@@ -28,16 +26,14 @@ if(!Array.getOverlaps) {
  */
 if(!Array.prototype.overlaps) {
     Object.defineProperty(Array.prototype, 'overlaps', {
-        value: function(arr) {
-            return !!this.find(function(v) { return ~arr.indexOf(v); });
+        value(arr) {
+            return typeof this.find(v => ~arr.indexOf(v)) !== 'undefined';
         }
     });
 }
 if(!Array.overlaps) {
     Object.defineProperty(Array, 'overlaps', {
-        value: function(a, b) {
-            return a.overlaps(b);
-        }
+        value: (a, b) => a.overlaps(b)
     });
 }
 
@@ -47,9 +43,7 @@ if(!Array.overlaps) {
  */
 if(!Object.isObject) {
     Object.defineProperty(Object, 'isObject', {
-        value: function(obj) {
-            return obj && obj.constructor === Object;
-        }
+        value: obj => Object.getPrototypeOf(obj) === Object.prototype
     });
 }
 
@@ -60,8 +54,8 @@ if(!Object.isObject) {
  */
 if(!String.prototype.capitalize) {
     Object.defineProperty(String.prototype, 'capitalize', {
-        value: function() {
-            return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
+        value() {
+            return this.replace(/(?:^|\s)\S/g, a => a.toUpperCase());
         }
     });
 }
@@ -77,22 +71,19 @@ if(!String.prototype.capitalize) {
  */
 if(!String.prototype.heuristicCompare) {
     Object.defineProperty(String.prototype, 'heuristicCompare', {
-        value: function(compareString) {
-            var thisChunks = this.match(/(\d+|[^\d]+)/g), 
+        value(compareString) {
+            let thisChunks = this.match(/(\d+|[^\d]+)/g), 
                 thatChunks = compareString.match(/(\d+|[^\d]+)/g), 
-                i = 0;
+                i = 0, chunkA, chunkB, compare;
             while(true) {
                 if(i === thisChunks.length) {
                     return i === thatChunks.length ? 0 : -1;
                 } else if(i === thatChunks.length) {
                     return 1;
                 }
-                var chunkA = thisChunks[i], 
-                    chunkB = thatChunks[i], 
-                    aNumeric = /\d/.test(chunkA), 
-                    bothNumeric = aNumeric && /\d/.test(chunkB);
-                var compare;
-                if(bothNumeric) {
+                chunkA = thisChunks[i];
+                chunkB = thatChunks[i];
+                if(/\d/.test(chunkA) && /\d/.test(chunkB)) {
                     compare = parseInt(chunkA) - parseInt(chunkB);
                 } else {
                     compare = chunkA.localeCompare(chunkB);
@@ -100,7 +91,7 @@ if(!String.prototype.heuristicCompare) {
                 if(compare) return compare < 0 ? -1 : 1;
                 ++i;
             }
-            return compare;
+            return 0;
         }
     });
 }
@@ -112,14 +103,12 @@ if(!String.prototype.heuristicCompare) {
  */
 if(!Number.prototype.addCommas) {
     Object.defineProperty(Number.prototype, 'addCommas', {
-        value: function(precision){
-            var n         = this, 
-                precision = isNaN(precision = Math.abs(precision)) ? 0 : precision, 
-                sign      = n < 0 ? "-" : "", 
-                number    = parseInt(n = Math.abs(+n || 0).toFixed(precision)) + "", 
-                digits    = (digits = number.length) > 3 ? digits % 3 : 0;
+        value(precision) {
+            precision  = isNaN(precision = Math.abs(precision)) ? 0 : precision;
+            let n = Math.abs(+this || 0), 
+                number = parseInt(n.toFixed(precision)) + "";
             return (
-                sign
+                (n < 0 ? "-" : "")
                 + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                 + (precision ? "." + Math.abs(n - number).toFixed(precision).slice(2) : "")
             );
@@ -137,9 +126,9 @@ if(!Number.prototype.addCommas) {
  */
 if(!Number.prototype.addCommasSmart) {
     Object.defineProperty(Number.prototype, 'addCommasSmart', {
-        value: function(minimum) {
+        value(minimum) {
             if(this === 0.0) return "0.0";
-            var n = Math.abs(this);
+            let n = Math.abs(this);
             minimum = minimum || 0.001;
             if(n < minimum) {
                 return "0.0";
@@ -166,7 +155,7 @@ if(!Number.prototype.addCommasSmart) {
  */
 if(!Element.prototype.isVisible) {
     Object.defineProperty(Element.prototype, 'isVisible', {
-        value: function() {
+        value() {
             return (
                 this.offsetParent !== null 
                 && (!this.style.visibility || this.style.visibility.toLowerCase() !== "hidden")
@@ -181,8 +170,8 @@ if(!Element.prototype.isVisible) {
  */
 if(!Element.prototype.setAttributes) {
     Object.defineProperty(Element.prototype, 'setAttributes', {
-        value: function(attrs) {
-            for(var key in attrs) this.setAttribute(key, attrs[key]);
+        value(attrs) {
+            for(let key in attrs) this.setAttribute(key, attrs[key]);
         }
     });
 }
@@ -195,9 +184,9 @@ if(!Element.prototype.setAttributes) {
  */
 if(!Element.prototype.css) {
     Object.defineProperty(Element.prototype, 'css', {
-        value: function(style, value) {
+        value(style, value) {
             if(style && style.constructor === Object) {
-                for(var key in style) this.style[key] = style[key];
+                for(let key in style) this.style[key] = style[key];
             } else {
                 this.style[style] = value;
             }
@@ -210,7 +199,7 @@ if(!Element.prototype.css) {
  */
 if(!Element.prototype.center) {
     Object.defineProperty(Element.prototype, 'center', {
-        value: function() {
+        value() {
             this.css({
                 position: "absolute", 
                 top:  Math.max(0, ((window.innerHeight - this.offsetHeight) / 2) + (window.scrollY || window.pageYOffset)),
@@ -237,7 +226,7 @@ window.DateUTC = function(year, month, day, hour, min, sec) {
 
 if(!Date.prototype.asUTC) {
     Object.defineProperty(Date.prototype, 'asUTC', {
-        value: function() {
+        value() {
             return new Date(Date.UTC(
                 this.getFullYear(), 
                 this.getMonth(), 
@@ -252,7 +241,7 @@ if(!Date.prototype.asUTC) {
 
 if(!Date.prototype.toUTC) {
     Object.defineProperty(Date.prototype, 'toUTC', {
-        value: function() {
+        value() {
             return new Date(Date.UTC(
                 this.getUTCFullYear(), 
                 this.getUTCMonth(), 
@@ -267,7 +256,7 @@ if(!Date.prototype.toUTC) {
 
 if(!Date.prototype.asUTCDate) {
     Object.defineProperty(Date.prototype, 'asUTCDate', {
-        value: function() {
+        value() {
             return new Date(Date.UTC(
                 this.getFullYear(), 
                 this.getMonth(), 
@@ -279,7 +268,7 @@ if(!Date.prototype.asUTCDate) {
 
 if(!Date.prototype.toUTCDate) {
     Object.defineProperty(Date.prototype, 'toUTCDate', {
-        value: function() {
+        value() {
             return new Date(Date.UTC(
                 this.getUTCFullYear(), 
                 this.getUTCMonth(), 
@@ -291,7 +280,7 @@ if(!Date.prototype.toUTCDate) {
 
 if(!Date.prototype.addDays) {
     Object.defineProperty(Date.prototype, 'addDays', {
-        value: function(days) {
+        value(days) {
             return new Date(this.getTime() + days*86400000);
         }
     });
@@ -299,7 +288,7 @@ if(!Date.prototype.addDays) {
 
 if(!Date.prototype.monthOfYear) {
     Object.defineProperty(Date.prototype, 'monthOfYear', {
-        value: function() {
+        value() {
             return this.getMonth()+1;
         }
     });
@@ -307,7 +296,7 @@ if(!Date.prototype.monthOfYear) {
 
 if(!Date.prototype.daysInMonth) {
     Object.defineProperty(Date.prototype, 'daysInMonth', {
-        value: function() {
+        value() {
             return (new Date(this.getFullYear(), this.getMonth(), 0)).getDate();
         }
     });
