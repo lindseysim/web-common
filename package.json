@@ -1,11 +1,11 @@
 {
   "name": "@lawrencesim/web-common",
-  "version": "4.0.1",
+  "version": "4.0.3",
   "description": "Web Common is a collection of polyfills, extentions, and modules I repeatedly found myself reapplying on new projects.",
   "main": "common.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lawrencesim/web-common.git"
+    "url": "https://github.com/lawrencesim/web-common.git"
   },
   "author": "Lawrence Sim",
   "license": "MIT",

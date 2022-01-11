@@ -27,17 +27,13 @@ CommonTable.prototype.prependTo = function(container) {
 
 CommonTable.prototype.addColumn = function(group, title, key, options) {
     if(group && group.hasOwnProperty("title") && group.hasOwnProperty("key") && !title && !key) {
+        if(!group.group) group.group = null;
         // add as object literal
-        if(!group.group) {
-            group.group = null;
-        }
         this.headerObjs.push(group);
     } else {
-        // create object from parameters
-        if(!group) {
-            group = null;
-        }
+        if(!group) group = null;
         if(!options) options = {};
+        // create object from parameters
         this.headerObjs.push({
             group:      group, 
             title:      title, 
@@ -53,18 +49,17 @@ CommonTable.prototype.addColumn = function(group, title, key, options) {
 };
 
 CommonTable.prototype.createHeaders = function(sortOnKey, ascending) {
-    var self = this;
     this.tbodyElement.innerHTML = "";
-    var hdrRows = [];
-    for(var i = 0; i < 2; ++i) {
-        var el = document.createElement("tr");
+    let hdrRows = [];
+    for(let i = 0; i < 2; ++i) {
+        let el = document.createElement("tr");
         el.setAttribute("cm-table-rowtype", "header-row");
         this.tbodyElement.append(el);
         hdrRows.push(el);
     }
-    var lastGroupName = null, 
+    let lastGroupName = null, 
         lastGroupElem = null;
-    this.headerObjs.forEach(function(hdr) {
+    this.headerObjs.forEach(hdr => {
         // add group header, or extend the colspan, if necessary
         if(hdr.group) {
             if(lastGroupName && hdr.group === lastGroupName) {
@@ -81,22 +76,22 @@ CommonTable.prototype.createHeaders = function(sortOnKey, ascending) {
                 hdrRows[0].append(lastGroupElem);
             }
         }
-        var hdrElem = document.createElement("th");
+        let hdrElem = document.createElement("th");
         hdrElem.innerHTML = hdr.title;
         hdrElem.setAttribute("cm-table-celltype", "header");
         // add styles -- note that hdrStyles overwrites colStyles
-        var styles = {};
+        let styles = {};
         if(hdr.colStyles) {
-            for(var s in hdr.colStyles) styles[s] = hdr.colStyles[s];
+            for(let s in hdr.colStyles) styles[s] = hdr.colStyles[s];
         }
         if(hdr.hdrStyles) {
-            for(var s in hdr.hdrStyles) styles[s] = hdr.hdrStyles[s];
+            for(let s in hdr.hdrStyles) styles[s] = hdr.hdrStyles[s];
         }
         hdrElem.css(styles);
         // current sort header
-        var sortOnThis = sortOnKey && sortOnKey === hdr.key;
+        let sortOnThis = sortOnKey && sortOnKey === hdr.key;
         if(sortOnThis) {
-            var icon = document.createElement("i");
+            let icon = document.createElement("i");
             icon.className = "icon-" + (ascending ? "ascending" : "descending");
             hdrElem.append(icon);
         }
@@ -104,12 +99,10 @@ CommonTable.prototype.createHeaders = function(sortOnKey, ascending) {
         if(hdr.sortable) {
             hdrElem.css("cursor", "pointer");
             hdrElem.addEventListener('click', 
-                (function(theKey, isAscending) {
-                    return function(evt) {
-                        evt.stopPropagation();
-                        self.populateTable(null, theKey, isAscending);
-                    };
-                }(hdr.key, sortOnThis ? !ascending : true))
+                ((theKey, isAscending) => (evt => {
+                    evt.stopPropagation();
+                    this.populateTable(null, theKey, isAscending);
+                }))(hdr.key, sortOnThis ? !ascending : true)
             );
         }
         // add to row
@@ -123,9 +116,7 @@ CommonTable.prototype.createHeaders = function(sortOnKey, ascending) {
     // if no groups, delete unnecessary row, remove rowspans
     if(!hdrRows[1].hasChildNodes()) {
         hdrRows[1].remove();
-        hdrRows[0].querySelectorAll("th").forEach(function(el) {
-            el.setAttribute("rowspan", "");
-        });
+        hdrRows[0].querySelectorAll("th").forEach(el => el.setAttribute("rowspan", ""));
     }
     return this;
 };
@@ -136,11 +127,11 @@ CommonTable.prototype.populateTable = function(tableData, sortOnKey, ascending) 
     // get data or use last provided
     if(tableData) this.tableData = tableData;
     // sort data
-    var sortedData = this.tableData;
+    let sortedData = this.tableData;
     if(sortOnKey && sortedData.length) {
-        var sortedData = this.tableData.slice();
-        sortedData.sort(function(a, b) {
-            var compared = 0, 
+        sortedData = this.tableData.slice();
+        sortedData.sort((a, b) => {
+            let compared = 0, 
                 values = [a[sortOnKey], b[sortOnKey]], 
                 isUndefined = [
                     typeof values[0] === "undefined", 
@@ -149,13 +140,14 @@ CommonTable.prototype.populateTable = function(tableData, sortOnKey, ascending) 
             if(isUndefined[0] !== isUndefined[1]) {
                 // only one is undefined
                 compared = isUndefined[0] ? -1 : 1;
-            // else if both are not undefined
             } else if(!isUndefined[0]) {
+                // else if both are defined
                 if(typeof values[0] === "number" && typeof values[1] === "number") {
+                    // compare numbers
                     compared = values[0] - values[1];
                 } else {
                     // try converting to dates
-                    var asDates = [Date.parse(values[0]), Date.parse(values[1])];
+                    let asDates = [Date.parse(values[0]), Date.parse(values[1])];
                     if(!isNaN(asDates[0]) && !isNaN(asDates[0])) {
                         compared = asDates[0] - asDates[1];
                     } else {
@@ -167,12 +159,11 @@ CommonTable.prototype.populateTable = function(tableData, sortOnKey, ascending) 
         });
     }
     // add by rows
-    var self = this;
-    sortedData.forEach(function(d) {
-        var row = document.createElement("tr");
+    sortedData.forEach(d => {
+        let row = document.createElement("tr");
         row.setAttribute("cm-table-rowtype", "data");
-        self.headerObjs.forEach(function(hdr) {
-            var val = d[hdr.key];
+        this.headerObjs.forEach(hdr => {
+            let val = d[hdr.key];
             if(hdr.format) {
                 try {
                     val = hdr.format(val);
@@ -180,31 +171,29 @@ CommonTable.prototype.populateTable = function(tableData, sortOnKey, ascending) 
                     // do nothing, continue with raw value
                 }
             }
-            var cell = document.createElement("td");
+            let cell = document.createElement("td");
             cell.setAttribute("cm-table-celltype", "data");
             row.append(cell);
             if(hdr.colStyles) cell.css(hdr.colStyles);
             if(hdr.onClick) {
                 // if click functionality, wrap in anchor
-                var a = document.createElement("a");
+                let a = document.createElement("a");
                 a.setAttribute("href", "#");
                 a.innerHTML = val;
                 cell.append(a);
                 a.addEventListener(
                     "click", 
                     // function constructed this way to maintain scope
-                    (function(callback, onData) {
-                        return function(evt) {
-                            callback(onData);
-                            evt.preventDefault();
-                        };
-                    }(hdr.onClick, d))
+                    ((callback, onData) => (evt => {
+                        callback(onData);
+                        evt.preventDefault();
+                    }))(hdr.onClick, d)
                 );
             } else {
                 cell.innerHTML = val;
             }
         });
-        self.tbodyElement.append(row);
+        this.tbodyElement.append(row);
     });
     return this;
 };
