@@ -51,67 +51,101 @@ If using script imports in HTML, import the paths to 'common.js', 'style.css', a
 
 Ensures the below functions exists, many of which are missing in Internet Explorer (pre-Edge).
 
+&nbsp;
 <a name="common-arrayFrom" href="#common-arrayFrom">#</a>
 *Array*.**from**(*arrayLike*[, *mapFn*[, *thisArg*]])
 
-Create array from array-like or iterable. See [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from)
+Create array from array-like or iterable. \n\n > See [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from)
 
+&nbsp;
 <a name="common-arrayFind" href="#common-arrayFind">#</a>
 *Array*.prototype.**find**(*callback*[, *thisArg*])
 
-Find item in an array. See [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find)
+Find item in an array. 
 
+> See [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find)
+
+&nbsp;
 <a name="common-elementRemove" href="#common-elementRemove">#</a>
 *Element*.prototype.**remove**()
 
-Remove element. See [https://developer.mozilla.org/en-US/docs/Web/API/ChildNode/remove](https://developer.mozilla.org/en-US/docs/Web/API/ChildNode/remove)
+Remove element. 
 
+> See [https://developer.mozilla.org/en-US/docs/Web/API/ChildNode/remove](https://developer.mozilla.org/en-US/docs/Web/API/ChildNode/remove)
+
+&nbsp;
 <a name="common-elementAppend" href="#common-elementAppend">#</a>
 *Element*.prototype.**append**(*nodes*)
 
-Append to element. See [https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/append](https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/append)
+Append to element. 
 
+> See [https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/append](https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/append)
+
+&nbsp;
 <a name="common-elementPrepend" href="#common-elementPrepend">#</a>
 *Element*.prototype.**prepend**(*nodes*)
 
-Prepend to element. See [https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/prepend](https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/prepend)
+Prepend to element. 
 
+> See [https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/prepend](https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/prepend)
+
+&nbsp;
 <a name="common-elementMatches" href="#common-elementMatches">#</a>
 *Element*.prototype.**matches**(*selectors*)
 
-Check if element matches selector. See [https://developer.mozilla.org/en-US/docs/Web/API/Element/matches](https://developer.mozilla.org/en-US/docs/Web/API/Element/matches)
+Check if element matches selector. 
 
+> See [https://developer.mozilla.org/en-US/docs/Web/API/Element/matches](https://developer.mozilla.org/en-US/docs/Web/API/Element/matches)
+
+&nbsp;
 <a name="common-elementCloset" href="#common-elementCloset">#</a>
 *Element*.prototype.**closest**(*selectors*)
 
-Find closest element matching selector. See [https://developer.mozilla.org/en-US/docs/Web/API/Element/closest](https://developer.mozilla.org/en-US/docs/Web/API/Element/closest)
+Find closest element matching selector. 
 
+> See [https://developer.mozilla.org/en-US/docs/Web/API/Element/closest](https://developer.mozilla.org/en-US/docs/Web/API/Element/closest)
+
+&nbsp;
 <a name="common-elementClassList" href="#common-elementClassList">#</a>
 *Element*.**classList** 
 
-Ensures existence of `contains()`, `add()`, `remove()`, `toggle()`, and `replace()` functions in element's `classList` property. See [https://developer.mozilla.org/en-US/docs/Web/API/Element/classList](https://developer.mozilla.org/en-US/docs/Web/API/Element/classList)  
+Ensures existence of `contains()`, `add()`, `remove()`, `toggle()`, and `replace()` functions in element's `classList` property. 
+
+> See [https://developer.mozilla.org/en-US/docs/Web/API/Element/classList](https://developer.mozilla.org/en-US/docs/Web/API/Element/classList)  
 
 Note that IE and Edge cannot support `classList` on SVG elements (no polyfill available).
 
+&nbsp;
 <a name="common-nodeListForEach" href="#common-nodeListForEach">#</a>
 *NodeList*.prototype.**forEach**(*callback*[, *thisArg]*)
 
-Functionally iterate through a `NodeList`. See [https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach](https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach)
+Functionally iterate through a `NodeList`. 
 
+> See [https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach](https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach)
+
+&nbsp;
 <a name="common-stringStartsWith" href="#common-stringStartsWith">#</a>
 *String*.prototype.**startsWith**(*searchString*[, *position*])
 
-Check string starts with sequence. See [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith)
+Check string starts with sequence. 
 
+> See [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith)
+
+&nbsp;
 <a name="common-stringEndsWith" href="#common-stringEndsWith">#</a>
 *String*.prototype.**endsWith**(*searchString*[, *length*])
 
-Check string ends with sequence. See [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith)
+Check string ends with sequence. 
 
+> See [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith)
+
+&nbsp;
 <a name="common-stringRepeat" href="#common-stringRepeat">#</a>
 *String*.prototype.**repeat**(*count*)
 
-Repeat string content. See [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/repeat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/repeat)
+Repeat string content. 
+
+> See [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/repeat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/repeat)
 
 &nbsp;
 
@@ -123,7 +157,7 @@ Internally, [taylorhakes/promise-polyfill](https://github.com/taylorhakes/promis
 
 ## Global Browser Variable ##
 
-Two variables are added to the global namespace that stores browser information.
+Two variables are added to the `window` namespace (if it exists) that stores browser information.
 
 | Param | Description |
 | --- | :--- |
@@ -149,60 +183,69 @@ E.g. for Opera browsers, with an example user agent of `"Mozilla/5.0 (Windows NT
 
 These useful functions are added to common object prototypes.
 
+&nbsp;
 <a name="common-arrayGetOverlaps" href="#common-arrayGetOverlaps">#</a>
 *Array*.**getOverlaps**(*a*, *b*) ⇒ `Array`
 *Array*.prototype.**getOverlaps**(*arr*) ⇒ `Array`
 
 Get overlapping values with second array. Can be called from array instance or `Array` global. Uses strict equality.
 
+&nbsp;
 <a name="common-arrayOverlaps" href="#common-arrayOverlaps">#</a>
 *Array*.**overlaps**(*a*, *b*) ⇒ `boolean`
 *Array*.prototype.**overlaps**(*arr*) ⇒ `boolean`
 
 Check if at least one value overlaps with second array. Can be called from array instance or `Array` global. Uses strict equality.
 
+&nbsp;
 <a name="common-elementIsVisible" href="#common-elementIsVisible">#</a>
 *Element*.prototype.**isVisible**() ⇒ `boolean`
 
 Simple is-visible check using `offsetParent` trick. Note it will have issues with elements in fixed positions.
 
+&nbsp;
 <a name="common-elementSetAttributes" href="#common-elementSetAttributes">#</a>
 *Element*.prototype.**setAttributes**(*attrs*)
 
 Sets multiple attributes (given as dictionary) at once.
 
+&nbsp;
 <a name="common-elementCss" href="#common-elementCss">#</a>
 *Element*.prototype.**css**(*style*[, *value*])
 
 Much like the JQuery css() function, sets inline style, either as style name and value provided as strings, or given a dictionary of style names and values and key-value pairs. 
 
+&nbsp;
 <a name="common-elementCenter" href="#common-elementCenter">#</a>
 *Element*.prototype.**center**()
 
 Will center an element on screen using absolute positioning.
 
+&nbsp;
 <a name="common-elementAddCommas" href="#common-elementAddCommas">#</a>
 *Number*.prototype.**addCommas**(*precision*) ⇒ `string`
 
 Will convert a given number to a string, using the supplied precision, with commas.
 
+&nbsp;
 <a name="common-elementAddCommasSmart" href="#common-elementAddCommasSmart">#</a>
 *Number*.prototype.**addCommasSmart**([*minimum=0.001*]) ⇒ `string`
 
 Basically wraps `Number.prototype.addCommas()` with heuristic guessing on precision to use. As well, the `minimum` parameter rounds any value whose absolute value is less than this to zero. Look at the source code for exact behavior, but generally, evaluation to zero is always written as "0.0", less than 0.01 as exponential with three sig. figures, less than 0.1 as exponential with two sig. figures, less than 0.3 with three decimal places, less than 1.0 with two decimal places, less than 100 with one decimal place, and greater than or equal to 100 with no decimal places.
 
+&nbsp;
 <a name="common-objectIsObject" href="#common-objectIsObject">#</a>
 *Object*.**isObject**(*obj*) ⇒ `boolean`
 
 Check is given object is an object-type. That is, not a primitive, string, or array. Useful for when parameters must be ensured is an object-literal/dictionary.
 
+&nbsp;
 <a name="common-stringCapitalize" href="#common-stringCapitalize">#</a>
 *String*.prototype.**capitalize**() ⇒ `string`
 
 Will capitalize the each word in the string (using whitespace to delineate words).
 
-&nbsp; &nbsp; **Returns:** `String`
-
+&nbsp;
 <a name="common-stringHeuristicCompare" href="#common-stringHeuristicCompare">#</a>
 *String*.prototype.**heuristicCompare**(*compareString*) ⇒ `number`
 
@@ -227,11 +270,13 @@ Returns numeric indicating whether `this` string comes before (-1), after (1), o
 
 Additional functions for handling basic Date objects are added. Specifically to ensure UTC handling.
 
+&nbsp;
 <a name="common-DateUTC" href="#common-DateUTC">#</a>
 **DateUTC**(*year*, *month*, *day*[, *hour*[, *min*[, *sec*]]]) ⇒ `Date`
 
 Creates a datetime, forced as UTC. **Note that month must be indicated as 1-12** (unlike traditional Date constructor as 0-11).
 
+&nbsp;
 <a name="common-dateAsUTC" href="#common-dateAsUTC">#</a>
 *Date*.prototype.**asUTC**() ⇒ `Date`
 
@@ -244,6 +289,7 @@ d.asUTC();                     // Tue Jan 01 2019 12:00:00 GMT-0800 (Pacific Sta
 // Converted back to PST is 8 hours earlier, which is what it prints
 ```
 
+&nbsp;
 <a name="common-dateToUTC" href="#common-dateToUTC">#</a>
 *Date*.prototype.**toUTC**() ⇒ `Date`
 
@@ -256,6 +302,7 @@ d.toUTC();                     // Tue Jan 01 2019 20:00:00 GMT-0800 (Pacific Sta
 // This function only left in for clarity, but really doesn't do anything
 ```
 
+&nbsp;
 <a name="common-dateAsUTCDate" href="#common-dateAsUTCDate">#</a>
 *Date*.prototype.**asUTCDate**() ⇒ `Date`
 
@@ -269,6 +316,7 @@ d.asUTCDate();                 // Mon Dec 31 2018 16:00:00 GMT-0800 (Pacific Sta
 // Which is 16:00 PST the previous day in PST, which is what it prints
 ```
 
+&nbsp;
 <a name="common-dateToUTCDate" href="#common-dateToUTCDate">#</a>
 *Date*.prototype.**toUTCDate**() ⇒ `Date`
 
@@ -282,16 +330,19 @@ d.toUTCDate();                 // Tue Jan 01 2019 16:00:00 GMT-0800 (Pacific Sta
 // Which is 16:00 PST the previous day in PST, which is what it prints
 ```
 
+&nbsp;
 <a name="common-dateAddDays" href="#common-dateAddDays">#</a>
 *Date*.prototype.**addDays**(*days*) ⇒ `Date`
 
 Returns new date with days added (or removed if negative).
 
+&nbsp;
 <a name="common-dateMonthOfYear" href="#common-dateMonthOfYear">#</a>
 *Date*.prototype.**monthOfYear**() ⇒ `number`
 
 Returns the month of the year as 1-12 number (as opposed to 0-11 for `getMonth()`).
 
+&nbsp;
 <a name="common-dateDaysInMonth" href="#common-dateDaysInMonth">#</a>
 *Date*.prototype.**daysInMonth**() ⇒ `number`
 

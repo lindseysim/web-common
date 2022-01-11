@@ -6,7 +6,7 @@ import ui          from "./common.ui.js";
 //****************************************************************************************************
 // Misc. Globals
 //****************************************************************************************************
-if(navigator) {
+if(navigator && window) {
     // note, none of these browser checks are future-proof, periodically update as necessary
     var browser = {};
     if(!String.prototype.matchAll) {
@@ -44,7 +44,7 @@ if(navigator) {
     } else if(browser.firefox) {
         browser.isFirefox = true;
     }
-    if(window) window.browser = window.browserType = browser;
+    window.browser = window.browserType = browser;
 }
 
 ui.getElementList = common.getElementList;
