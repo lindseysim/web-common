@@ -13,6 +13,7 @@ module.exports = {
         library: '[name]', 
         libraryTarget: 'umd', 
         libraryExport: 'default', 
+        globalObject: 'this', 
         path: path.resolve(__dirname), 
         filename: '[name].js'
     },
@@ -22,7 +23,7 @@ module.exports = {
                 test:    /\.js$/,
                 exclude: /(node_modules)/,
                 loader:  'babel-loader', 
-                query: {
+                options: {
                     presets: ['@babel/preset-env']
                 }
             }

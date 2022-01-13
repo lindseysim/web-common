@@ -11,12 +11,12 @@
   "license": "MIT",
   "homepage": "https://github.com/lawrencesim/web-common",
   "devDependencies": {
-    "@babel/core": "^7.12.13",
-    "@babel/preset-env": "^7.12.13",
-    "babel-loader": "^8.2.2",
+    "@babel/core": "^7.16.7",
+    "@babel/preset-env": "^7.16.8",
+    "babel-loader": "^8.2.3",
     "clean-css": "^4.2.3",
-    "webpack": "^4.46.0",
-    "webpack-cli": "^3.3.12"
+    "webpack": "^5.66.0",
+    "webpack-cli": "^4.9.1"
   },
   "dependencies": {
     "promise-polyfill": "8.2.0"
