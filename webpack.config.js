@@ -13,6 +13,7 @@ module.exports = {
         library: '[name]', 
         libraryTarget: 'umd', 
         libraryExport: 'default', 
+        globalObject: 'this', 
         path: path.resolve(__dirname), 
         filename: '[name].js'
     },
