@@ -6,16 +6,27 @@ const webpack  = require('webpack'),
 module.exports = {
     mode: 'production', 
     entry: {
-        'common': './src/entry.js', 
-        'CommonTable': './src/common.table.js'
+        common: {
+            import: './src/entry.js', 
+            library: {
+                name:   'common', 
+                type:   'umd', 
+                export: 'default'
+            }
+        }, 
+        CommonTable: {
+            import: './src/common.table.js', 
+            library: {
+                name:   'CommonTable', 
+                type:   'umd', 
+                export: 'default'
+            }
+        }
     }, 
     output: {
-        library: '[name]', 
-        libraryTarget: 'umd', 
-        libraryExport: 'default', 
         globalObject: 'this', 
-        path: path.resolve(__dirname), 
-        filename: '[name].js'
+        path:         path.resolve(__dirname), 
+        filename:     '[name].js'
     },
     module: {
         rules: [
@@ -23,9 +34,7 @@ module.exports = {
                 test:    /\.js$/,
                 exclude: /(node_modules)/,
                 loader:  'babel-loader', 
-                options: {
-                    presets: ['@babel/preset-env']
-                }
+                options: {presets: ['@babel/preset-env']}
             }
         ]
     }, 
