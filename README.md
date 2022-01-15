@@ -545,11 +545,10 @@ Check whether modal is open.
 
 <a name="common-setModal" href="#common-setModal">#</a>
 *common*.*ui*.**setModal**(*visible*, *content*, *options*]])<br />
-<a name="common-setModal" href="#common-setModal">#</a>*common*.*ui*.**openModal**(*content*[, *options*])
+<a name="common-setModal" href="#common-setModal">#</a>
+*common*.*ui*.**openModal**(*content*[, *options*])
 
 Creates a new modal dialog (or closes, if visible=false). Function `openModal()` is the same with `visible` defaulted to `true`.
-
-&nbsp; &nbsp; **Returns:** `Element` of modal content div (`.cm-modal-inner`).
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
@@ -562,12 +561,12 @@ Creates a new modal dialog (or closes, if visible=false). Function `openModal()`
 | options.hideCloser | `Boolean` | If true, does not apply the automatically placed "X" to close dialog on upper-right. |
 | options.onClose | `Callback` | Callback to run on modal being closed.  |
 
+&nbsp; &nbsp; **Returns:** `Element` of modal content div (`.cm-modal-inner`).
+
 <a name="common-setModalAsLoading" href="#common-setModalAsLoading">#</a>
 *common*.*ui*.**setModalAsLoading**([*content*[, *options*]])
 
 Creates a new modal dialog with default values prepped for loading. `content` is optional and defaults to `"Loading.."`. In addition to same `options` available for [`common.setModal()`](#common-setModal), extended `options` are:
-
-&nbsp; &nbsp; **Returns:** `Element` of modal content div (`.cm-modal-inner`).
 
 | Param | Type | Default | Description |
 | :--- | :---: | :---: | :--- |
@@ -579,6 +578,8 @@ Creates a new modal dialog with default values prepped for loading. `content` is
 | options.hideCloser | `Boolean` | `true` | If true, does not apply the automatically placed "X" to close dialog on upper-right. |
 | options.addDetails | `Boolean` | `true` | If true, creates a semi-trans |
 | options.addDetailsText | `String` | `"Please wait.."` | If true, creates a semi-trans |
+
+&nbsp; &nbsp; **Returns:** `Element` of modal content div (`.cm-modal-inner`).
  
 <a name="common-changeModal" href="#common-changeModal">#</a>
 *common*.*ui*.**changeModal**(*content*[, *prepContentCallback*[, *hideCloser*]]) ⇒ `Element` of modal content div (`.cm-modal-inner`)
