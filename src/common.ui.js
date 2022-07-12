@@ -212,7 +212,7 @@ export default {
             p.innerHTML = options.addDetailsText;
             loadingDialog.append(p);
         }
-        return this.openModal(visible, loadingDialog, options);
+        return this.openModal(true, loadingDialog, options);
     }, 
     
     changeModal(content, prepContentCallback, hideCloser) {
