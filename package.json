@@ -1,6 +1,6 @@
 {
   "name": "@lawrencesim/web-common",
-  "version": "4.0.8",
+  "version": "4.0.9",
   "description": "Web Common is a collection of polyfills, extentions, and modules I repeatedly found myself reapplying on new projects.",
   "main": "common.js",
   "repository": {

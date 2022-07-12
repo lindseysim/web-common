@@ -211,7 +211,7 @@ export default {
             p.innerHTML = options.addDetailsText;
             loadingDialog.append(p);
         }
-        return this.openModal(true, loadingDialog, options);
+        return this.openModal(loadingDialog, options);
     }, 
     
     changeModal(content, prepContentCallback, hideCloser) {
