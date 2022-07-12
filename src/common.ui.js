@@ -2,8 +2,7 @@ export default {
 
     addGrabCursorFunctionality(element) {
         var elList = this.getElementList(element);
-        for(var i = 0; i < elList.length; ++i) {
-            e = elList[i];
+        elList.forEach(e => {
             e.classList.add("grab");
             e.addEventListener('mousedown', function() {
                 this.classList.remove("grab");
@@ -13,7 +12,7 @@ export default {
                 this.classList.remove("grabbing");
                 this.classList.add("grab");
             });
-        }
+        });
     }, 
     
     createDropdown(element, menu) {
