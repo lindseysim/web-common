@@ -181,7 +181,7 @@ These useful functions are added to common object prototypes.
 Get overlapping values with second array. Can be called from array instance or `Array` global. Uses strict equality.
 
 <a name="common-arrayOverlaps" href="#common-arrayOverlaps">#</a>
-*Array*.**overlaps**(*a*, *b*) ⇒ `boolean`
+*Array*.**overlaps**(*a*, *b*) ⇒ `boolean`<br />
 *Array*.prototype.**overlaps**(*arr*) ⇒ `boolean`
 
 Check if at least one value overlaps with second array. Can be called from array instance or `Array` global. Uses strict equality.
@@ -214,7 +214,7 @@ Will convert a given number to a string, using the supplied precision, with comm
 <a name="common-elementAddCommasSmart" href="#common-elementAddCommasSmart">#</a>
 *Number*.prototype.**addCommasSmart**([*minimum=0.001*]) ⇒ `string`
 
-Basically wraps `Number.prototype.addCommas()` with heuristic guessing on precision to use. As well, the `minimum` parameter rounds any value whose absolute value is less than this to zero. Look at the source code for exact behavior, but generally, evaluation to zero is always written as "0.0", less than 0.01 as exponential with three sig. figures, less than 0.1 as exponential with two sig. figures, less than 0.3 with three decimal places, less than 1.0 with two decimal places, less than 100 with one decimal place, and greater than or equal to 100 with no decimal places.
+Basically wraps `Number.prototype.addCommas()` with heuristic guessing on precision to use. As well, the `minimum` parameter rounds any value whose absolute value is less than this to zero. Current heuristics are: evaluation to zero is always written as "0.0", less than 0.01 as exponential with three sig. figures, less than 0.1 as exponential with two sig. figures, less than 0.3 with three decimal places, less than 1.0 with two decimal places, less than 100 with one decimal place, and greater than or equal to 100 with no decimal places.
 
 <a name="common-objectIsObject" href="#common-objectIsObject">#</a>
 *Object*.**isObject**(*obj*) ⇒ `boolean`
