@@ -13,15 +13,13 @@ if(navigator && window) {
         let match = navigator.userAgent.toLowerCase().match(/(msie|trident(?=\/))\/?\s*(\d+)/);
         if(match[1] === "msie") {
             browser.isIE = true;
-            browser.ieVersion = parseInt(match[2]);
-            browser.ie = browser.ieVersion;
+            browser.ie = browser.ieVersion = parseInt(match[2]);
         } else if(match[1] === "trident") {
             browser.isIE = true;
-            browser.ieVersion = parseInt(ua.split('rv:')[1]);
-            browser.ie = browser.ieVersion;
+            browser.ie = browser.ieVersion = parseInt(ua.split('rv:')[1]);
         }
     } else {
-        let matchAll = navigator.userAgent.toLowerCase().matchAll(/(opera|chrome|safari|firefox|msie|trident|edge|edg(?=\/))\/?\s*(\d+)/g), 
+        let matchAll = navigator.userAgent.toLowerCase().matchAll(/(chrome|firefox|safari|opera|opr|edge|edg(?=\/))\/?\s*(\d+)/g), 
             match = matchAll.next(), 
             matches = {};
         while(!match.done) {
@@ -29,13 +27,18 @@ if(navigator && window) {
             match = matchAll.next();
         }
     }
+    // order matters here
     if(browser.opera || browser.opr) {
-        if(!browser.opera) browser.opera = browser.opr;
-        delete browser.opr;
+        if(!browser.opera) {
+            browser.opera = browser.opr;
+            delete browser.opr;
+        }
         browser.isOpera = true;
     } else if(browser.edg || browser.edge) {
-        if(!browser.edge) browser.edge = browser.edg;
-        delete browser.edg;
+        if(!browser.edge) {
+            browser.edge = browser.edg;
+            delete browser.edg;
+        }
         browser.isEdge = true;
     } else if(browser.chrome) {
         browser.isChrome = true;

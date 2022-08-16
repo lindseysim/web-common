@@ -43,7 +43,7 @@ if(!Array.overlaps) {
  */
 if(!Object.isObject) {
     Object.defineProperty(Object, 'isObject', {
-        value: obj => Object.getPrototypeOf(obj) === Object.prototype
+        value: obj => obj !== null && obj !== undefined && Object.getPrototypeOf(obj) === Object.prototype
     });
 }
 
@@ -104,7 +104,7 @@ if(!String.prototype.heuristicCompare) {
 if(!Number.prototype.addCommas) {
     Object.defineProperty(Number.prototype, 'addCommas', {
         value(precision) {
-            precision  = isNaN(precision = Math.abs(precision)) ? 0 : precision;
+            precision = isNaN(precision = Math.abs(precision)) ? 0 : precision;
             let n = Math.abs(+this || 0), 
                 number = parseInt(n.toFixed(precision)) + "";
             return (

@@ -116,24 +116,23 @@ export default {
         // NOTE: json response type not supported in IE, Edge, or Opera
         if(responseType !== "json") xhr.responseType = params.dataType;
         var onReadyStateChange = resolve => {
-            if(xhr.readyState === 4) {
-                if(xhr.status === 200) {
-                    var res = xhr.responseText;
-                    if(responseType === "json") {
-                        try {
-                            res = JSON.parse(res);
-                        } catch(e) {
-                            params.error(xhr, xhr.statusText, xhr.responseText);
-                        }
-                        params.success(res, xhr.statusText, xhr);
-                    } else {
-                        params.success(res, xhr.statusText, xhr);
+            if(xhr.readyState !== 4) return;
+            if(xhr.status === 200) {
+                var res = xhr.responseText;
+                if(responseType === "json") {
+                    try {
+                        res = JSON.parse(res);
+                    } catch(e) {
+                        params.error(xhr, xhr.statusText, xhr.responseText);
                     }
+                    params.success(res, xhr.statusText, xhr);
                 } else {
-                    params.error(xhr, xhr.statusText, xhr.responseText);
+                    params.success(res, xhr.statusText, xhr);
                 }
-                complete(resolve, xhr, xhr.statusText);
+            } else {
+                params.error(xhr, xhr.statusText, xhr.responseText);
             }
+            complete(resolve, xhr, xhr.statusText);
         };
         var finishXHR = resolve => {
             xhr.onreadystatechange = evt => onReadyStateChange(resolve);
@@ -153,10 +152,9 @@ export default {
         };
         if(params.promise) {
             return new (Promise || require('promise-polyfill').default)(finishXHR);
-        } else {
-            finishXHR();
-            return xhr;
         }
+        finishXHR();
+        return xhr;
     }, 
 
     animate(element, properties, durationMs, timingFunction, complete) {
