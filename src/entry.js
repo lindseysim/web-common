@@ -19,7 +19,7 @@ if(navigator && window) {
             browser.ie = browser.ieVersion = parseInt(ua.split('rv:')[1]);
         }
     } else {
-        let matchAll = navigator.userAgent.toLowerCase().matchAll(/(chrome|firefox|safari|opera|opr|edge|edg(?=\/))\/?\s*(\d+)/g), 
+        let matchAll = navigator.userAgent.toLowerCase().matchAll(/(chrome|firefox|safari|opera|opr|edge|edg|brave|samsungbrowser|ucbrowser|yabrowser|qtwebengine(?=\/))\/?\s*(\d+)/g), 
             match = matchAll.next(), 
             matches = {};
         while(!match.done) {
@@ -28,7 +28,19 @@ if(navigator && window) {
         }
     }
     // order matters here
-    if(browser.opera || browser.opr) {
+    if(browser.samsungbrowser) {
+        browser.samsung = browser.samsungbrowser;
+        delete browser.samsungbrowser;
+        browser.isSamsungInternet = true;
+    } else if(browser.ucbrowser) {
+        browser.isUCBrowser = true;
+    } else if(browser.yabrowser) {
+        browser.yandex = browser.yabrowser;
+        delete browser.yabrowser;
+        browser.isYandex = true;
+    } else if(browser.qtwebengine) {
+        browser.isQtWebEngine = true;
+    } else if(browser.opera || browser.opr) {
         if(!browser.opera) {
             browser.opera = browser.opr;
             delete browser.opr;
@@ -40,6 +52,8 @@ if(navigator && window) {
             delete browser.edg;
         }
         browser.isEdge = true;
+    } else if(browser.brave) {
+        browser.isBrave = true;
     } else if(browser.chrome) {
         browser.isChrome = true;
     } else if(browser.safari) {
