@@ -154,7 +154,7 @@ Two variables are added to the `window` namespace (if it exists) that stores bro
 | `browser` | Stores information on browser type and version. |
 | `browserType` |  Alias for `browser`, left for backwards compatibility. |
 
-Note there are two formats in which data exists as browser information. One is a simple string parse of the user agent and version as key name and value. For certain user agents this may return multiple results. However there may exist a secondary 'is' variable, which is heuristically determined, that will give the specific browser.
+Note there are two formats in which data exists as browser information. One is a simple string parse of the UserAgent and version as key name and value. For certain user agents this may return multiple results. However there may exist a secondary 'is' variable, which is heuristically determined, that will give the specific browser.
 
 E.g. for Opera browsers, with an example user agent of `"Mozilla/5.0 (Windows NT 10.0; WOW64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36 OPR/74.0.3911.75"`, the `browser` object will show three separate browser versions and an `isOpera` variable:
 
@@ -166,6 +166,10 @@ E.g. for Opera browsers, with an example user agent of `"Mozilla/5.0 (Windows NT
   isOpera: true
 }
 ```
+
+Currently, this checks for the following known browsers: Chrome, Firefox, Edge, IE, Safari, Opera, Brave, Samsung Internet, UCBrowser, Yandex, and QtWebEngine.
+
+Note that this method of parsing the UserAgent string is somewhat brittle and can be unreliable, especially for those lesser-seen browsers (e.g. Android Browser) or those specific to devices (e.g. Kindle Browser). If this is critical, it is generally preferred to use feature detection instead.
 
 &nbsp;
 
