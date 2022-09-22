@@ -178,15 +178,15 @@ Note that this method of parsing the UserAgent string is somewhat brittle and ca
 These useful functions are added to common object prototypes.
 
 <a name="common-arrayGetOverlaps" href="#common-arrayGetOverlaps">#</a>
-*Array*.**getOverlaps**(*a*, *b*[, *notStrict*]) ⇒ `Array`<br />
+*Array*.**getOverlaps**(*a*, *b*) ⇒ `Array`<br />
 <a name="common-arrayGetOverlaps" href="#common-arrayGetOverlaps">#</a>
-*Array*.prototype.**getOverlaps**(*arr*[, *notStrict*]) ⇒ `Array`
+*Array*.prototype.**getOverlaps**(*arr*) ⇒ `Array`
 
 Get overlapping values with second array. Can be called from array instance or `Array` global. Uses strict equality.
 
 <a name="common-arrayOverlaps" href="#common-arrayOverlaps">#</a>
-*Array*.**overlaps**(*a*, *b*[, *notStrict*]) ⇒ `boolean`<br />
-*Array*.prototype.**overlaps**(*arr*[, *notStrict*]) ⇒ `boolean`
+*Array*.**overlaps**(*a*, *b*) ⇒ `boolean`<br />
+*Array*.prototype.**overlaps**(*arr*) ⇒ `boolean`
 
 Check if at least one value overlaps with second array. Can be called from array instance or `Array` global. Uses strict equality.
 
