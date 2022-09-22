@@ -41,7 +41,7 @@ import '@lawrencesim/web-common/style.css';
 import CommonTable from '@lawrencesim/web-common/CommonTable';
 ```
 
-The first import will bring in the common module, including polyfills/extensions, and the UI submodule. If using the UI submodule or CommonTable module, you will also need to load the styles (second line), but otherwise, this can be left out. Note that depending on build configuration (e.g. Webpack) you may need proper style handles to load the CSS styles. The final line loads the optional CommonTable class.
+The first import will bring in the common module, including polyfills/extensions, and the UI submodule. If using the UI submodule or CommonTable module, you will also need to load the styles (second line), but otherwise, this can be left out. Note that depending on build configuration (e.g. Webpack) you may need proper style handlers to load the CSS styles. The final line loads the optional CommonTable class.
 
 If using script imports in HTML, import the paths to 'common.js', 'style.css', and/or 'CommonTable.js' as needed in the main directory. The main module will be added as `common` and CommonTable as `CommonTable` to the global namespace.
 
@@ -178,15 +178,15 @@ Note that this method of parsing the UserAgent string is somewhat brittle and ca
 These useful functions are added to common object prototypes.
 
 <a name="common-arrayGetOverlaps" href="#common-arrayGetOverlaps">#</a>
-*Array*.**getOverlaps**(*a*, *b*) ⇒ `Array`<br />
+*Array*.**getOverlaps**(*a*, *b*[, *notStrict*]) ⇒ `Array`<br />
 <a name="common-arrayGetOverlaps" href="#common-arrayGetOverlaps">#</a>
-*Array*.prototype.**getOverlaps**(*arr*) ⇒ `Array`
+*Array*.prototype.**getOverlaps**(*arr*[, *notStrict*]) ⇒ `Array`
 
 Get overlapping values with second array. Can be called from array instance or `Array` global. Uses strict equality.
 
 <a name="common-arrayOverlaps" href="#common-arrayOverlaps">#</a>
-*Array*.**overlaps**(*a*, *b*) ⇒ `boolean`<br />
-*Array*.prototype.**overlaps**(*arr*) ⇒ `boolean`
+*Array*.**overlaps**(*a*, *b*[, *notStrict*]) ⇒ `boolean`<br />
+*Array*.prototype.**overlaps**(*arr*[, *notStrict*]) ⇒ `boolean`
 
 Check if at least one value overlaps with second array. Can be called from array instance or `Array` global. Uses strict equality.
 
@@ -223,12 +223,21 @@ Basically wraps `Number.prototype.addCommas()` with heuristic guessing on precis
 <a name="common-objectIsObject" href="#common-objectIsObject">#</a>
 *Object*.**isObject**(*obj*) ⇒ `boolean`
 
-Check is given object is an object-type. That is, not a primitive, string, or array. Useful for when parameters must be ensured is an object-literal/dictionary.
+Check is given object is an object-type. That is, not a primitive, string, or array. This includes any inheritance of the object prototype, except for arrays.
+
+Uses [`typeof`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof) check with extra handling to invalidate array types.
+
+<a name="common-objectIsObjectLiteral" href="#common-objectIsObjectLiteral">#</a>
+*Object*.**isObjectLiteral**(*obj*) ⇒ `boolean`
+
+Check is given object is an object literal-type. That is, not a primitive, string, array, or even any inheritance of the Object prototype. Must be a base object create either as an object literal  or via `new Object()`. Useful for when parameters must be ensured is an object-literal/dictionary.
+
+Uses [`Object.getPrototypeOf()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getPrototypeOf) check.
 
 <a name="common-stringCapitalize" href="#common-stringCapitalize">#</a>
-*String*.prototype.**capitalize**() ⇒ `string`
+*String*.prototype.**capitalize**([*breaks*]) ⇒ `string`
 
-Will capitalize the each word in the string (using whitespace to delineate words).
+Will capitalize the each word in the string (using whitespace to delineate words). Additional break characters can be provided as either an array of characters or a string of all characters in the optional parameter `break`. E.g., to include hyphens, `"up-to-date".capitalize("-")`.
 
 <a name="common-stringHeuristicCompare" href="#common-stringHeuristicCompare">#</a>
 *String*.prototype.**heuristicCompare**(*compareString*) ⇒ `number`
@@ -237,9 +246,9 @@ Compare strings with numbers such that a "number" is not compared alphabetically
 
 Compares character by character such that numbers encountered at the same "place" are compared. If numbers are of different character length but equal numerically, continues reading strings, adjusting "place" for different digit length.
 
-**Currently does not support negative numbers.**
+***Does not support negative numbers.** Negative symbols will be read as hyphen character.*
 
-Returns numeric indicating whether `this` string comes before (-1), after (1), or is equal (0) to compared string.
+Returns numeric indicating whether `this` string comes before (-1), after (1), or is equal (0) to compared string. As such, can be inserted into most sort functions such as [Array.prototype.sort()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort) as the compare function.
 
 ```javascript
 "a01b02".heuristicCompare("a1b2");  // 0
@@ -374,7 +383,7 @@ Retrieve GET parameters in current URL as an object literal (dictionary format).
 <a name="common-newWindow" href="#common-newWindow">#</a>
 *common*.**newWindow**(*url*, *name*, *width*, *height*[, *minimal*]) ⇒ `Window`
 
-Creates a new, centered window, even accounting for dual screen monitors.. The `event` object, if not provided, is grabbed from window.event. This is used to screen against middle-mouse clicks and ctrl+left-clicks which should be handled separately to create a new tab. If `minimal` is true, attempts to hide menubar, statusbar, and location -- though many modern browsers may prevent some or all of this.
+Creates a new, centered window, even accounting for dual screen monitors.. The `event` object, if not provided, is grabbed from `window.event`. This is used to screen against middle-mouse clicks and ctrl+left-clicks which should be handled separately to create a new tab. If `minimal` is true, attempts to hide `menubar`, `statusbar`, and `location` -- though many modern browsers may prevent some or all of this.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
@@ -722,7 +731,7 @@ var data = [
         nickName: "El Cucuy", 
         lastName: "Ferguson", 
         winCount: 25, 
-        lossCount: 6, 
+        lossCount: 8, 
         drawCount: 0, 
         birthDate: new DateUTC(1984, 2, 12)
     }, 

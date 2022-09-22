@@ -37,12 +37,27 @@ if(!Array.overlaps) {
     });
 }
 
-/** Check is given object is an object-type. That is, not a primitive, string, or array. Useful for 
- * when parameters must be ensured is an object-literal/dictionary.
+/** Check is given object is an object-type. That is, not a primitive, string, or array. This includes 
+ * any inheritance of the object prototype, except for arrays. 
+ * 
+ * Uses `typeof` check with extra handling to invalidate array types.
  * @param {anything} obj - The variable to be checked.
  */
 if(!Object.isObject) {
     Object.defineProperty(Object, 'isObject', {
+        value: obj => obj !== null && obj !== undefined && typeof obj === "object" && !Array.isArray(obj)
+    });
+}
+
+/** Check is given object is an object literal-type. That is, not a primitive, string, array, or even 
+ * any inheritance of the Object prototype. Must be a base object create either as an object literal 
+ * or via `new Object()`. Useful for when parameters must be ensured is an object-literal/dictionary.
+ * 
+ * Uses `Object.getPrototypeOf()` check.
+ * @param {anything} obj - The variable to be checked.
+ */
+if(!Object.isObjectLiteral) {
+    Object.defineProperty(Object, 'isObjectLiteral', {
         value: obj => obj !== null && obj !== undefined && Object.getPrototypeOf(obj) === Object.prototype
     });
 }
@@ -50,12 +65,30 @@ if(!Object.isObject) {
 /**
  * Capitalize the first letter of every word. (A word is determined by any string preceded by 
  * whitespace, as such ignores second word in hyphenated compound words).
+ * @param {String} breaks
  * @returns {String} Capitalized version of this string.
  */
 if(!String.prototype.capitalize) {
     Object.defineProperty(String.prototype, 'capitalize', {
-        value() {
-            return this.replace(/(?:^|\s)\S/g, a => a.toUpperCase());
+        value(breaks) {
+            if(breaks) {
+                breaks = Array.from(breaks)
+                    .filter(c => c && c !== " ")
+                    .map(c => {
+                        let code = c.charCodeAt(0), 
+                            alphanumeric = (
+                                (code > 47 && code < 58) ||  // numeric (0-9)
+                                (code > 64 && code < 91) ||  // upper alpha (A-Z)
+                                (code > 96 && code < 123)    // lower alpha (a-z)
+                            );
+                        return alphanumeric ? c : "\\"+c;
+                    });
+            } else {
+                breaks = [];
+            }
+            let re = new RegExp(`(?:^|[${breaks.join('')}\\s])\\S`, "g");
+            return this.replace(re, a => a.toUpperCase());
+            //let capped = this.replace(/(?:^|\s)\S/g, a => a.toUpperCase());
         }
     });
 }
@@ -66,7 +99,7 @@ if(!String.prototype.capitalize) {
  * such that numbers encountered at the same "place" are compared. If numbers are of different 
  * character length but equal numerically, continues reading strings, adjusting "place" for different 
  * digit length. E.g. "a01b02" will compare as equal to "a1b2".
- * @param {String} compare string
+ * @param {String} compareString
  * @returns {Number} -1 if before, 0 if equal, 1 if after.
  */
 if(!String.prototype.heuristicCompare) {
