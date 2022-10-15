@@ -34,7 +34,12 @@ export default {
         return element instanceof Element ? [element] : [];
     }, 
 
-    extend(obj, extend, allowOverwrite, deepCopy) {
+    extend(obj, extend, allowOverwrite, deepCopy, modifyObj) {
+        if(Object.isObjectLiteral(allowOverwrite)) {
+            if(typeof deepCopy === "undefined") deepCopy = allowOverwrite.deepCopy;
+            if(typeof modifyObj === "undefined") modifyObj = allowOverwrite.modifyObj;
+            allowOverwrite = allowOverwrite.allowOverwrite;
+        }
         let docopy;
         if(!deepCopy) {
             docopy = input => input;
@@ -43,11 +48,16 @@ export default {
         } else {
             docopy = input => JSON.parse(JSON.stringify(input));
         }
-        if(!extend) return docopy(obj);
+        if(!extend) return modifyObj ? obj : docopy(obj);
         if(!obj) return docopy(extend);
-        let clone = {};
-        for(let key in obj) {
-            clone[key] = docopy(obj[key]);
+        let clone;
+        if(modifyObj) {
+            clone = obj;
+        } else {
+            clone = {};
+            for(let key in obj) {
+                clone[key] = docopy(obj[key]);
+            }
         }
         for(let key in extend) {
             if(allowOverwrite || !(key in clone)) {
@@ -67,11 +77,11 @@ export default {
     }, 
 
     newWindow(url, name, width, height, minimal) {
-        if(Object.isObject(url)) {
-            if(typeof name === "undefined") name = url.name;
-            if(typeof width === "undefined") width = url.width;
-            if(typeof height === "undefined") height = url.height;
-            if(typeof minimal === "undefined") minimal = url.minimal;
+        if(Object.isObjectLiteral(name)) {
+            if(typeof name === "undefined") name = name.name;
+            if(typeof width === "undefined") width = name.width;
+            if(typeof height === "undefined") height = name.height;
+            if(typeof minimal === "undefined") minimal = name.minimal;
         }
         // center window, from http://www.xtf.dk/2011/08/center-new-popup-window-even-on.html
         // Fixes dual-screen position                          Most browsers       Firefox
@@ -167,12 +177,14 @@ export default {
     }, 
 
     animate(element, properties, durationMs, timingFunction, complete) {
-        if(Object.isObject(element)) {
+        if(Object.isObjectLiteral(element)) {
             if(typeof properties === "undefined") properties = element.properties;
             if(typeof durationMs === "undefined") durationMs = element.durationMs || element.duration;
             if(typeof timingFunction === "undefined") timingFunction = element.timingFunction || element.timing;
             if(typeof complete === "undefined") complete = element.complete;
+            element = element.element;
         }
+        if(!element) return;
 
         if(typeof durationMs !== "number") throw "Duration must be specified as numeric type in milliseconds.";
         let durationSecs = durationMs*0.001 + "s", 

@@ -371,22 +371,34 @@ Given an input, converts it into an array of [Elements](https://developer.mozill
 | element | `Element` \| `NodeList` \| `jQuery` \| `String` | Object to convert to array or `NodeList`. |
 
 <a name="common-extend" href="#common-extend">#</a>
-*common*.**extend**(*obj*, *extend*[, *allowOverwrite*[, *deepCopy*]]) ⇒ `Object`
+*common*.**extend**(*obj*, *extend*[, *allowOverwrite*[, *deepCopy*[, *modifyObj*]]]) ⇒ `Object`
 
-Copy given object and extended with new values. The passed parameters are not modified in any way.
+Copy given object and extended with new values. The passed parameters are not modified in any way unless `modifyObj` is set true.
 
-If either `extend` or `obj` is null or undefined (or evaluates as such, e.g. false or zeros values), the remaining object is simply returned as is. The returned value is simply a passed reference to the input object, unless `deepCopy` is true. 
-
-If both are specified, values in first levels of `obj` and `extend` are copied to a cloned object by simply passing the value. Thus primitive types are copied by value, but objects will be copied by reference, unless `deepCopy` is true.
+If either `extend` or `obj` is null or undefined (or evaluates as such, e.g. false or zeros values), a copy of whatever remaining object is returned. Otherwise, values in `obj` and `extend` are copied to a cloned object by passing the value. Thus primitive types are copied by value, but objects will be copied by reference, unless `deepCopy` is true.
 
 Deep copy is done via [`structuredClone()`](https://developer.mozilla.org/en-US/docs/Web/API/structuredClone), if available, or fallbacks to the `JSON.parse(JSON.stringify())` method. Note that the former method may throw an `DataCloneError` exception and the latter will results in some values (such as dates, functions, or circular references) not being correctly carried over.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| obj | `Object` | Base object |
-| extend | `Object` | Object of extensions to base object |
+| obj | `Object` | Base object. |
+| extend | `Object` | Object of extensions to the copy of the base object. |
 | allowOverwrite | `Boolean` | Unless true, items in `extend` matching existing values in `obj` by key are not copied over. |
 | deepCopy | `Boolean` | If true, all values are copied via `structuredClone()` or, as a fallback, `JSON.parse(JSON.stringify())`. |
+| modifyObj | `Boolean` | If true, the input base object (`obj`) is modified directly, instead of cloning. |
+
+Alternatively, the parameters `allowOverwrite`, `deepCopy`, and/or `modifyObj` may be provided as key-value pairs of an object-literal passed as the 3rd `options` parameter.
+
+<a name="common-extend-2" href="#common-extend-2">#</a>
+*common*.**extend**(*obj*, *extend*[, *options*]) ⇒ `Object`
+
+| Param | Type | Description |
+| :--- | :---: | :--- |
+| obj | `Object` | Base object. |
+| extend | `Object` | Object of extensions to the copy of the base object. |
+| options.allowOverwrite | `Boolean` | Unless true, items in `extend` matching existing values in `obj` by key are not copied over. |
+| options.deepCopy | `Boolean` | If true, all values are copied via `structuredClone()` or, as a fallback, `JSON.parse(JSON.stringify())`. |
+| options.modifyObj | `Boolean` | If true, the input base object (`obj`) is modified directly, instead of cloning. |
 
 <a name="common-getUrlGetVars" href="#common-getUrlGetVars">#</a>
 *common*.**getUrlGetVars**() ⇒ `Object`
@@ -405,6 +417,19 @@ Creates a new, centered window, even accounting for dual screen monitors.. The `
 | width | `Number` | Width in pixels. |
 | height | `Number` | Height in pixels. |
 | minimal | `Boolean` | If true forces hiding of menubar, statusbar, and location -- although with many modern browsers this has no effect as it is not allowed. |
+
+Alternatively, all parameters except `url` can be supplied as key-value pairs of an object-literal provided as the 2nd parameter to the function.
+
+<a name="common-newWindow-2" href="#common-newWindow-2">#</a>
+*common*.**newWindow**(*url*, [*options*]) ⇒ `Window`
+
+| Param | Type | Description |
+| :--- | :---: | :--- |
+| url | `String` | URL for new window or an object literal with all parameters as properties. |
+| options.name | `String` | New window name. |
+| options.width | `Number` | Width in pixels. |
+| options.height | `Number` | Height in pixels. |
+| options.minimal | `Boolean` | If true forces hiding of menubar, statusbar, and location -- although with many modern browsers this has no effect as it is not allowed. |
 
 <a name="common-ajax" href="#common-ajax">#</a>
 *common*.**ajax**(*params*) ⇒ `XMLHttpRequest` | `Promise`
@@ -430,7 +455,7 @@ However, if the project allows, I'd nowadays recommend using the [Fetch API](htt
 <a name="common-animate" href="#common-animate">#</a>
 *common*.**animate**(*element*, *properties*, *durationMs*[, *easing*[, *complete*]]]) ⇒ `Promise`
 
-Mimics [jQuery.animate()](http://api.jquery.com/jQuery.animate/) function using CSS3 transitions.
+Mimics [jQuery.animate()](http://api.jquery.com/jQuery.animate/) function using CSS transitions by first applying a [transition](https://developer.mozilla.org/en-US/docs/Web/CSS/transition) property for the requisite CSS properties to be applied, then, after a short delay (5 ms), applying the properties. All this is done as modifications to the element's inline styles, and will thus may overwrite any existing inline styles and will be subject to any CSS rule overrides (such as an existing, applicable CSS rule with the `!imporant` property).
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
@@ -439,6 +464,19 @@ Mimics [jQuery.animate()](http://api.jquery.com/jQuery.animate/) function using 
 | durationMs | `Number` | Duration of animation, in milliseconds. |
 | timingFunction | `String` | Timing/easing function, defaults to "ease". See: [transition-timing-function](https://developer.mozilla.org/en-US/docs/Web/CSS/transition-timing-function). |
 | complete | `Callback` | Optional callback to run on completion. |
+
+Alternatively, all the parameters may be provided as key-value pairs of an object-literal provided as the singular parameter to the function.
+
+<a name="common-animate-2" href="#common-animate-2">#</a>
+*common*.**animate**(*options*) ⇒ `Promise`
+
+| Param | Type | Description |
+| :--- | :---: | :--- |
+| options.element | `Element` | The Element to animate. Or an object literal with all parameters are properties. |
+| options.properties | `Object` | CSS properties to animate to. Note not all properties are animatable. See [animatable CSS properties](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animated_properties). |
+| options.durationMs | `Number` | Duration of animation, in milliseconds. |
+| options.timingFunction | `String` | Timing/easing function, defaults to "ease". See: [transition-timing-function](https://developer.mozilla.org/en-US/docs/Web/CSS/transition-timing-function). |
+| options.complete | `Callback` | Optional callback to run on completion. |
 
 &nbsp;
 
@@ -741,18 +779,18 @@ tbl.addColumn(null, "Draws", "drawCount");
 var data = [
     {
         firstName: "Tony", 
-        nickName: "El Cucuy", 
-        lastName: "Ferguson", 
-        winCount: 25, 
+        nickName:  "El Cucuy", 
+        lastName:  "Ferguson", 
+        winCount:  25, 
         lossCount: 8, 
         drawCount: 0, 
         birthDate: new DateUTC(1984, 2, 12)
     }, 
     {
         firstName: "Khabib", 
-        nickName: "The Eagle", 
-        lastName: "Nurmagomedov", 
-        winCount: 29, 
+        nickName:  "The Eagle", 
+        lastName:  "Nurmagomedov", 
+        winCount:  29, 
         lossCount: 0, 
         drawCount: 0, 
         birthDate: new DateUTC(1988, 9, 20)
