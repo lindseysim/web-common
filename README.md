@@ -186,6 +186,7 @@ Get overlapping values with second array. Can be called from array instance or `
 
 <a name="common-arrayOverlaps" href="#common-arrayOverlaps">#</a>
 *Array*.**overlaps**(*a*, *b*) ⇒ `boolean`<br />
+<a name="common-arrayOverlaps" href="#common-arrayOverlaps">#</a>
 *Array*.prototype.**overlaps**(*arr*) ⇒ `boolean`
 
 Check if at least one value overlaps with second array. Can be called from array instance or `Array` global. Uses strict equality.
