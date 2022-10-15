@@ -78,10 +78,10 @@ export default {
 
     newWindow(url, name, width, height, minimal) {
         if(Object.isObjectLiteral(name)) {
-            if(typeof name === "undefined") name = name.name;
             if(typeof width === "undefined") width = name.width;
             if(typeof height === "undefined") height = name.height;
             if(typeof minimal === "undefined") minimal = name.minimal;
+            name = name.name;
         }
         // center window, from http://www.xtf.dk/2011/08/center-new-popup-window-even-on.html
         // Fixes dual-screen position                          Most browsers       Firefox
