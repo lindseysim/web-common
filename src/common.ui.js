@@ -63,6 +63,11 @@ export default {
 
     addTooltip(element, message, direction, force) {
         var dirs = ["right", "left", "top", "bottom"];
+        if(Object.isObjectLiteral(message)) {
+            if(typeof direction === "undefined") direction = message.direction;
+            if(typeof force === "undefined") force = message.force;
+            message = message.message;
+        }
         this.getElementList(element).forEach(el => {
             if(!message) {
                 el.classList.remove("cm-tooltip-left", "cm-tooltip-right", "cm-tooltip-top", "cm-tooltip-bottom", "cm-tooltip-force");
@@ -92,6 +97,12 @@ export default {
     }, 
 
     appendHelpIcon(element, message, direction, style, force) {
+        if(Object.isObjectLiteral(message)) {
+            if(typeof direction === "undefined") direction = message.direction;
+            if(typeof style === "undefined") style = message.style;
+            if(typeof force === "undefined") force = message.force;
+            message = message.message;
+        }
         this.getElementList(element).forEach(el => {
             let icon = document.createElement("i");
             icon.classList.add("cm-icon");

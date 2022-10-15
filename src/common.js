@@ -1,3 +1,16 @@
+function _copy_(obj, extend, allowOverwrite, copyFunc) {
+    for(let key in extend) {
+        if(!(key in obj)) {
+            obj[key] = copyFunc(extend[key]);
+        } else if(Object.isObjectLiteral(obj[key]) && Object.isObjectLiteral(extend[key])) {
+            _copy_(obj[key], extend[key], allowOverwrite, copyFunc);
+        } else if(allowOverwrite) {
+            obj[key] = copyFunc(extend[key]);
+        }
+    }
+    return obj;
+}
+
 export default {
 
     getElement(element) {
@@ -16,7 +29,7 @@ export default {
             let next = element.next();
             return next.done ? undefined : next.value;
         }
-        return element;
+        return element instanceof Element ? element : null;
     }, 
 
     getElementList(element) {
@@ -25,27 +38,33 @@ export default {
             return Array.from(document.querySelectorAll(element));
         }
         if(element[Symbol.iterator] === "function") {
-            return Array.isArray(element) ? element : Array.from(element);
+            return (Array.isArray(element) ? element : Array.from(element))
+                filter(o => o instanceof Element);
         }
         if(typeof jQuery !== "undefined" && element instanceof jQuery) {
             return element.get();
         }
-        return [element];
+        return element instanceof Element ? [element] : [];
     }, 
 
-    extend(obj, extend, allowOverwrite, deepCopy) {
-        if(!extend) return !deepCopy ? obj : JSON.parse(JSON.stringify(obj));
-        if(!obj) return !deepCopy ? extend : JSON.parse(JSON.stringify(extend));
-        let clone = {};
-        for(let key in obj) {
-            clone[key] = !deepCopy ? obj[key] : JSON.parse(JSON.stringify(obj[key]));
+    extend(obj, extend, allowOverwrite, deepCopy, modifyObj) {
+        if(Object.isObjectLiteral(allowOverwrite)) {
+            if(typeof deepCopy === "undefined") deepCopy = allowOverwrite.deepCopy;
+            if(typeof modifyObj === "undefined") modifyObj = allowOverwrite.modifyObj;
+            allowOverwrite = allowOverwrite.allowOverwrite;
         }
-        for(let key in extend) {
-            if(allowOverwrite || !(key in clone)) {
-                clone[key] = !deepCopy ? extend[key] : JSON.parse(JSON.stringify(extend[key]));
-            }
+        let copyFunc;
+        if(!deepCopy) {
+            copyFunc = input => input;
+        } else if(structuredClone && typeof structuredClone === "function") {
+            copyFunc = structuredClone;
+        } else {
+            copyFunc = input => JSON.parse(JSON.stringify(input));
         }
-        return clone;
+        if(!extend) return modifyObj ? obj : copyFunc(obj);
+        if(!obj) return copyFunc(extend);
+        let clone = modifyObj ? obj : _copy_({}, obj, true, copyFunc);
+        return _copy_(clone, extend, allowOverwrite, copyFunc);
     }, 
     
     getUrlGetVars() {
@@ -58,11 +77,11 @@ export default {
     }, 
 
     newWindow(url, name, width, height, minimal) {
-        if(Object.isObject(url)) {
-            if(typeof name === "undefined") name = url.name;
-            if(typeof width === "undefined") width = url.width;
-            if(typeof height === "undefined") height = url.height;
-            if(typeof minimal === "undefined") minimal = url.minimal;
+        if(Object.isObjectLiteral(name)) {
+            if(typeof width === "undefined") width = name.width;
+            if(typeof height === "undefined") height = name.height;
+            if(typeof minimal === "undefined") minimal = name.minimal;
+            name = name.name;
         }
         // center window, from http://www.xtf.dk/2011/08/center-new-popup-window-even-on.html
         // Fixes dual-screen position                          Most browsers       Firefox
@@ -158,12 +177,14 @@ export default {
     }, 
 
     animate(element, properties, durationMs, timingFunction, complete) {
-        if(Object.isObject(element)) {
+        if(Object.isObjectLiteral(element)) {
             if(typeof properties === "undefined") properties = element.properties;
             if(typeof durationMs === "undefined") durationMs = element.durationMs || element.duration;
             if(typeof timingFunction === "undefined") timingFunction = element.timingFunction || element.timing;
             if(typeof complete === "undefined") complete = element.complete;
+            element = element.element;
         }
+        if(!element) return;
 
         if(typeof durationMs !== "number") throw "Duration must be specified as numeric type in milliseconds.";
         let durationSecs = durationMs*0.001 + "s", 
