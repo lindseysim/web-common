@@ -26,29 +26,33 @@ CommonTable.prototype.prependTo = function(container) {
 };
 
 CommonTable.prototype.addColumn = function(group, title, key, options) {
-    if(group && group.hasOwnProperty("title") && group.hasOwnProperty("key") && !title && !key) {
-        if(!group.group) group.group = null;
-        // add as object literal
-        this.headerObjs.push(group);
-    } else {
-        if(!group) group = null;
-        if(!options) options = {};
-        // create object from parameters
-        this.headerObjs.push({
-            group:      group, 
-            title:      title, 
-            key:        key, 
-            format:     options.format, 
-            hdrStyles:  options.hdrStyles, 
-            colStyles:  options.colStyles, 
-            onClick:    options.onClick, 
-            sortable:   (options.sortable === undefined || options.sortable)
-        });
+    if(Object.isObjectLiteral(group)) {
+        title   = group.title;
+        key     = group.key;
+        options = group;
+        group   = group.group;
     }
+    if(!group) group = null;
+    if(!options) options = {};
+    // create object from parameters
+    this.headerObjs.push({
+        group:      group, 
+        title:      title, 
+        key:        key, 
+        format:     options.format, 
+        hdrStyles:  options.hdrStyles, 
+        colStyles:  options.colStyles, 
+        onClick:    options.onClick, 
+        sortable:   (options.sortable === undefined || options.sortable)
+    });
     return this;
 };
 
 CommonTable.prototype.createHeaders = function(sortOnKey, ascending) {
+    if(Object.isObjectLiteral(sortOnKey)) {
+        ascending = options.ascending;
+        sortOnKey = options.sortOnKey;
+    }
     this.tbodyElement.innerHTML = "";
     let hdrRows = [];
     for(let i = 0; i < 2; ++i) {
@@ -122,6 +126,11 @@ CommonTable.prototype.createHeaders = function(sortOnKey, ascending) {
 };
 
 CommonTable.prototype.populateTable = function(tableData, sortOnKey, ascending) {
+    if(Object.isObjectLiteral(tableData)) {
+        sortOnKey = tableData.sortOnKey;
+        ascending = tableData.ascending;
+        tableData = tableData.tableData;
+    }
     // recreate headers, which should also clear all rows
     this.createHeaders(sortOnKey, ascending);
     // get data or use last provided

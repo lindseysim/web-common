@@ -398,6 +398,7 @@ See above.
 | :--- | :---: | :--- |
 | obj | `Object` | Base object. |
 | extend | `Object` | Object of extensions to the copy of the base object. |
+| options | `Object` | |
 | options.allowOverwrite | `Boolean` | Unless true, items in `extend` matching existing values in `obj` by key are not copied over. |
 | options.deepCopy | `Boolean` | If true, all values are copied via `structuredClone()` or, as a fallback, `JSON.parse(JSON.stringify())`. |
 | options.modifyObj | `Boolean` | If true, the input base object (`obj`) is modified directly, instead of cloning. |
@@ -430,6 +431,7 @@ See above.
 | Param | Type | Description |
 | :--- | :---: | :--- |
 | url | `String` | URL for new window or an object literal with all parameters as properties. |
+| options | `Object` | |
 | options.name | `String` | New window name. |
 | options.width | `Number` | Width in pixels. |
 | options.height | `Number` | Height in pixels. |
@@ -478,6 +480,7 @@ See above.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
+| options | `Object` | |
 | options.element | `Element` | The Element to animate. Or an object literal with all parameters are properties. |
 | options.properties | `Object` | CSS properties to animate to. Note not all properties are animatable. See [animatable CSS properties](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animated_properties). |
 | options.durationMs | `Number` | Duration of animation, in milliseconds. |
@@ -577,6 +580,7 @@ See above.
 | Param | Type | Description |
 | :--- | :---: | :--- |
 | element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to remove dropdown from. See [`common.getElementList()`](#common-getElementList) for evaluation of this parameter. |
+| options | `Object` | |
 | options.message | `String` | Tooltip message/HTML. |
 | options.direction | `String` | Direction of tooltip (defaults to top). |
 | options.force | `Boolean` | If true, forces tooltip visible. |
@@ -613,6 +617,7 @@ See above.
 | Param | Type | Description |
 | :--- | :---: | :--- |
 | element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to remove dropdown from. See [`common.getElementList()`](#common-getElementList) for evaluation of this parameter. |
+| options | `Object` | |
 | options.message | `String` | Tooltip message/HTML. |
 | options.direction | `String` | Direction of tooltip (defaults to top). |
 | options.style | `Object` | Dictionary of inline style key-values for icon. |
@@ -633,7 +638,7 @@ Remove help icon from element(s).
 
 For modal dialog usage, ensure your dependency-manager/import-function is caching requires/imports of the `common` object, or that you are passing the object by reference. Calling multiple instances of `common.ui` in the same window can result in odd behavior for modal management.
 
-When a modal function is first called, this library appends a hidden div to `body` to handle modals/dialogs. This includes a container div (`#cm-modal-container`), an outer modal div (`#cm-modal-outer`) with absolute positioning, and an inner div (`.cm-modal-inner`) which represents the actual dialog.
+When a modal function is first called, this library appends a hidden div to `body` to handle modals/dialogs. This includes a container div (`#cm-modal-container`), an outer modal div (`#cm-modal-outer`) with absolute positioning, and an inner div (`.cm-modal-inner`) which represents the actual dialog. You may (and are in fact recommended to) tweak the CSS rules attached to these as necessary.
 
 Only one modal may be open at a time. Opening another modal will replace the current one.
 
@@ -744,9 +749,28 @@ Prepends table to element.
 | container | `Element` | Element to prepend table in |
 
 <a name="CommonTable-addColumn" href="CommonTable-addColumn">#</a>
+*CommonTable*.prototype.**addColumn**(*options*)
+
+See above.
+
+| Param | Type | Description |
+| :--- | :---: | :--- |
+| options | `Object` | |
+| options.group | `String` | The header group. If not null, used to group two or more headers as subheaders under a banner header (via colspan). |
+| options.title | `String` | The title to display the header as. |
+| options.key | `String` | The key used to retrieve data from this header. |
+| options.format | `Function` | Optional function such that `format(value)`, returns the formatted value for the table cell. Run in try-catch block, so if it fails, simply continues with raw value. |
+| options.hdrStyles | `String` \| `Object` | Optional styles to apply to the header. Overrides any colStyles properties. |
+| options.colStyles | `String` \| `Object` | Optional styles to apply to every row in this column (including header). If you only want to apply to non-header cells, must override values in hdrStyles. |
+| options.onClick | `Function` | Optional onClick listener to add to each cell (excluding header). Callback will be given the entire row's data as the parameter. |
+| options.sortable | `Boolean` | Optional flag to set/disable sortable column on this column. By default columns are sortable, so set as false or null to disable. |
+
+Alternatively, the `group`, `title`, and `key` parameters may be split out and provided as individual parameters.
+
+<a name="CommonTable-addColumn-2" href="CommonTable-addColumn-2">#</a>
 *CommonTable*.prototype.**addColumn**(*group*, *title*, *key*[, *options*])
 
-Add column. Parameters may either be specified as list of arguments, or formatted into single object literal with parameter names as below. Title and key are required.
+See above.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
@@ -761,19 +785,46 @@ Add column. Parameters may either be specified as list of arguments, or formatte
 | options.sortable | `Boolean` | Optional flag to set/disable sortable column on this column. By default columns are sortable, so set as false or null to disable. |
 
 <a name="CommonTable-createHeaders" href="CommonTable-createHeaders">#</a>
-*CommonTable*.prototype.**createHeaders**([*sortOnKey*[, *ascending*]])
+*CommonTable*.prototype.**createHeaders**([*options*]])
 
 [Re]draw table. Unlike `populateTable()`, this only redraws the headers (rest of the rows are lost).
+
+| Param | Type | Description |
+| :--- | :---: | :--- |
+| options | `Object` | |
+| options.sortOnKey | `String` | Optional key to sort on. |
+| options.ascending | `Boolean` | If sorting, whether ascending or descending order. |
+
+Alternatively, parameters may be expanded out as individual arguments.
+
+<a name="CommonTable-createHeaders-2" href="CommonTable-createHeaders-2">#</a>
+*CommonTable*.prototype.**createHeaders**([*sortOnKey*[, *ascending*]])
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
 | sortOnKey | `String` | Optional key to sort on. |
 | ascending | `Boolean` | If sorting, whether ascending or descending order. |
 
+See above.
+
 <a name="CommonTable-populateTable" href="CommonTable-populateTable">#</a>
-*CommonTable*.prototype.**populateTable**(*tableData*[, *sortOnKey*[, *ascending*]]])
+*CommonTable*.prototype.**populateTable**(*options*)
 
 Populate and [re]draw table.
+
+| Param | Type | Description |
+| :--- | :---: | :--- |
+| options | `Object` | |
+| options.tableData | `Object[]` | Array of objects, representing data by row. Data is not stored to object or dynamically bound in any way. To update table, must be redrawn, passing the updated data array. |
+| options.sortOnKey | `String` | Optional key to sort on. |
+| options.ascending | `Boolean` | If sorting, whether ascending or descending order. |
+
+Alternatively, parameters may be expanded out as individual arguments.
+
+<a name="CommonTable-populateTable-2" href="CommonTable-populateTable-2">#</a>
+*CommonTable*.prototype.**populateTable**(*tableData*[, *sortOnKey*[, *ascending*]]])
+
+See above.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
@@ -792,48 +843,53 @@ var tbl = new CommonTable("my-table-id", "my-table-class");
 tbl.appendTo(document.body);
 
 // first three columns under "Name" header group
-tbl.addColumn("Name", "First", "firstName");
-tbl.addColumn("Name", "Nickname", "nickName");
-tbl.addColumn("Name", "Last", "lastName");
+tbl.addColumn({group: "Name", title: "First", key: "firstName"});
+tbl.addColumn({group: "Name", title: "Nickname", key: "nickName"});
+tbl.addColumn({group: "Name", title: "Last", key: "lastName"});
 // add generic meta-data (to be used later)
-tbl.addColumn(
-  null, 
-  "Birthday", 
-  "birthDate", 
-  {
-    format: function(val) {
-      return (val.getMonth()+1).toString() + "/" + val.getDate().toString() + "/" + val.getFullYear().toString()
-    }
+tbl.addColumn({
+  title:  "Birthday", 
+  key:    "birthDate", 
+  format: function(val) {
+    return (
+      (val.getMonth()+1).toString() + "/" 
+      + val.getDate().toString() + "/" 
+      + val.getFullYear().toString()
+    );
   }
-);
+});
 // other columns
-tbl.addColumn(null, "Wins", "winCount");
-tbl.addColumn(null, "Losses", "lossCount");
-tbl.addColumn(null, "Draws", "drawCount");
+tbl.addColumn({title: "Wins", key: "winCount"});
+tbl.addColumn({title: "Losses", key: "lossCount"});
+tbl.addColumn({title: "Draws", key: "drawCount"});
 
 var data = [
-    {
-        firstName: "Tony", 
-        nickName:  "El Cucuy", 
-        lastName:  "Ferguson", 
-        winCount:  25, 
-        lossCount: 8, 
-        drawCount: 0, 
-        birthDate: new DateUTC(1984, 2, 12)
-    }, 
-    {
-        firstName: "Khabib", 
-        nickName:  "The Eagle", 
-        lastName:  "Nurmagomedov", 
-        winCount:  29, 
-        lossCount: 0, 
-        drawCount: 0, 
-        birthDate: new DateUTC(1988, 9, 20)
-    }, 
-    // etc...
+  {
+    firstName: "Tony", 
+    nickName:  "El Cucuy", 
+    lastName:  "Ferguson", 
+    winCount:  25, 
+    lossCount: 8, 
+    drawCount: 0, 
+    birthDate: new DateUTC(1984, 2, 12)
+  }, 
+  {
+    firstName: "Khabib", 
+    nickName:  "The Eagle", 
+    lastName:  "Nurmagomedov", 
+    winCount:  29, 
+    lossCount: 0, 
+    drawCount: 0, 
+    birthDate: new DateUTC(1988, 9, 20)
+  }, 
+  // etc...
 ];
 
-tbl.populateTable(data, "winCount", false);  // sort by wins descending
+tbl.populateTable({
+  tableData: data, 
+  sortOnKey: "winCount", 
+  ascending: false  // sort by wins descending
+});
 ```
 
 ----------
