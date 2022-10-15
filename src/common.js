@@ -16,7 +16,7 @@ export default {
             let next = element.next();
             return next.done ? undefined : next.value;
         }
-        return element;
+        return element instanceof Element ? element : null;
     }, 
 
     getElementList(element) {
@@ -25,24 +25,33 @@ export default {
             return Array.from(document.querySelectorAll(element));
         }
         if(element[Symbol.iterator] === "function") {
-            return Array.isArray(element) ? element : Array.from(element);
+            return (Array.isArray(element) ? element : Array.from(element))
+                filter(o => o instanceof Element);
         }
         if(typeof jQuery !== "undefined" && element instanceof jQuery) {
             return element.get();
         }
-        return [element];
+        return element instanceof Element ? [element] : [];
     }, 
 
     extend(obj, extend, allowOverwrite, deepCopy) {
-        if(!extend) return !deepCopy ? obj : JSON.parse(JSON.stringify(obj));
-        if(!obj) return !deepCopy ? extend : JSON.parse(JSON.stringify(extend));
+        let docopy;
+        if(!deepCopy) {
+            docopy = input => input;
+        } else if(structuredClone && typeof structuredClone === "function") {
+            docopy = structuredClone;
+        } else {
+            docopy = input => JSON.parse(JSON.stringify(input));
+        }
+        if(!extend) return docopy(obj);
+        if(!obj) return docopy(extend);
         let clone = {};
         for(let key in obj) {
-            clone[key] = !deepCopy ? obj[key] : JSON.parse(JSON.stringify(obj[key]));
+            clone[key] = docopy(obj[key]);
         }
         for(let key in extend) {
             if(allowOverwrite || !(key in clone)) {
-                clone[key] = !deepCopy ? extend[key] : JSON.parse(JSON.stringify(extend[key]));
+                clone[key] = docopy(extend[key]);
             }
         }
         return clone;

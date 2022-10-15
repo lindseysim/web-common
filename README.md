@@ -251,17 +251,17 @@ Returns numeric indicating whether `this` string comes before (-1), after (1), o
 
 
 ```javascript
-"x01x02".semanticCompare("x1x2");  // 0  is semantically equal
-"x20".semanticCompare("x1");   // 1  comes after
-"x9".semanticCompare("x999");  // -1 comes before
-"b20".semanticCompare("a1");   // 1
+"x01x02".semanticCompare("x1x2");  //  0 is semantically equal
+"x20".semanticCompare("x1");       //  1 comes after
+"x9".semanticCompare("x999");      // -1 comes before
+"b1".semanticCompare("a2");        //  1 comes after
 ```
 
 By default, negative numbers and decimals are not handled as dashes and periods may not be considered part of the number, depending on the string. This can be switched by setting true either/both the optional parameters `options.handleNegative` and/or `options.handleDeciaml`. If enabling decimals in particular, ensure numbers are properly formatted. E.g. a value of "3.2.1" would result in a numeric parsing two separate values of "3.2" and "0.1".
 
 ```javascript
-"x-2".semanticCompare("x-1", {handleNegative: true});  // -1
 "x-2".semanticCompare("x-1");  // 1
+"x-2".semanticCompare("x-1", {handleNegative: true});  // -1
 ```
 
 Each string is broken into chunks of parsable number and non-numeric chunks. Each chunk is compared in similar sequences. When both compared chunks are parsable numbers, they will be compared numerically. If either is not, they will be compared as strings. E.g. "a10bc40" and "a10b50c" would be broken up into `['a', '10', 'bc', '40']` and `['a', '10', 'b', '50', 'c']` respectively. The crux of the comparison would happen at the chunks "bc" vs "b" (wherein "b" comes before "bc"), and the comparison of chunks "40" and "50" would be irrelevant.
@@ -279,7 +279,7 @@ Additional functions for handling basic Date objects are added. Specifically to 
 <a name="common-DateUTC" href="#common-DateUTC">#</a>
 **DateUTC**(*year*, *month*, *day*[, *hour*[, *min*[, *sec*]]]) ⇒ `Date`
 
-Creates a datetime, forced as UTC. **Note that month must be indicated as 1-12** (unlike traditional Date constructor as 0-11).
+Creates a datetime, forced as UTC. **Month is to be indicated as number from 1-12** (unlike traditional Date constructor as 0-11).
 
 <a name="common-dateAsUTC" href="#common-dateAsUTC">#</a>
 *Date*.prototype.**asUTC**() ⇒ `Date`
@@ -308,7 +308,7 @@ d.toUTC();                     // Tue Jan 01 2019 20:00:00 GMT-0800 (Pacific Sta
 <a name="common-dateAsUTCDate" href="#common-dateAsUTCDate">#</a>
 *Date*.prototype.**asUTCDate**() ⇒ `Date`
 
-Converts date dropping any time information and assuming 12:00 AM UTC. Does not convert localtime, assuming it was given incorrectly.
+Converts date by dropping any time information and assuming 12:00 AM UTC. Does not convert localtime, assuming it was given incorrectly.
 
 ```javascript
 d = new Date(2019, 0, 1, 20);  // Tue Jan 01 2019 20:00:00 GMT-0800 (Pacific Standard Time)
@@ -355,7 +355,7 @@ Returned as object if instantiated via CommonJS or AMD import. Otherwise appende
 <a name="common-getElement" href="#common-getElement">#</a>
 *common*.**getElement**(*element*) ⇒ `Element`
 
-Given an input, returns an [Element](https://developer.mozilla.org/en-US/docs/Web/API/Element) as best determined from what is provided. If a single Element is provided, simply returns it. If an array is provided, returns the first item (or `undefined` if empty). If a NodeList or other iterable is provided, returns value of `next()` or `null` if done. If a jQuery object is provided, returns first result in [`element.get()`](https://api.jquery.com/get/), or `null` if no results. If string is provided, returns result of [`document.querySelector()`](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector) using the string as the selector. If none of the above apply, returns `null`.
+Given an input, returns an [Element](https://developer.mozilla.org/en-US/docs/Web/API/Element) (or object derived from the Element prototype) as best determined from what is provided. If a single Element is provided, simply returns it. If an array is provided, returns the first item (or `undefined` if empty). If a NodeList or other iterable is provided, returns value of `next()` or `null` if done. If a jQuery object is provided, returns the first result in [`get()`](https://api.jquery.com/get/), or `null` if no results. If string is provided, returns result of [`document.querySelector()`](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector) using the string as the selector. If none of the above apply, returns `null`.
 
 | Param | Type | Description |a 
 | :--- | :---: | :--- |
@@ -364,7 +364,7 @@ Given an input, returns an [Element](https://developer.mozilla.org/en-US/docs/We
 <a name="common-getElementList" href="#common-getElementList">#</a>
 *common*.**getElementList**(*element*) ⇒ `Element[]`
 
-Given any input, converts it into an array (assumedly of Elements). If undefined input, returns an empty array. If a `NodeList`, array, or other iterable is provided, converts to an array via `Array.from()`. If a `jQuery` object is provided, returns array given by calling [`.get()`](https://api.jquery.com/get/) on it. If a string is provided, returns result of `document.querySelectorAll(element)` converted into an array. Otherwise, the default behavior is to simply wrap the input object into an array (such that if provided, e.g. an `Element` instance)
+Given an input, converts it into an array of [Elements](https://developer.mozilla.org/en-US/docs/Web/API/Element) (or objects derived from the Element prototype). If a NodeList, array, or other iterable is provided, converts to an array via `Array.from()`, then filtering on only elements that are derived from the Element prototype. If a `jQuery` object is provided, returns array given by calling [`get()`](https://api.jquery.com/get/) on it. If a string is provided, returns result of [`document.querySelectorAll()`](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelectorAll), using the string as the selector, converted into an array. Otherwise, wraps it in an array if derived from the Element prototype, or returns an empty array.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
@@ -373,20 +373,20 @@ Given any input, converts it into an array (assumedly of Elements). If undefined
 <a name="common-extend" href="#common-extend">#</a>
 *common*.**extend**(*obj*, *extend*[, *allowOverwrite*[, *deepCopy*]]) ⇒ `Object`
 
-Copy given object and extended with new values.
+Copy given object and extended with new values. The passed parameters are not modified in any way.
 
-If `extend` is null, a copy of `obj` is returned. If `obj` is null, `extend` is simply returned as is. The returned value is simply a passed reference to the input object, unless `deepCopy` is true. 
+If either `extend` or `obj` is null or undefined (or evaluates as such, e.g. false or zeros values), the remaining object is simply returned as is. The returned value is simply a passed reference to the input object, unless `deepCopy` is true. 
 
 If both are specified, values in first levels of `obj` and `extend` are copied to a cloned object by simply passing the value. Thus primitive types are copied by value, but objects will be copied by reference, unless `deepCopy` is true.
 
-Deep copy is done via `JSON.parse(JSON.stringify())`, which may result in some data loss (e.g. functions will not get copied properly).
+Deep copy is done via [`structuredClone()`](https://developer.mozilla.org/en-US/docs/Web/API/structuredClone), if available, or fallbacks to the `JSON.parse(JSON.stringify())` method. Note that the former method may throw an `DataCloneError` exception and the latter will results in some values (such as dates, functions, or circular references) not being correctly carried over.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
 | obj | `Object` | Base object |
 | extend | `Object` | Object of extensions to base object |
 | allowOverwrite | `Boolean` | Unless true, items in `extend` matching existing values in `obj` by key are not copied over. |
-| deepCopy | `Boolean` | If true, all values are copied via JSON.parse(JSON.stringify()), ensuring a deep copy. |
+| deepCopy | `Boolean` | If true, all values are copied via `structuredClone()` or, as a fallback, `JSON.parse(JSON.stringify())`. |
 
 <a name="common-getUrlGetVars" href="#common-getUrlGetVars">#</a>
 *common*.**getUrlGetVars**() ⇒ `Object`
