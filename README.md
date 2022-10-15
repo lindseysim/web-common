@@ -392,6 +392,8 @@ Alternatively, the parameters `allowOverwrite`, `deepCopy`, and/or `modifyObj` m
 <a name="common-extend-2" href="#common-extend-2">#</a>
 *common*.**extend**(*obj*, *extend*[, *options*]) ⇒ `Object`
 
+See above.
+
 | Param | Type | Description |
 | :--- | :---: | :--- |
 | obj | `Object` | Base object. |
@@ -422,6 +424,8 @@ Alternatively, all parameters except `url` can be supplied as key-value pairs of
 
 <a name="common-newWindow-2" href="#common-newWindow-2">#</a>
 *common*.**newWindow**(*url*, [*options*]) ⇒ `Window`
+
+See above.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
@@ -469,6 +473,8 @@ Alternatively, all the parameters may be provided as key-value pairs of an objec
 
 <a name="common-animate-2" href="#common-animate-2">#</a>
 *common*.**animate**(*options*) ⇒ `Promise`
+
+See above.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
@@ -561,6 +567,20 @@ Add hover tooltip to element(s).
 | direction | `String` | Direction of tooltip (defaults to top). |
 | force | `Boolean` | If true, forces tooltip visible. |
 
+Alternatively, `message`, `direction`, and `force` may be provided as key-value pairs of an object-literal provided as the 2nd parameter.
+
+<a name="common-addTooltip-2" href="#common-addTooltip-2">#</a>
+*common*.*ui*.**addTooltip**(*element*, *options*)
+
+See above.
+
+| Param | Type | Description |
+| :--- | :---: | :--- |
+| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to remove dropdown from. See [`common.getElementList()`](#common-getElementList) for evaluation of this parameter. |
+| options.message | `String` | Tooltip message/HTML. |
+| options.direction | `String` | Direction of tooltip (defaults to top). |
+| options.force | `Boolean` | If true, forces tooltip visible. |
+
 <a name="common-removeTooltip" href="#common-removeTooltip">#</a>
 *common*.*ui*.**removeTooltip**(*element*)
 
@@ -582,6 +602,21 @@ Add help icon to element(s) as (?) styled icon with tooltip.
 | direction | `String` | Direction of tooltip (defaults to top). |
 | style | `Object` | Dictionary of inline style key-values for icon. |
 | force | `Boolean` | If true, forces tooltip visible. |
+
+Alternatively, `message`, `direction`, `style`, and `force` may be provided as key-value pairs of an object-literal provided as the 2nd parameter.
+
+<a name="common-appendHelpIcon-2" href="#common-appendHelpIcon-2">#</a>
+*common*.*ui*.**appendHelpIcon**(*element*, *options*)
+
+See above.
+
+| Param | Type | Description |
+| :--- | :---: | :--- |
+| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to remove dropdown from. See [`common.getElementList()`](#common-getElementList) for evaluation of this parameter. |
+| options.message | `String` | Tooltip message/HTML. |
+| options.direction | `String` | Direction of tooltip (defaults to top). |
+| options.style | `Object` | Dictionary of inline style key-values for icon. |
+| options.force | `Boolean` | If true, forces tooltip visible. |
  
 <a name="common-removeHelpIcon" href="#common-removeHelpIcon">#</a>
 *common*.*ui*.**removeHelpIcon**(*element*)
@@ -608,7 +643,7 @@ Only one modal may be open at a time. Opening another modal will replace the cur
 Check whether modal is open.
 
 <a name="common-setModal" href="#common-setModal">#</a>
-*common*.*ui*.**setModal**(*visible*, *content*, *options*]])<br />
+*common*.*ui*.**setModal**(*visible*, *content*[, *options*])<br />
 <a name="common-setModal" href="#common-setModal">#</a>
 *common*.*ui*.**openModal**(*content*[, *options*])
 
