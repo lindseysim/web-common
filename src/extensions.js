@@ -94,39 +94,76 @@ if(!String.prototype.capitalize) {
 }
 
 /**
- * Compare strings with numbers such that a "number" is not compared alphabetically by character but 
- * as the numeric value. Right now only handles positive integers. Compares character by character 
- * such that numbers encountered at the same "place" are compared. If numbers are of different 
- * character length but equal numerically, continues reading strings, adjusting "place" for different 
- * digit length. E.g. "a01b02" will compare as equal to "a1b2".
+ * Compare strings semantically, such that numbers within the string are not compared alphabetically 
+ * by character but as the full numeric value. By default, only handles positive integers.
  * @param {String} compareString
+ * @param {Object} options
+ * @param {Boolean} options.handleNegative
+ * @param {Boolean} options.handleDecimal
  * @returns {Number} -1 if before, 0 if equal, 1 if after.
  */
-if(!String.prototype.heuristicCompare) {
-    Object.defineProperty(String.prototype, 'heuristicCompare', {
-        value(compareString) {
-            let thisChunks = this.match(/(\d+|[^\d]+)/g), 
-                thatChunks = compareString.match(/(\d+|[^\d]+)/g), 
-                i = 0, chunkA, chunkB, compare;
-            while(true) {
-                if(i === thisChunks.length) {
-                    return i === thatChunks.length ? 0 : -1;
-                } else if(i === thatChunks.length) {
-                    return 1;
-                }
-                chunkA = thisChunks[i];
-                chunkB = thatChunks[i];
-                if(/\d/.test(chunkA) && /\d/.test(chunkB)) {
-                    compare = parseInt(chunkA) - parseInt(chunkB);
-                } else {
-                    compare = chunkA.localeCompare(chunkB);
-                }
-                if(compare) return compare < 0 ? -1 : 1;
-                ++i;
-            }
-            return 0;
+if(!String.prototype.semanticCompare || !String.prototype.heuristicCompare) {
+    var compareFunc = function(compareString, options) {
+        options = options || {};
+        let matchRegex;
+        if(options.handleDecimal && options.handleNegative) {
+            matchRegex = /(\-?\d+\.?\d+)|(\-?\.\d+)|(\-?\d+)/g;
+        } else if(options.handleDecimal) {
+            matchRegex = /(\d+\.?\d+)|(\.\d+)|(\d+)/g;
+        } else if(options.handleNegative) {
+            matchRegex = /\-?\d+/g
+        } else {
+            matchRegex = /\d+/g;
         }
-    });
+        let A = {str: this}, 
+            B = {str: compareString}, 
+            both = [A, B], 
+            compare;
+        both.forEach(o => {
+            o.matches = o.str.matchAll(matchRegex);
+            o.match   = o.matches.next();
+            o.chunk   = "";
+            o.index   = 0;
+            o.isnum   = false;
+            o.done    = false;
+        });
+        while(!A.done || !B.done) {
+            both.forEach(o => {
+                if(o.done) return;
+                if(o.match.done) {
+                    o.done = true;
+                    o.isnum = false;
+                    o.chunk = o.str.slice(o.index);
+                    o.index = o.str.length;
+                } else if(o.match.value.index > o.index) {
+                    // grab preceding string first
+                    o.isnum = false;
+                    o.chunk = o.str.slice(o.index, o.match.value.index);
+                    o.index = o.match.value.index;
+                } else {
+                    o.isnum = true;
+                    o.chunk = o.match.value[0];
+                    o.index = o.match.value.index + o.chunk.length;
+                    o.match = o.matches.next();
+                }
+            });
+            if(A.isnum && B.isnum) {
+                compare = parseFloat(A.chunk) - parseFloat(B.chunk);
+                compare = !compare ? 0 : (compare < 0 ? -1 : 1);
+            } else {
+                compare = A.chunk.localeCompare(B.chunk);
+            }
+            if(compare) return compare;
+            if(A.done !== B.done) return A.done ? -1 : 1;
+        }
+        return 0;
+    };
+    if(!String.prototype.semanticCompare) {
+        Object.defineProperty(String.prototype, 'semanticCompare', {value: compareFunc});
+    }
+    if(!String.prototype.heuristicCompare) {
+        Object.defineProperty(String.prototype, 'heuristicCompare', {value: compareFunc});
+    }
 }
 
 /**

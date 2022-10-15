@@ -240,22 +240,34 @@ Uses [`Object.getPrototypeOf()`](https://developer.mozilla.org/en-US/docs/Web/Ja
 
 Will capitalize the each word in the string (using whitespace to delineate words). Additional break characters can be provided as either an array of characters or a string of all characters in the optional parameter `break`. E.g., to include hyphens, `"up-to-date".capitalize("-")`.
 
+<a name="common-stringSemanticCompare" href="#common-stringSemanticCompare">#</a>
+*String*.prototype.**semanticCompare**(*compareString*[, *options*]) ⇒ `number`<br />
 <a name="common-stringHeuristicCompare" href="#common-stringHeuristicCompare">#</a>
-*String*.prototype.**heuristicCompare**(*compareString*) ⇒ `number`
+*String*.prototype.**heuristicCompare**(*compareString*[, *options*]) ⇒ `number`
 
-Compare strings with numbers such that a "number" is not compared alphabetically by character but as the numeric value. 
-
-Compares character by character such that numbers encountered at the same "place" are compared. If numbers are of different character length but equal numerically, continues reading strings, adjusting "place" for different digit length.
-
-***Does not support negative numbers.** Negative symbols will be read as hyphen character.*
+A semantic comparison of strings with numeric values within them. Compare the numbers in a string such that a "number" is not compared alphabetically by character but as the entire numeric value.
 
 Returns numeric indicating whether `this` string comes before (-1), after (1), or is equal (0) to compared string. As such, can be inserted into most sort functions such as [Array.prototype.sort()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort) as the compare function.
 
+
 ```javascript
-"a01b02".heuristicCompare("a1b2");  // 0
-"ab20".heuristicCompare("ab1");     // 1
-"ab9".heuristicCompare("ab999");    // -1
-"ba20".heuristicCompare("ab1");     // 1
+"x01x02".semanticCompare("x1x2");  // 0  is semantically equal
+"x20".semanticCompare("x1");   // 1  comes after
+"x9".semanticCompare("x999");  // -1 comes before
+"b20".semanticCompare("a1");   // 1
+```
+
+By default, negative numbers and decimals are not handled as dashes and periods may not be considered part of the number, depending on the string. This can be switched by setting true either/both the optional parameters `options.handleNegative` and/or `options.handleDeciaml`. If enabling decimals in particular, ensure numbers are properly formatted. E.g. a value of "3.2.1" would result in a numeric parsing two separate values of "3.2" and "0.1".
+
+```javascript
+"x-2".semanticCompare("x-1", {handleNegative: true});  // -1
+"x-2".semanticCompare("x-1");  // 1
+```
+
+Each string is broken into chunks of parsable number and non-numeric chunks. Each chunk is compared in similar sequences. When both compared chunks are parsable numbers, they will be compared numerically. If either is not, they will be compared as strings. E.g. "a10bc40" and "a10b50c" would be broken up into `['a', '10', 'bc', '40']` and `['a', '10', 'b', '50', 'c']` respectively. The crux of the comparison would happen at the chunks "bc" vs "b" (wherein "b" comes before "bc"), and the comparison of chunks "40" and "50" would be irrelevant.
+
+```javascript
+"a10bc40".semanticCompare("a10b50c");  // 1
 ```
 
 &nbsp;
@@ -343,9 +355,9 @@ Returned as object if instantiated via CommonJS or AMD import. Otherwise appende
 <a name="common-getElement" href="#common-getElement">#</a>
 *common*.**getElement**(*element*) ⇒ `Element`
 
-Given an object, returns an `Element`. If a single `Element` is provided, simply returns it. If an array is provided, returns the first item (or undefined if empty). If a `NodeList`, or other iterable is provided, returns value of `next()` or null if done. If `jQuery` object is provided, returns first result in [`element.get()`](https://api.jquery.com/get/), or null if no results. If string is provided, returns result of `document.querySelector(element)`. If none of the above apply, returns null;
+Given an input, returns an [Element](https://developer.mozilla.org/en-US/docs/Web/API/Element) as best determined from what is provided. If a single Element is provided, simply returns it. If an array is provided, returns the first item (or `undefined` if empty). If a NodeList or other iterable is provided, returns value of `next()` or `null` if done. If a jQuery object is provided, returns first result in [`element.get()`](https://api.jquery.com/get/), or `null` if no results. If string is provided, returns result of [`document.querySelector()`](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector) using the string as the selector. If none of the above apply, returns `null`.
 
-| Param | Type | Description |
+| Param | Type | Description |a 
 | :--- | :---: | :--- |
 | element | `Element` \| `jQuery` \| `String` | Object to convert to `Element`. |
  
