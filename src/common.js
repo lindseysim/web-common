@@ -1,3 +1,16 @@
+function _copy_(obj, extend, allowOverwrite, copyFunc) {
+    for(let key in extend) {
+        if(!(key in obj)) {
+            obj[key] = copyFunc(extend[key]);
+        } else if(Object.isObjectLiteral(obj[key]) && Object.isObjectLiteral(extend[key])) {
+            _copy_(obj[key], extend[key], allowOverwrite, copyFunc);
+        } else if(allowOverwrite) {
+            obj[key] = copyFunc(extend[key]);
+        }
+    }
+    return obj;
+}
+
 export default {
 
     getElement(element) {
@@ -40,31 +53,18 @@ export default {
             if(typeof modifyObj === "undefined") modifyObj = allowOverwrite.modifyObj;
             allowOverwrite = allowOverwrite.allowOverwrite;
         }
-        let docopy;
+        let copyFunc;
         if(!deepCopy) {
-            docopy = input => input;
+            copyFunc = input => input;
         } else if(structuredClone && typeof structuredClone === "function") {
-            docopy = structuredClone;
+            copyFunc = structuredClone;
         } else {
-            docopy = input => JSON.parse(JSON.stringify(input));
+            copyFunc = input => JSON.parse(JSON.stringify(input));
         }
-        if(!extend) return modifyObj ? obj : docopy(obj);
-        if(!obj) return docopy(extend);
-        let clone;
-        if(modifyObj) {
-            clone = obj;
-        } else {
-            clone = {};
-            for(let key in obj) {
-                clone[key] = docopy(obj[key]);
-            }
-        }
-        for(let key in extend) {
-            if(allowOverwrite || !(key in clone)) {
-                clone[key] = docopy(extend[key]);
-            }
-        }
-        return clone;
+        if(!extend) return modifyObj ? obj : copyFunc(obj);
+        if(!obj) return copyFunc(extend);
+        let clone = modifyObj ? obj : _copy_({}, obj, true, copyFunc);
+        return _copy_(clone, extend, allowOverwrite, copyFunc);
     }, 
     
     getUrlGetVars() {
