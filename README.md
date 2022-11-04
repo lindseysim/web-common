@@ -357,10 +357,12 @@ Returned as object if instantiated via CommonJS or AMD import. Otherwise appende
 
 Given an input, returns an [Element](https://developer.mozilla.org/en-US/docs/Web/API/Element) (or object derived from the Element prototype) as best determined from what is provided. If a single Element is provided, simply returns it. If an array is provided, returns the first item (or `undefined` if empty). If a NodeList or other iterable is provided, returns value of `next()` or `null` if done. If a jQuery object is provided, returns the first result in [`get()`](https://api.jquery.com/get/), or `null` if no results. If string is provided, returns result of [`document.querySelector()`](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector) using the string as the selector. If none of the above apply, returns `null`.
 
-| Param | Type | Description |a 
+| Param | Type | Description |
 | :--- | :---: | :--- |
 | element | `Element` \| `jQuery` \| `String` | Object to convert to `Element`. |
  
+&nbsp;
+
 <a name="common-getElementList" href="#common-getElementList">#</a>
 *common*.**getElementList**(*element*) ⇒ `Element[]`
 
