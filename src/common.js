@@ -120,15 +120,19 @@ export default {
             }
         };
 
-        let reqParams = null, 
-            methodIsPost = params.method.toUpperCase() === "POST";
-        if(!methodIsPost && params.data) {
+        let reqParams = null;
+        if(params.data) {
             if(!params.url.endsWith("?")) params.url += "?";
-            reqParams = [];
+            let strParams = [];
             for(let key in params.data) {
-                reqParams.push(encodeURI(key + '=' + params.data[key]));
+                strParams.push(encodeURI(key + '=' + params.data[key]));
             }
-            params.url += reqParams.join("&");
+            reqParams = strParams.join("&");
+        }
+        let methodIsPost = params.method.toUpperCase() === "POST";
+        if(!methodIsPost && reqParams) {
+            if(!params.url.endsWith("?")) params.url += "?";
+            params.url += reqParams;
         }
 
         var xhr = new XMLHttpRequest(), 
