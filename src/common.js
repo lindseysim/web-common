@@ -120,10 +120,11 @@ export default {
             }
         };
 
-        let methodIsPost = params.method.toUpperCase() === "POST";
+        let reqParams = null, 
+            methodIsPost = params.method.toUpperCase() === "POST";
         if(!methodIsPost && params.data) {
             if(!params.url.endsWith("?")) params.url += "?";
-            let reqParams = [];
+            reqParams = [];
             for(let key in params.data) {
                 reqParams.push(encodeURI(key + '=' + params.data[key]));
             }

@@ -360,8 +360,6 @@ Given an input, returns an [Element](https://developer.mozilla.org/en-US/docs/We
 | Param | Type | Description |
 | :--- | :---: | :--- |
 | element | `Element` \| `jQuery` \| `String` | Object to convert to `Element`. |
- 
-&nbsp;
 
 <a name="common-getElementList" href="#common-getElementList">#</a>
 *common*.**getElementList**(*element*) ⇒ `Element[]`
