@@ -167,9 +167,13 @@ E.g. for Opera browsers, with an example user agent of `"Mozilla/5.0 (Windows NT
 }
 ```
 
-Currently, this checks for the following known browsers: Chrome, Firefox, Edge, IE, Safari, Opera, Brave, Samsung Internet, UCBrowser, Yandex, and QtWebEngine.
+Similarly, the variable might be `isChrome` or `isFirefox` or `isEdge`, as the case dictates.
 
-Note that this method of parsing the UserAgent string is somewhat brittle and can be unreliable, especially for those lesser-seen browsers (e.g. Android Browser) or those specific to devices (e.g. Kindle Browser). If this is critical, it is generally preferred to use feature detection instead.
+Currently, this checks for the following known browsers: Chrome, Firefox, Edge, IE, Safari, Opera, Brave, Samsung Internet, UCBrowser, Yandex, 360 Secure Browser, QQBrowser, Instabridge, Vivaldi, Cốc Cốc, Naver Whale, Puffin, Sleipnir, Amazon Silk, and QtWebEngine. 
+
+For browsers on iOS, Apple forces to be basically skins of Safari Mobile, which may not always be detected some browser don't change the user agent name. For what it's worth, Chrome, Firefox, and Edge flavors will have versions under `crios`, `fiox`, and `edgios` while correctly identifying it as a Safari Browser.
+
+Note that this method of parsing the UserAgent string is somewhat brittle and can be unreliable, especially for those lesser-seen browsers or those specific to devices (like tablets, smart TVs, or gaming consoles). If this is critical, it is generally preferred to use feature detection instead.
 
 &nbsp;
 
@@ -190,6 +194,15 @@ Get overlapping values with second array. Can be called from array instance or `
 *Array*.prototype.**overlaps**(*arr*) ⇒ `boolean`
 
 Check if at least one value overlaps with second array. Can be called from array instance or `Array` global. Uses strict equality.
+
+<a name="common-arrayRemove" href="#common-arrayRemove">#</a>
+*Array*.prototype.**remove**(*value*[, *index*[, *limit*]]) ⇒ `Array`
+
+Remove all instances of a value from an array. Creates a copy without modifying the original array.
+
+Set `index` to define the index at which to start indexing. Negatives are allowed to find a position from reverse. If the index is greater than or equal to the length of the array, the array is not searched and nothing is removed.
+
+Set `limit` to a positive value to define a limit to the number of times the value will be removed. Otherwise, the removal allowance is unlimited.
 
 <a name="common-elementIsVisible" href="#common-elementIsVisible">#</a>
 *Element*.prototype.**isVisible**() ⇒ `boolean`
@@ -219,7 +232,15 @@ Will convert a given number to a string, using the supplied precision, with comm
 <a name="common-elementAddCommasSmart" href="#common-elementAddCommasSmart">#</a>
 *Number*.prototype.**addCommasSmart**([*minimum=0.001*]) ⇒ `string`
 
-Basically wraps `Number.prototype.addCommas()` with heuristic guessing on precision to use. As well, the `minimum` parameter rounds any value whose absolute value is less than this to zero. Current heuristics are: evaluation to zero is always written as "0.0", less than 0.01 as exponential with three sig. figures, less than 0.1 as exponential with two sig. figures, less than 0.3 with three decimal places, less than 1.0 with two decimal places, less than 100 with one decimal place, and greater than or equal to 100 with no decimal places.
+Basically wraps `Number.prototype.addCommas()` with heuristic guessing on precision to use. The `minimum` parameter rounds any value whose absolute value is less than this to zero. Current heuristics are: 
+
+* Evaluation to zero is always written as "0.0"
+* \<0.01 as scientific notation with three significant figures
+* \<0.1 as scientific notation with two significant figures
+* \<0.3 as number with three decimal places
+* \<1.0 as number with two decimal places
+* \<100 as number with one decimal place
+* ≥100 as number with no decimal places
 
 <a name="common-objectIsObject" href="#common-objectIsObject">#</a>
 *Object*.**isObject**(*obj*) ⇒ `boolean`
@@ -231,23 +252,27 @@ Uses [`typeof`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Referenc
 <a name="common-objectIsObjectLiteral" href="#common-objectIsObjectLiteral">#</a>
 *Object*.**isObjectLiteral**(*obj*) ⇒ `boolean`
 
-Check is given object is an object literal-type. That is, not a primitive, string, array, or even any inheritance of the Object prototype. Must be a base object create either as an object literal  or via `new Object()`. Useful for when parameters must be ensured is an object-literal/dictionary.
+Check is given object is an object literal-type. That is, not a primitive, string, array, or even any inheritance of the Object prototype. Must be a base object created either as an object literal  or via `new Object()`. Useful for when parameters must be ensured as an object-literal/dictionary.
 
 Uses [`Object.getPrototypeOf()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getPrototypeOf) check.
 
 <a name="common-stringCapitalize" href="#common-stringCapitalize">#</a>
 *String*.prototype.**capitalize**([*breaks*]) ⇒ `string`
 
-Will capitalize the each word in the string (using whitespace to delineate words). Additional break characters can be provided as either an array of characters or a string of all characters in the optional parameter `break`. E.g., to include hyphens, `"up-to-date".capitalize("-")`.
+Will capitalize the each word in the string (using whitespace to delineate words). 
+
+Additional break characters can be provided as either an array of characters or a string of all characters in the optional parameter `breaks`. E.g., to include hyphens, `"up-to-date".capitalize("-")` will output `Up-To-Date`.
 
 <a name="common-stringSemanticCompare" href="#common-stringSemanticCompare">#</a>
 *String*.prototype.**semanticCompare**(*compareString*[, *options*]) ⇒ `number`<br />
 <a name="common-stringHeuristicCompare" href="#common-stringHeuristicCompare">#</a>
 *String*.prototype.**heuristicCompare**(*compareString*[, *options*]) ⇒ `number`
 
-A semantic comparison of strings with numeric values within them. Compare the numbers in a string such that a "number" is not compared alphabetically by character but as the entire numeric value.
+A semantic comparison of strings with numeric values within them. Compare the numbers in a string such that a "number" is not compared alphabetically by character but as the entire numeric value. 
 
-Returns numeric indicating whether `this` string comes before (-1), after (1), or is equal (0) to compared string. As such, can be inserted into most sort functions such as [Array.prototype.sort()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort) as the compare function.
+E.g., a typical string comparisons would result in '20' coming before '5', because it was compare character by character, first comparing the '2' and '5' characters. This ensures, the entire '20' is considered as one number.
+
+Returns numeric indicating whether `this` string comes before (-1), after (1), or is equal (0) to compared string. As such, can be inserted into most sort functions such as [Array.prototype.sort()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort) within the compare function.
 
 
 ```javascript
@@ -257,17 +282,17 @@ Returns numeric indicating whether `this` string comes before (-1), after (1), o
 "b1".semanticCompare("a2");        //  1 comes after
 ```
 
+Each string is broken into chunks of parsable number and non-numeric chunks. Each chunk is compared in similar sequences. When both compared chunks are parsable numbers, they will be compared numerically. If either is not, they will be compared as strings. E.g. "a10bc40" and "a10b50c" would be broken up into `['a', '10', 'bc', '40']` and `['a', '10', 'b', '50', 'c']` respectively. The crux of the comparison would happen at the chunks "bc" vs "b" (wherein "b" comes before "bc"), and the comparison of chunks "40" and "50" would be irrelevant.
+
+```javascript
+"a10bc40".semanticCompare("a10b50c");  // 1
+```
+
 By default, negative numbers and decimals are not handled as dashes and periods may not be considered part of the number, depending on the string. This can be switched by setting true either/both the optional parameters `options.handleNegative` and/or `options.handleDeciaml`. If enabling decimals in particular, ensure numbers are properly formatted. E.g. a value of "3.2.1" would result in a numeric parsing two separate values of "3.2" and "0.1".
 
 ```javascript
 "x-2".semanticCompare("x-1");  // 1
 "x-2".semanticCompare("x-1", {handleNegative: true});  // -1
-```
-
-Each string is broken into chunks of parsable number and non-numeric chunks. Each chunk is compared in similar sequences. When both compared chunks are parsable numbers, they will be compared numerically. If either is not, they will be compared as strings. E.g. "a10bc40" and "a10b50c" would be broken up into `['a', '10', 'bc', '40']` and `['a', '10', 'b', '50', 'c']` respectively. The crux of the comparison would happen at the chunks "bc" vs "b" (wherein "b" comes before "bc"), and the comparison of chunks "40" and "50" would be irrelevant.
-
-```javascript
-"a10bc40".semanticCompare("a10b50c");  // 1
 ```
 
 &nbsp;
@@ -284,14 +309,14 @@ Creates a datetime, forced as UTC. **Month is to be indicated as number from 1-1
 <a name="common-dateAsUTC" href="#common-dateAsUTC">#</a>
 *Date*.prototype.**asUTC**() ⇒ `Date`
 
-Converts datetime to UTC assuming time given (assumed localtime) was actually meant as UTC time. That is to say, the date/time in localtime will be kept as the UTC date/time, only changing timezone.
+Converts datetime to UTC assuming time given (assumed localtime) was actually meant as UTC time. That is to say, Does not convert localtime to UTC and simply passes the time values as they exist. The date/time in localtime will be kept as the UTC date/time, only changing the timezone to UTC.
 
 ```javascript
 d = new Date(2019, 0, 1, 20);  // Tue Jan 01 2019 20:00:00 GMT-0800 (Pacific Standard Time)
 d.asUTC();                     // Tue Jan 01 2019 12:00:00 GMT-0800 (Pacific Standard Time)
-// Assumed Jan 1 2019 at 20:00 was meant as UTC
-// Converted back to PST is 8 hours earlier, which is what it prints
 ```
+
+In the above conversion, assumed the date of Jan 1 2019 at 20:00 was meant as UTC and adjust the timezone without converting the time. When printing the date, which in javascript is by default converted to localtime (in this case PST), it 8 hours earlier but corresponds to 20:00 UTC.
 
 <a name="common-dateToUTC" href="#common-dateToUTC">#</a>
 *Date*.prototype.**toUTC**() ⇒ `Date`
@@ -301,35 +326,33 @@ Creates new `DateUTC` using the UTC datetime of this object, converted from loca
 ```javascript
 d = new Date(2019, 0, 1, 20);  // Tue Jan 01 2019 20:00:00 GMT-0800 (Pacific Standard Time)
 d.toUTC();                     // Tue Jan 01 2019 20:00:00 GMT-0800 (Pacific Standard Time)
-// No change, as printing is always done in localtime, conversion is mostly symbolic
-// This function only left in for clarity, but really doesn't do anything
 ```
+
+As printing is always done in localtime, conversion is mostly symbolic. This function only left in for completeness, but really doesn't do anything.
 
 <a name="common-dateAsUTCDate" href="#common-dateAsUTCDate">#</a>
 *Date*.prototype.**asUTCDate**() ⇒ `Date`
 
-Converts date by dropping any time information and assuming 12:00 AM UTC. Does not convert localtime, assuming it was given incorrectly.
+Converts date by dropping any time information and assuming 12:00 AM UTC. Does not convert localtime to UTC and simply passes the time values as they exist.
 
 ```javascript
 d = new Date(2019, 0, 1, 20);  // Tue Jan 01 2019 20:00:00 GMT-0800 (Pacific Standard Time)
 d.asUTCDate();                 // Mon Dec 31 2018 16:00:00 GMT-0800 (Pacific Standard Time)
-// Assumes Jan 1, 2019 (date-only) in UTC time (though constructed with localtime)
-// Drops time information, making it Jan 1, 2019 at 00:00 UTC
-// Which is 16:00 PST the previous day in PST, which is what it prints
 ```
+
+In the above conversion, converts Jan 1, 2019 (date-only) in UTC time (though constructed with localtime). Drops time information, making it Jan 1, 2019 at 00:00 UTC. Printed, which is in localtime by default in javascript, it shows as 16:00 PST the previous day.
 
 <a name="common-dateToUTCDate" href="#common-dateToUTCDate">#</a>
 *Date*.prototype.**toUTCDate**() ⇒ `Date`
 
-Converts date dropping any time information and assuming 12:00 AM UTC. Uses local date of instance converted to UTC.
+Converts date by first converting the time to UTC, then dropping any time information and assuming 12:00 AM UTC.
 
 ```javascript
 d = new Date(2019, 0, 1, 20);  // Tue Jan 01 2019 20:00:00 GMT-0800 (Pacific Standard Time)
 d.toUTCDate();                 // Tue Jan 01 2019 16:00:00 GMT-0800 (Pacific Standard Time)
-// Jan 1, 2019 at 20:00 in PST is Jan 2, 2019 at 04:00 in UTC
-// UTC date taken as is, time is dropped, leaving it at Jan 2, 2019 at 00:00 in UTC
-// Which is 16:00 PST the previous day in PST, which is what it prints
 ```
+
+In the above conversion, first converts Jan 1, 2019 at 20:00 in PST to 04:00 UTC the following day. Then it drops time information, making it Jan 2, 2019 at 00:00 UTC. Printed, which is in localtime by default in javascript, it shows as 16:00 PST the previous day (which is still Jan 1).
 
 <a name="common-dateAddDays" href="#common-dateAddDays">#</a>
 *Date*.prototype.**addDays**(*days*) ⇒ `Date`
@@ -426,7 +449,7 @@ Creates a new, centered window, even accounting for dual screen monitors.. The `
 Alternatively, all parameters except `url` can be supplied as key-value pairs of an object-literal provided as the 2nd parameter to the function.
 
 <a name="common-newWindow-2" href="#common-newWindow-2">#</a>
-*common*.**newWindow**(*url*, [*options*]) ⇒ `Window`
+*common*.**newWindow**(*url*[, *options*]) ⇒ `Window`
 
 See above.
 
@@ -461,7 +484,7 @@ However, if the project allows, I'd nowadays recommend using the [Fetch API](htt
 | params.promise | `Boolean` |  | Optionally return as Promise that resolves when the request resolves. |
 
 <a name="common-animate" href="#common-animate">#</a>
-*common*.**animate**(*element*, *properties*, *durationMs*[, *easing*[, *complete*]]]) ⇒ `Promise`
+*common*.**animate**(*element*, *properties*, *durationMs*[, *easing*[, *complete*]]) ⇒ `Promise`
 
 Mimics [jQuery.animate()](http://api.jquery.com/jQuery.animate/) function using CSS transitions by first applying a [transition](https://developer.mozilla.org/en-US/docs/Web/CSS/transition) property for the requisite CSS properties to be applied, then, after a short delay (5 ms), applying the properties. All this is done as modifications to the element's inline styles, and will thus may overwrite any existing inline styles and will be subject to any CSS rule overrides (such as an existing, applicable CSS rule with the `!imporant` property).
 
@@ -504,6 +527,8 @@ For modal dialog usage, ensure your dependency-manager/import-function is cachin
 
 Adds grab cursor functionality to draggable element. Element may be single element, a NodeList/Array of elements, or a jQuery selection.
 
+Adds class "grab" to element, and class "grabbing" when being dragged.
+
 | Param | Type | Description |
 | :--- | :---: | :--- |
 | element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to add functionality to. See [`common.getElementList()`](#common-getElementList) for evaluation of this parameter. |
@@ -512,6 +537,8 @@ Adds grab cursor functionality to draggable element. Element may be single eleme
 *common*.*ui*.**createDropdown**(*element*, *menu*)
 
 Create a dropdown menu on an element. *menu* parameter is an array of object literals defining the menu. The parameters 'id', 'class', 'style', and 'text', if they exist, are applied. For functionality, either add 'href' and optionally 'target' parameters or supply a callback to an 'onClick' parameter. To create a submenu, simply add a 'menu' parameter with the same nested structure. 
+
+Elements with be created with classes prefixed by "cm-dropdown".
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
@@ -565,9 +592,11 @@ To add a tooltip, simply add a class of `cm-tooltip-left`, `cm-tooltip-top`, `cm
 
 Add hover tooltip to element(s).
 
+Elements with be created with classes prefixed by "cm-tooltip".
+
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to remove dropdown from. See [`common.getElementList()`](#common-getElementList) for evaluation of this parameter. |
+| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to add tooltip to. See [`common.getElementList()`](#common-getElementList) for evaluation of this parameter. |
 | message | `String` | Tooltip message/HTML. |
 | direction | `String` | Direction of tooltip (defaults to top). |
 | force | `Boolean` | If true, forces tooltip visible. |
@@ -581,7 +610,7 @@ See above.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to remove dropdown from. See [`common.getElementList()`](#common-getElementList) for evaluation of this parameter. |
+| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to add tooltip to. See [`common.getElementList()`](#common-getElementList) for evaluation of this parameter. |
 | options | `Object` | |
 | options.message | `String` | Tooltip message/HTML. |
 | options.direction | `String` | Direction of tooltip (defaults to top). |
@@ -594,16 +623,18 @@ Remove hover tooltip from element(s).
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to remove dropdown from. See [`common.getElementList()`](#common-getElementList) for evaluation of this parameter. |
+| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to remove tooltip from. See [`common.getElementList()`](#common-getElementList) for evaluation of this parameter. |
 
 <a name="common-appendHelpIcon" href="#common-appendHelpIcon">#</a>
 *common*.*ui*.**appendHelpIcon**(*element*, *message*[, *direction*[, *style*[, *force*]]])
 
 Add help icon to element(s) as (?) styled icon with tooltip.
 
+Icon element will be created with class "cm-icon".
+
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to remove dropdown from. See [`common.getElementList()`](#common-getElementList) for evaluation of this parameter. |
+| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to add help icon too. See [`common.getElementList()`](#common-getElementList) for evaluation of this parameter. |
 | message | `String` | Tooltip message/HTML. |
 | direction | `String` | Direction of tooltip (defaults to top). |
 | style | `Object` | Dictionary of inline style key-values for icon. |
@@ -618,7 +649,7 @@ See above.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to remove dropdown from. See [`common.getElementList()`](#common-getElementList) for evaluation of this parameter. |
+| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to add help icon too. See [`common.getElementList()`](#common-getElementList) for evaluation of this parameter. |
 | options | `Object` | |
 | options.message | `String` | Tooltip message/HTML. |
 | options.direction | `String` | Direction of tooltip (defaults to top). |
@@ -632,13 +663,15 @@ Remove help icon from element(s).
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to remove dropdown from. See [`common.getElementList()`](#common-getElementList) for evaluation of this parameter. |
+| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to remove help icon from. See [`common.getElementList()`](#common-getElementList) for evaluation of this parameter. |
 
 &nbsp;  
 
 #### Modal dialogs ####
 
 For modal dialog usage, ensure your dependency-manager/import-function is caching requires/imports of the `common` object, or that you are passing the object by reference. Calling multiple instances of `common.ui` in the same window can result in odd behavior for modal management.
+
+Model elements will be created with classes prefixed by "cm-modal".
 
 When a modal function is first called, this library appends a hidden div to `body` to handle modals/dialogs. This includes a container div (`#cm-modal-container`), an outer modal div (`#cm-modal-outer`) with absolute positioning, and an inner div (`.cm-modal-inner`) which represents the actual dialog. You may (and are in fact recommended to) tweak the CSS rules attached to these as necessary.
 
@@ -682,8 +715,8 @@ Creates a new modal dialog with default values prepped for loading. `content` is
 | options.showBackground | `true` | `Boolean` | If true, creates a semi-transparent background over window. |
 | options.notExitable | `Boolean` | `true` | Normally modal closes on clicking anywhere outside modal dialog element. If true, this prevents this functionality. |
 | options.hideCloser | `Boolean` | `true` | If true, does not apply the automatically placed "X" to close dialog on upper-right. |
-| options.addDetails | `Boolean` | `true` | If true, creates a semi-trans |
-| options.addDetailsText | `String` | `"Please wait.."` | If true, creates a semi-trans |
+| options.addDetails | `Boolean` | `true` | If true, adds smaller subtext below the main modal content. |
+| options.addDetailsText | `String` | `"Please wait.."` | The content for subtext below the main modal content, if `addDetails` is set true. |
 
 &nbsp; &nbsp; **Returns:** `Element` of modal content div (`.cm-modal-inner`).
  
@@ -722,15 +755,15 @@ To use, begin by creating instance and adding columns with `addColumn()`. The `k
 And example usage script provided at bottom.  
 
 <a name="CommonTable" href="CommonTable">#</a>
-**CommonTable**(*tableId*[, *tableClass*[, *container*]])**
+**CommonTable**([*tableId*[, *tableClass*[, *container*]]])
 
-Creates new CommonTable with id and class (if provided, default class is "cm-table") and appends to container (if provided).
+Creates new CommonTable. The table will be given the class of "cm-table", more classes can be appended through the options.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
 | tableId | `String` | Table ID |
-| tableClass | `String` | Table classname |
-| container | `Element` | Element to create table in |
+| tableClass | `String|String[]` | Table classname (use array to add multiple) |
+| container | `Element` | Element to append table to |
 
 <a name="CommonTable-appendTo" href="CommonTable-appendTo">#</a>
 *CommonTable*.prototype.**appendTo**(*container*)
@@ -787,7 +820,7 @@ See above.
 | options.sortable | `Boolean` | Optional flag to set/disable sortable column on this column. By default columns are sortable, so set as false or null to disable. |
 
 <a name="CommonTable-createHeaders" href="CommonTable-createHeaders">#</a>
-*CommonTable*.prototype.**createHeaders**([*options*]])
+*CommonTable*.prototype.**createHeaders**([*options*])
 
 [Re]draw table. Unlike `populateTable()`, this only redraws the headers (rest of the rows are lost).
 
@@ -893,6 +926,8 @@ tbl.populateTable({
   ascending: false  // sort by wins descending
 });
 ```
+
+![CommonTable example](./misc/cmtable.png)
 
 ----------
 

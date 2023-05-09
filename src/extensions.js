@@ -2,6 +2,41 @@
 // Misc prototype extensions
 //****************************************************************************************************
 /**
+ * Remove all instances of a value from an array.
+ * @param value - Value to remove
+ * @param {number} index - Starting index (defaults to 0), negatives allowed
+ * @param {number} limit - Limit on number of removals (0 or negative for unlimited)
+ * @returns {Array} Copy of array with values removed
+ */
+if(!Array.prototype.remove) {
+    Object.defineProperty(Array.prototype, 'remove', {
+        value(value, index, limit) {
+            if(!index && index !== 0) {
+                index = 0;
+            } else if(index < 0) {
+                // negative indexing (only once)
+                index = this.length + index;
+                if(index < 0) return this.slice(0,);
+            } else if(index >= this.length) {
+                // greater than is no search
+                return this.slice(0,)
+            }
+            limit = limit || this.length;
+            let arr = this.slice(0,),  // ensures always copy, even if usually unnecessary
+                removed = 0;
+            index = arr.indexOf(value, index);
+            while(~index) {
+                if(index+1 === arr.length) return arr.slice(0, index);
+                arr = arr.slice(0, index).concat(arr.slice(index+1));
+                if(++removed >= limit) break;
+                index = arr.indexOf(value, index);
+            }
+            return arr;
+        }
+    });
+}
+
+/**
  * Get overlapping values with second array. Uses strict equality.
  * @param {Array} arr
  * @returns {Array} Array of overlapping values.
@@ -45,7 +80,7 @@ if(!Array.overlaps) {
  */
 if(!Object.isObject) {
     Object.defineProperty(Object, 'isObject', {
-        value: obj => obj !== null && obj !== undefined && typeof obj === "object" && !Array.isArray(obj)
+        value: obj => obj && typeof obj === "object" && !Array.isArray(obj)
     });
 }
 
@@ -58,7 +93,7 @@ if(!Object.isObject) {
  */
 if(!Object.isObjectLiteral) {
     Object.defineProperty(Object, 'isObjectLiteral', {
-        value: obj => obj !== null && obj !== undefined && Object.getPrototypeOf(obj) === Object.prototype
+        value: obj => obj && Object.getPrototypeOf(obj) === Object.prototype
     });
 }
 
