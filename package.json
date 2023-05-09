@@ -1,7 +1,7 @@
 {
   "name": "@lawrencesim/web-common",
   "version": "4.3.0",
-  "description": "Web Common is a collection of polyfills, extentions, and modules I repeatedly found myself reapplying on new projects.",
+  "description": "Web Common is a collection of polyfills, extensions, and modules I repeatedly found myself reapplying on new projects.",
   "main": "common.js",
   "repository": {
     "type": "git",
@@ -11,14 +11,14 @@
   "license": "MIT",
   "homepage": "https://github.com/lawrencesim/web-common",
   "devDependencies": {
-    "@babel/core": "^7.18.13",
-    "@babel/preset-env": "^7.18.10",
-    "babel-loader": "^8.2.5",
-    "clean-css": "^4.2.3",
-    "webpack": "^5.74.0",
+    "@babel/core": "^7.21.8",
+    "@babel/preset-env": "^7.21.5",
+    "babel-loader": "^9.1.2",
+    "clean-css": "^5.3.2",
+    "webpack": "^5.82.0",
     "webpack-cli": "^4.10.0"
   },
   "dependencies": {
-    "promise-polyfill": "^8.2.0"
+    "promise-polyfill": "^8.3.0"
   }
 }
