@@ -169,9 +169,11 @@ E.g. for Opera browsers, with an example user agent of `"Mozilla/5.0 (Windows NT
 
 Similarly, the variable might be `isChrome` or `isFirefox` or `isEdge`, as the case dictates.
 
-Currently, this checks for the following known browsers: Chrome, Firefox, Edge, IE, Safari, Opera, Brave, Samsung Internet, UCBrowser, Yandex, and QtWebEngine.
+Currently, this checks for the following known browsers: Chrome, Firefox, Edge, IE, Safari, Opera, Brave, Samsung Internet, UCBrowser, Yandex, 360 Secure Browser, QQBrowser, Instabridge, Vivaldi, Cốc Cốc, Naver Whale, Puffin, Sleipnir, Amazon Silk, and QtWebEngine. 
 
-Note that this method of parsing the UserAgent string is somewhat brittle and can be unreliable, especially for those lesser-seen browsers (e.g. Android Browser) or those specific to devices (e.g. Kindle Browser). If this is critical, it is generally preferred to use feature detection instead.
+For browsers on iOS, Apple forces to be basically skins of Safari Mobile, which may not always be detected some browser don't change the user agent name. For what it's worth, Chrome, Firefox, and Edge flavors will have versions under `crios`, `fiox`, and `edgios` while correctly identifying it as a Safari Browser.
+
+Note that this method of parsing the UserAgent string is somewhat brittle and can be unreliable, especially for those lesser-seen browsers or those specific to devices (like tablets, smart TVs, or gaming consoles). If this is critical, it is generally preferred to use feature detection instead.
 
 &nbsp;
 
@@ -192,6 +194,15 @@ Get overlapping values with second array. Can be called from array instance or `
 *Array*.prototype.**overlaps**(*arr*) ⇒ `boolean`
 
 Check if at least one value overlaps with second array. Can be called from array instance or `Array` global. Uses strict equality.
+
+<a name="common-arrayRemove" href="#common-arrayRemove">#</a>
+*Array*.prototype.**remove**(*value*[, *index*[, *limit*]]) ⇒ `Array`
+
+Remove all instances of a value from an array. Creates a copy without modifying the original array.
+
+Set `index` to define the index at which to start indexing. Negatives are allowed to find a position from reverse. If the index is greater than or equal to the length of the array, the array is not searched and nothing is removed.
+
+Set `limit` to a positive value to define a limit to the number of times the value will be removed. Otherwise, the removal allowance is unlimited.
 
 <a name="common-elementIsVisible" href="#common-elementIsVisible">#</a>
 *Element*.prototype.**isVisible**() ⇒ `boolean`
@@ -223,13 +234,13 @@ Will convert a given number to a string, using the supplied precision, with comm
 
 Basically wraps `Number.prototype.addCommas()` with heuristic guessing on precision to use. The `minimum` parameter rounds any value whose absolute value is less than this to zero. Current heuristics are: 
 
-* Evaluation to zero is always written as "0.0".
-* \<0.01 as scientific notation with three significant figures.
-* \<0.1 as scientific notation with two significant figures.
-* \<0.3 as number with three decimal places.
-* \<1.0 as number with two decimal places.
-* \<100 as number with one decimal place.
-* ≥100 as number with no decimal places.
+* Evaluation to zero is always written as "0.0"
+* \<0.01 as scientific notation with three significant figures
+* \<0.1 as scientific notation with two significant figures
+* \<0.3 as number with three decimal places
+* \<1.0 as number with two decimal places
+* \<100 as number with one decimal place
+* ≥100 as number with no decimal places
 
 <a name="common-objectIsObject" href="#common-objectIsObject">#</a>
 *Object*.**isObject**(*obj*) ⇒ `boolean`
@@ -744,15 +755,15 @@ To use, begin by creating instance and adding columns with `addColumn()`. The `k
 And example usage script provided at bottom.  
 
 <a name="CommonTable" href="CommonTable">#</a>
-**CommonTable**(*tableId*[, *tableClass*[, *container*]])
+**CommonTable**([*tableId*[, *tableClass*[, *container*]]])
 
-Creates new CommonTable with id and class (if provided, default class is "cm-table") and appends to container (if provided).
+Creates new CommonTable. The table will be given the class of "cm-table", more classes can be appended through the options.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
 | tableId | `String` | Table ID |
-| tableClass | `String` | Table classname |
-| container | `Element` | Element to create table in |
+| tableClass | `String|String[]` | Table classname (use array to add multiple) |
+| container | `Element` | Element to append table to |
 
 <a name="CommonTable-appendTo" href="CommonTable-appendTo">#</a>
 *CommonTable*.prototype.**appendTo**(*container*)
@@ -915,6 +926,8 @@ tbl.populateTable({
   ascending: false  // sort by wins descending
 });
 ```
+
+![CommonTable example](./misc/cmtable.png)
 
 ----------
 

@@ -9,9 +9,15 @@ function CommonTable(tableId, tableClass, container) {
     this.tableElement.append(this.tbodyElement);
     this.tableElement.className = 'cm-table';
     
-    if(tableId)    this.tableElement.setAttribute("id", tableId);
-    if(tableClass) this.tableElement.classList.add(tableClass);
-    if(container)  container.append(this.tableElement);
+    if(tableId) this.tableElement.setAttribute("id", tableId);
+    if(tableClass) {
+        if(Array.isArray(tableClass)) {
+            tableClass.forEach(cname => this.tableElement.classList.add(cname))
+        } else {
+            this.tableElement.classList.add(tableClass);
+        }
+    }
+    if(container) container.append(this.tableElement);
     return this;
 };
 

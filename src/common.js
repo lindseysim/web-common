@@ -196,7 +196,7 @@ export default {
             transition = "";
         for(let key in properties) {
             if(transition) transition += ", ";
-            transition += key + " " + durationSecs + " " + (timingFunction || "ease");
+            transition += `${key} ${durationMs*0.001}s ${timingFunction || "ease"}`;
         }
         element.css({
             '-webkit-transition': transition, 
