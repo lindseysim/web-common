@@ -261,9 +261,13 @@ if(!Number.prototype.addCommasSmart) {
 if(!Element.prototype.isVisible) {
     Object.defineProperty(Element.prototype, 'isVisible', {
         value() {
+            if(this.style.visibility && this.style.visibility.toLowerCase() !== "hidden") return false;
+            if(this.style.display && this.style.display.toLowerCase() !== "none") return false;
+            var rect = this.getBoundingClientRect();
             return (
-                this.offsetParent !== null 
-                && (!this.style.visibility || this.style.visibility.toLowerCase() !== "hidden")
+                rect.top >= 0 && rect.left >= 0
+                && rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) 
+                && rect.right <= (window.innerWidth || document.documentElement.clientWidth)
             );
         }
     });
