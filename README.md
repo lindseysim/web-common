@@ -49,7 +49,9 @@ If using script imports in HTML, import the paths to 'common.js', 'style.css', a
 
 ## Polyfills ##
 
-Ensures the below functions exists, many of which are missing in Internet Explorer (pre-Edge).
+Ensures the below functions exists, many of which are missing in Internet Explorer (pre-Edge) and Opera Mini.
+
+Note that this is just a personal list of functions I tended to require (combined with history of having to work with gov't clients that were still stuck in IE land). These days, probably less necessary, and if so, better to use a more complete polyfill library like [core-js](https://www.npmjs.com/package/core-js).
 
 <a name="common-arrayFrom" href="#common-arrayFrom">#</a>
 *Array*.**from**(*arrayLike*[, *mapFn*[, *thisArg*]])
@@ -64,6 +66,41 @@ See [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Ob
 Find item in an array. 
 
 See [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find)
+
+<a name="common-arrayFindIndex" href="#common-arrayFindIndex">#</a>
+*Array*.prototype.**findIndex**(*callback*[, *thisArg*])
+
+Find index of an item in an array. 
+
+See [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex)
+
+<a name="common-arrayFindLast" href="#common-arrayFindLast">#</a>
+*Array*.prototype.**findLast**(*callback*[, *thisArg*])
+
+Find item in an array, searching in reverse.
+
+See [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findLast](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findLast)
+
+<a name="common-arrayFindLastIndex" href="#common-arrayFindLastIndex">#</a>
+*Array*.prototype.**findLastIndex**(*callback*[, *thisArg*])
+
+Find index of an item in an array, searching in reverse.
+
+See [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findLastIndex](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findLastIndex)
+
+<a name="common-arrayFlat" href="#common-arrayFlat">#</a>
+*Array*.prototype.**flat**([*depth*])
+
+Flatten an array to a desired depth (or default single-depth).
+
+See [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat)
+
+<a name="common-arrayIncludes" href="#common-arrayIncludes">#</a>
+*Array*.prototype.**includes**(*searchElement*[, *fromIndex*])
+
+Find if an item exists in an array. 
+
+See [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes)
 
 <a name="common-elementRemove" href="#common-elementRemove">#</a>
 *Element*.prototype.**remove**()
@@ -207,17 +244,17 @@ Set `limit` to a positive value to define a limit to the number of times the val
 <a name="common-elementIsVisible" href="#common-elementIsVisible">#</a>
 *Element*.prototype.**isVisible**() ⇒ `boolean`
 
-Simple is-visible check using `offsetParent` trick. Note it will have issues with elements in fixed positions.
+Check is element is visible. Uses `getBoundingClientRect` method, which is more reliable than the old `offsetParent` trick.
 
 <a name="common-elementSetAttributes" href="#common-elementSetAttributes">#</a>
 *Element*.prototype.**setAttributes**(*attrs*)
 
-Sets multiple attributes (given as dictionary) at once.
+Sets multiple attributes (given as a dictionary-like object of key-value pairs) at once.
 
 <a name="common-elementCss" href="#common-elementCss">#</a>
 *Element*.prototype.**css**(*style*[, *value*])
 
-Much like the JQuery css() function, sets inline style, either as style name and value provided as strings, or given a dictionary of style names and values and key-value pairs. 
+Much like the JQuery css() function, sets inline style, either as style name and value provided as strings, or as a dictionary-like object of style names and values and key-value pairs. 
 
 <a name="common-elementCenter" href="#common-elementCenter">#</a>
 *Element*.prototype.**center**()

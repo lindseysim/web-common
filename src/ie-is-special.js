@@ -284,22 +284,116 @@ export default (function() {
         });
     }
     
-    // Array.find  https://tc39.github.io/ecma262/#sec-array.prototype.find
-    if(!Array.prototype.find) {
-        Object.defineProperty(Array.prototype, 'find', {
-            value: function(predicate) {
-                if(this == null) throw new TypeError('"this" is null or not defined');
-                if(typeof predicate !== 'function') throw new TypeError('predicate must be a function');
+    // Array.find and findLast https://tc39.github.io/ecma262/#sec-array.prototype.find
+    if(!Array.prototype.find || !Array.prototype.findIndex) {
+        var arrayFind = function(predicate, thisArg, asIndex) {
+            if(thisArg === undefined) thisArg = this;
+            if(thisArg == null) throw new TypeError('"this" is null or not defined');
+            if(typeof predicate !== 'function') throw new TypeError('predicate must be a function');
+            var o = Object(thisArg), 
+                len = o.length >>> 0, 
+                k = 0;
+            while(k < len) {
+                if(predicate.call(thisArg, o[k], k, o)) {
+                    return asIndex ? k : o[k];
+                }
+                ++k;
+            }
+            return asIndex ? -1 : undefined;
+        }
+        if(!Array.prototype.find) {
+            Object.defineProperty(Array.prototype, 'find', {
+                value: function(callbackFn, thisArg) {
+                    return arrayFind(callbackFn, thisArg, false);
+                },
+                configurable: true,
+                writable: true
+          });
+        }
+        if(!Array.prototype.findIndex) {
+            Object.defineProperty(Array.prototype, 'findIndex', {
+                value: function(callbackFn, thisArg) {
+                    return arrayFind(callbackFn, thisArg, true);
+                },
+                configurable: true,
+                writable: true
+          });
+        }
+    }
+    if(!Array.prototype.findLast || !Array.prototype.findLastIndex) {
+        var arrayFindLast = function(predicate, thisArg, asIndex) {
+            if(thisArg === undefined) thisArg = this;
+            if(thisArg == null) throw new TypeError('"this" is null or not defined');
+            if(typeof predicate !== 'function') throw new TypeError('predicate must be a function');
+            var o = Object(thisArg), 
+                len = o.length >>> 0, 
+                k = len - 1;
+            while(k >= 0) {
+                if(predicate.call(thisArg, o[k], k, o)) {
+                    return asIndex ? k : o[k];
+                }
+                --k;
+            }
+            return asIndex ? -1 : undefined;
+        }
+        if(!Array.prototype.findLast) {
+            Object.defineProperty(Array.prototype, 'findLast', {
+                value: function(callbackFn, thisArg) {
+                    return arrayFindLast(callbackFn, thisArg, false);
+                },
+                configurable: true,
+                writable: true
+          });
+        }
+        if(!Array.prototype.findLastIndex) {
+            Object.defineProperty(Array.prototype, 'findLastIndex', {
+                value: function(callbackFn, thisArg) {
+                    return arrayFindLast(callbackFn, thisArg, true);
+                },
+                configurable: true,
+                writable: true
+          });
+        }
+    }
+
+    // Array.includes()
+    if(!Array.prototype.includes) {
+        Object.defineProperty(Array.prototype, 'includes', {
+            value: function(searchElement, fromIndex) {
+                if(fromIndex < 0) {
+                    fromIndex += this.length;
+                    if(fromIndex < 0) fromIndex = 0;
+                } else if(!fromIndex && fromIndex !== 0) {
+                    fromIndex = 0;
+                } else if(fromIndex >= this.length) {
+                    return false;
+                }
                 var o = Object(this), 
                     len = o.length >>> 0, 
-                    thisArg = arguments[1], 
-                    k = 0;
-                while(k < len) {
-                    var kValue = o[k];
-                    if(predicate.call(thisArg, kValue, k, o)) return kValue;
-                    k++;
+                    i = fromIndex;
+                while(i < len) {
+                    if(o[i] === searchElement) return true;
+                    ++i;
                 }
-                return undefined;
+                return false;
+            },
+            configurable: true,
+            writable: true
+      });
+    }
+
+    // Array.flat()
+    if(!Array.prototype.flat || !Array.prototype.flatMap) {
+        var flattern = function(depthLeft) {
+            if(--depthLeft < 0 || !this || !Array.isArray(this)) return this;
+            var o = Object(this);
+            return o.filter((o,i) => i in o)
+                    .map(i => flatten(this, depthLeft));
+        };
+        Object.defineProperty(Array.prototype, 'flat', {
+            value: function(depth) {
+                if(depth <= 0) depth = 1;
+                return flatten(this, depth > 0 ? depth : 1);
             },
             configurable: true,
             writable: true
