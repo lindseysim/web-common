@@ -740,7 +740,7 @@ Creates a new modal dialog with default values prepped for loading. `content` is
 | content | `String` | `"Loading.."` | Modal content HTML |
 | options | `Object` |  |
 | options.id | `String` | `"modal-loading-dialog"` | Id of inner modal dialog element. |
-| options.showBackground | `true` | `Boolean` | If truthy, creates a semi-transparent background over window. |
+| options.showBackground | `Boolean` | `true` | If truthy, creates a semi-transparent background over window. |
 | options.notExitable | `Boolean` | `true` | Normally modal closes on clicking anywhere outside modal dialog element. If truthy, this prevents this functionality. |
 | options.hideCloser | `Boolean` | `true` | If truthy, does not apply the automatically placed "X" to close dialog on upper-right. |
 | options.addDetails | `Boolean` | `true` | If truthy, adds smaller subtext below the main modal content. |
