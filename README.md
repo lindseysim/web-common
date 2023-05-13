@@ -428,7 +428,7 @@ Given an input, returns an [*Element*](https://developer.mozilla.org/en-US/docs/
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| element | -- | Input to filter for and/or convert to *Element*. |
+| `element` | -- | Input to filter for and/or convert to *Element*. |
 
 &nbsp; &nbsp; **Returns:** 
 
@@ -446,7 +446,7 @@ Given an input, converts it into an array of [Elements](https://developer.mozill
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| input | -- | Input to filter for and/or convert to an array of *Elements*. |
+| `input` | -- | Input to filter for and/or convert to an array of *Elements*. |
 
 &nbsp; &nbsp; **Returns:** 
 
@@ -464,15 +464,15 @@ Copy given object and extended with new values. The passed objects are not modif
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| obj | `Object` | Base object. |
-| extend | `Object` | Object of extensions to the copy of the base object. |
-| options | `Object` | Options object, or options may be specified in flat series of parameters. |
-| options.overwrite | `Boolean` | Unless true, items in `extend` matching existing values in `obj` by key are not copied over. |
-| options.allowOverwrite | `Boolean` | Same as above. |
-| options.deep | `Boolean` | If true, all values are copied via `structuredClone()` or, as a fallback, `JSON.parse(JSON.stringify())`. |
-| options.deepCopy | `Boolean` | Same as above. |
-| options.modify | `Boolean` | If true, the input base object (`obj`) is modified directly, instead of cloning. |
-| options.modifyObj | `Boolean` | Same as above. |
+| `obj` | *Object* | Base object. |
+| `extend` | *Object* | Object of extensions to the copy of the base object. |
+| `options` | *Object* | Options object, or options may be specified in flat series of parameters. |
+| `options.overwrite` | *Boolean* | Unless true, items in `extend` matching existing values in `obj` by key are not copied over. |
+| `options.allowOverwrite` | *Boolean* | Same as above. |
+| `options.deep` | *Boolean* | If true, all values are copied via `structuredClone()` or, as a fallback, `JSON.parse(JSON.stringify())`. |
+| `options.deepCopy` | *Boolean* | Same as above. |
+| `options.modify` | *Boolean* | If true, the input base object (`obj`) is modified directly, instead of cloning. |
+| `options.modifyObj` | *Boolean* | Same as above. |
 
 If either `extend` or `obj` is *null* or *undefined* (or evaluates as falsy), a copy of whatever remaining object is returned. Otherwise, values in `obj` and `extend` are copied to a cloned object by passing the value. Thus primitive types are copied by value, but objects will be copied by reference, unless `deepCopy` is true.
 
@@ -498,15 +498,15 @@ Creates a new, centered window.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| url | `String` | URL for new window or an object literal with all parameters as properties. |
-| name | `String` | New window name. |
-| options | `Object` | |
-| options.name | `String` | New window name may also be specified in the options. |
-| options.width | `Number` | Width in pixels. If not specified, defaults to 600. |
-| options.height | `Number` | Height in pixels. If not specified, defaults to 400. |
-| options.minimal | `Boolean` | Optional. If truthy, forces hiding of menubar, statusbar, and location – although with many modern browsers this has no effect as it is not allowed. |
-| options.options | `Object` | Optional. Additional window options (passed as `windowFeatures` parameter). Specify as key-value pairing. Will overwrite any options set by function or other parameters. |
-| options.error | `Callback` | Optional. Callback to run when the new window is detected to have been immediately closed (likely due to pop-up blocking). Given the *WindowProxy* returned by `window.open()`. |
+| `url` | *String* | URL for new window or an object literal with all parameters as properties. |
+| `name` | *String* | New window name. |
+| `options` | *Object* | |
+| `options.name` | *String* | New window name may also be specified in the options. |
+| `options.width` | *Number* | Width in pixels. If not specified, defaults to 600. |
+| `options.height` | *Number* | Height in pixels. If not specified, defaults to 400. |
+| `options.minimal` | *Boolean* | Optional. If truthy, forces hiding of menubar, statusbar, and location – although with many modern browsers this has no effect as it is not allowed. |
+| `options.options` | *Object* | Optional. Additional window options (passed as `windowFeatures` parameter). Specify as key-value pairing. Will overwrite any options set by function or other parameters. |
+| `options.error` | *Callback* | Optional. Callback to run when the new window is detected to have been immediately closed (likely due to pop-up blocking). Given the *WindowProxy* returned by `window.open()`. |
 
 &nbsp; &nbsp; **Returns:** The [*WindowProxy*](https://developer.mozilla.org/en-US/docs/Glossary/WindowProxy) returned by `window.open()`.
 
@@ -519,17 +519,17 @@ However, if the project allows, I'd nowadays recommend using the [Fetch API](htt
 
 | Param | Type | Default | Description |
 | :--- | :---: | :---: | :--- |
-| params.url | `String` |  | The URL of the request. |
-| params.async | `Boolean` | `true` | Asynchronous. Defaults to *true*. |
-| params.method | `String` | `"GET"` | Method for passing data. |
-| params.data | `Object` |  | Optional dictionary of data to send with request. |
-| params.dataType | `String` |  | Type of returned data given by [`XMLHttpRequest.responseType`](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/responseType). |
-| params.success | `Callback` |  | Callback on success. Passes parameters of `XMLHttpRequest.responseText`, `XMLHttpRequest.statusText`, and the `XMLHttpRequest` instance itself. |
-| params.error | `Callback` |  | Callback on error. Passes parameters the `XMLHttpRequest` instance, `XMLHttpRequest.statusText`, and `XMLHttpRequest.responseText`. |
-| params.complete | `Callback` |  | Callback on completion (whether success or error). Passes parameters the `XMLHttpRequest` instance and `XMLHttpRequest.statusText`. |
-| params.user | `String` |  | Optional username, if necessitated. |
-| params.password | `String` |  | Optional password, if necessitated. |
-| params.promise | `Boolean` |  | Optionally return as *Promise* that resolves when the request resolves. |
+|` params.url` | *String* |  | The URL of the request. |
+| `params.async` | *Boolean* | `true` | Asynchronous. Defaults to *true*. |
+| `params.method` | *String* | `"GET"` | Method for passing data. |
+| `params.data` | *Object* |  | Optional dictionary of data to send with request. |
+| `params.dataType` | *String* |  | Type of returned data given by [`XMLHttpRequest.responseType`](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/responseType). |
+| `params.success` | *Callback* |  | Callback on success. Passes parameters of `XMLHttpRequest.responseText`, `XMLHttpRequest.statusText`, and the `XMLHttpRequest` instance itself. |
+| `params.error` | *Callback* |  | Callback on error. Passes parameters the `XMLHttpRequest` instance, `XMLHttpRequest.statusText`, and `XMLHttpRequest.responseText`. |
+| `params.complete` | *Callback* |  | Callback on completion (whether success or error). Passes parameters the `XMLHttpRequest` instance and `XMLHttpRequest.statusText`. |
+| `params.user` | *String* |  | Optional username, if necessitated. |
+| `params.password` | *String* |  | Optional password, if necessitated. |
+| `params.promise` | *Boolean* |  | Optionally return as *Promise* that resolves when the request resolves. |
 
 &nbsp; &nbsp; **Returns:** *XMLHttpRequest* or *Promise* on completion for the request.
 
@@ -547,17 +547,17 @@ Mimics jQuery.[animate()](http://api.jquery.com/jQuery.animate/) function using 
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| element | `Element` | The Element to animate |
-| properties | `Object` | CSS properties to animate to. Note that [not all properties are can be animated](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animated_properties). |
-| duration | `Number` | Duration of animation, in milliseconds. Optional, but if not supplied, the animation is somewhat pointless as the transition is instant. |
-| options | `Object` | |
-| options.element | `Element` | The `element` parameter may also be specified in the options. |
-| options.properties | `Object` | The `properties` parameter may also be specified in the options. |
-| options.duration | `Number` | The `duration` parameter may also be specified in the options. |
-| options.durationMs | `Number` | Same as above. |
-| options.timing | `String` | Timing/easing function, defaults to "ease". See: [transition-timing-function](https://developer.mozilla.org/en-US/docs/Web/CSS/transition-timing-function). |
-| options.timingFunction | `String` | Same as above. |
-| options.complete | `Callback` | Optional callback to run on completion. |
+| `element` | *Element* | The Element to animate |
+| `properties` | *Object* | CSS properties to animate to. Note that [not all properties are can be animated](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animated_properties). |
+| `duration` | *Number* | Duration of animation, in milliseconds. Optional, but if not supplied, the animation is somewhat pointless as the transition is instant. |
+| `options` | *Object* | |
+| `options.element` | *Element* | The `element` parameter may also be specified in the options. |
+| `options.properties` | *Object* | The `properties` parameter may also be specified in the options. |
+| `options.duration` | *Number* | The `duration` parameter may also be specified in the options. |
+| `options.durationMs` | *Number* | Same as above. |
+| `options.timing` | *String* | Timing/easing function, defaults to "ease". See: [transition-timing-function](https://developer.mozilla.org/en-US/docs/Web/CSS/transition-timing-function). |
+| `options.timingFunction` | *String* | Same as above. |
+| `options.complete` | *Callback* | Optional callback to run on completion. |
 
 &nbsp; &nbsp; **Returns:** A *Promise* tied to the animation duration, if the Promise API is available.
 
@@ -580,7 +580,7 @@ Adds class "grab" to element, and class "grabbing" when being dragged.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| element | -- | Element(s) to add functionality to. See *common*.[**getElementList**()](#common-getElementList) for evaluation of this parameter. |
+| `element` | -- | Element(s) to add functionality to. See *common*.[**getElementList**()](#common-getElementList) for evaluation of this parameter. |
 
 <a name="common-createDropdown" href="#common-createDropdown">#</a>
 *common*.*ui*.**createDropdown**(*element*, *menu*)
@@ -591,8 +591,8 @@ Elements with be created with classes prefixed by "cm-dropdown".
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| element | -- | Element(s) to add dropdown to. See *common*.[**getElementList**()](#common-getElementList) for evaluation of this parameter. |
-| menu | `Object[]` | JSON map of menu |
+| `element` | -- | Element(s) to add dropdown to. See *common*.[**getElementList**()](#common-getElementList) for evaluation of this parameter. |
+| `menu` | *Object*[] | JSON map of menu |
 
 *Example usage:*
 
@@ -626,7 +626,7 @@ Remove dropdown menu functionality from an element.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| element | -- | Element(s) to remove dropdown from. See *common*.[**getElementList**()](#common-getElementList) for evaluation of this parameter. |
+| `element` | -- | Element(s) to remove dropdown from. See *common*.[**getElementList**()](#common-getElementList) for evaluation of this parameter. |
 
 &nbsp;  
 
@@ -649,11 +649,11 @@ Elements will be created with classes prefixed by *cm-tooltip*.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| element | -- | Element(s) to add tooltip to. See *common*.[**getElementList**()](#common-getElementList) for evaluation of this parameter. |
-| options | `Object` | Options object, or options may be specified in flat series of parameters. |
-| options.message | `String` | Tooltip message/HTML. |
-| options.direction | `String` | Direction of tooltip (defaults to top). |
-| options.force | `Boolean` | If truthy, forces tooltip visible. |
+| `element` | -- | Element(s) to add tooltip to. See *common*.[**getElementList**()](#common-getElementList) for evaluation of this parameter. |
+| `options` | *Object* | Options object, or options may be specified in flat series of parameters. |
+| `options.message` | *String* | Tooltip message/HTML. |
+| `options.direction` | *String* | Direction of tooltip (defaults to top). |
+| `options.force` | *Boolean* | If truthy, forces tooltip visible. |
 
 <a name="common-removeTooltip" href="#common-removeTooltip">#</a>
 *common*.*ui*.**removeTooltip**(*element*)
@@ -662,7 +662,7 @@ Remove hover tooltip from element(s).
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| element | -- | Element(s) to remove tooltip from. See *common*.[**getElementList**()](#common-getElementList) for evaluation of this parameter. |
+| `element` | -- | Element(s) to remove tooltip from. See *common*.[**getElementList**()](#common-getElementList) for evaluation of this parameter. |
 
 <a name="common-appendHelpIcon" href="#common-appendHelpIcon">#</a>
 *common*.*ui*.**appendHelpIcon**(*element*, *options*)<br />
@@ -675,12 +675,12 @@ Icon element will be created with class *cm-icon*.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| element | -- | Element(s) to add help icon too. See *common*.[**getElementList**()](#common-getElementList) for evaluation of this parameter. |
-| options | `Object` | Options object, or options may be specified in flat series of parameters. |
-| options.message | `String` | Tooltip message/HTML. |
-| options.direction | `String` | Direction of tooltip (defaults to top). |
-| options.style | `Object` | Dictionary of inline style key-values for icon. |
-| options.force | `Boolean` | If truthy, forces tooltip visible. |
+| `element` | -- | Element(s) to add help icon too. See *common*.[**getElementList**()](#common-getElementList) for evaluation of this parameter. |
+| `options` | *Object* | Options object, or options may be specified in flat series of parameters. |
+| `options.message` | *String* | Tooltip message/HTML. |
+| `options.direction` | *String* | Direction of tooltip (defaults to top). |
+| `options.style` | *Object* | Dictionary of inline style key-values for icon. |
+| `options.force` | *Boolean* | If truthy, forces tooltip visible. |
  
 <a name="common-removeHelpIcon" href="#common-removeHelpIcon">#</a>
 *common*.*ui*.**removeHelpIcon**(*element*)
@@ -689,7 +689,7 @@ Remove help icon from element(s).
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| element | -- | Element(s) to remove help icon from. See *common*.[**getElementList**()](#common-getElementList) for evaluation of this parameter. |
+| `element` | -- | Element(s) to remove help icon from. See *common*.[**getElementList**()](#common-getElementList) for evaluation of this parameter. |
 
 &nbsp;  
 
@@ -719,14 +719,14 @@ Creates a new modal dialog (or closes, if `visible` is falsy). Function `openMod
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| visible | `Boolean` | Whether to open or close modal |
-| content | `String` | Modal content HTML |
-| options | `Object` |  |
-| options.id | `String` | Id of inner modal dialog element. |
-| options.showBackground | `Boolean` | If truthy, creates a semi-transparent background over window. |
-| options.notExitable | `Boolean` | Normally modal closes on clicking anywhere outside modal dialog element. If truthy, this prevents this functionality. |
-| options.hideCloser | `Boolean` | If truthy, does not apply the automatically placed "X" to close dialog on upper-right. |
-| options.onClose | `Callback` | Callback to run on modal being closed.  |
+| `visible` | *Boolean* | Whether to open or close modal |
+| `content` | *String* | Modal content HTML |
+| `options` | *Object* |  |
+| `options.id` | *String* | Id of inner modal dialog element. |
+| `options.showBackground` | *Boolean* | If truthy, creates a semi-transparent background over window. |
+| `options.notExitable` | *Boolean* | Normally modal closes on clicking anywhere outside modal dialog element. If truthy, this prevents this functionality. |
+| `options.hideCloser` | *Boolean* | If truthy, does not apply the automatically placed "X" to close dialog on upper-right. |
+| `options.onClose` | *Callback* | Callback to run on modal being closed.  |
 
 &nbsp; &nbsp; **Returns:** *Element* of modal content div (*.cm-modal-inner*).
 
@@ -737,14 +737,14 @@ Creates a new modal dialog with default values prepped for loading. `content` is
 
 | Param | Type | Default | Description |
 | :--- | :---: | :---: | :--- |
-| content | `String` | `"Loading.."` | Modal content HTML |
-| options | `Object` |  |
-| options.id | `String` | `"modal-loading-dialog"` | Id of inner modal dialog element. |
-| options.showBackground | `Boolean` | `true` | If truthy, creates a semi-transparent background over window. |
-| options.notExitable | `Boolean` | `true` | Normally modal closes on clicking anywhere outside modal dialog element. If truthy, this prevents this functionality. |
-| options.hideCloser | `Boolean` | `true` | If truthy, does not apply the automatically placed "X" to close dialog on upper-right. |
-| options.addDetails | `Boolean` | `true` | If truthy, adds smaller subtext below the main modal content. |
-| options.addDetailsText | `String` | `"Please wait.."` | The content for subtext below the main modal content, if `addDetails` is truthy. |
+| `content` | *String* | `"Loading.."` | Modal content HTML |
+| `options` | *Object* |  |
+| `options.id` | *String* | `"modal-loading-dialog"` | Id of inner modal dialog element. |
+| `options.showBackground` | *Boolean* | `true` | If truthy, creates a semi-transparent background over window. |
+| `options.notExitable` | *Boolean* | `true` | Normally modal closes on clicking anywhere outside modal dialog element. If truthy, this prevents this functionality. |
+| `options.hideCloser` | *Boolean* | `true` | If truthy, does not apply the automatically placed "X" to close dialog on upper-right. |
+| `options.addDetails` | *Boolean* | `true` | If truthy, adds smaller subtext below the main modal content. |
+| `options.addDetailsText` | *String* | `"Please wait.."` | The content for subtext below the main modal content, if `addDetails` is truthy. |
 
 &nbsp; &nbsp; **Returns:** *Element* of modal content div (*.cm-modal-inner*).
  
@@ -755,9 +755,9 @@ Change modal dialog content while leaving all other options the same. Keeps the 
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| content | `String` | Modal content HTML |
-| prepContentCallback | `Callback` | If some prep work is needed before determining the new dimensions of the modal for size change animation. |
-| hideCloser | `Boolean` | Due to HTML refresh, closer will be readded unless this is set as truthy. |
+| `content` | *String* | Modal content HTML |
+| `prepContentCallback` | *Callback* | If some prep work is needed before determining the new dimensions of the modal for size change animation. |
+| `hideCloser` | *Boolean* | Due to HTML refresh, closer will be readded unless this is set as truthy. |
 
 &nbsp; &nbsp; **Returns:** `Element` of modal content div (`.cm-modal-inner`).
 
@@ -770,7 +770,7 @@ Hide any currently visible modal.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| suppressOnClose | `Boolean` | If truthy, suppresses `onClose` event callback, if one is attached. |
+| `suppressOnClose` | *Boolean* | If truthy, suppresses `onClose` event callback, if one is attached. |
 
 &nbsp;
 
@@ -793,9 +793,9 @@ Creates new CommonTable. The table will be given the class of *cm-table*, more c
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| tableId | `String` | Table ID |
-| tableClass | `String|String[]` | Table classname (use array to add multiple) |
-| container | `Element` | *Element* to append table to |
+| `tableId` | *String* | Table ID |
+| `tableClass` | *String* \| *String*[] | Table classname (use array to add multiple) |
+| `container` | *Element* | *Element* to append table to |
 
 <a name="CommonTable-appendTo" href="CommonTable-appendTo">#</a>
 *CommonTable*.prototype.**appendTo**(*container*)
@@ -804,7 +804,7 @@ Appends table to element.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| container | `Element` | *Element* to append table in |
+| `container` | *Element* | *Element* to append table in |
 
 <a name="CommonTable-prependTo" href="CommonTable-prependTo">#</a>
 *CommonTable*.prototype.**prependTo**(*container*)
@@ -813,43 +813,29 @@ Prepends table to element.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| container | `Element` | *Element* to prepend table in |
+| `container` | *Element* | *Element* to prepend table in |
 
 <a name="CommonTable-addColumn" href="CommonTable-addColumn">#</a>
-*CommonTable*.prototype.**addColumn**(*options*)
-
-See above.
-
-| Param | Type | Description |
-| :--- | :---: | :--- |
-| options | `Object` | |
-| options.group | `String` | The header group. If not *null*, used to group two or more headers as subheaders under a banner header (via colspan). |
-| options.title | `String` | The title to display the header as. |
-| options.key | `String` | The key used to retrieve data from this header. |
-| options.format | `Callback` | Optional function such that `format(value)`, returns the formatted value for the table cell. Run in try-catch block, so if it fails, simply continues with raw value. |
-| options.hdrStyles | `String` \| `Object` | Optional styles to apply to the header. Overrides any colStyles properties. |
-| options.colStyles | `String` \| `Object` | Optional styles to apply to every row in this column (including header). If you only want to apply to non-header cells, must override values in hdrStyles. |
-| options.onClick | `Callback` | Optional onClick listener to add to each cell (excluding header). Callback will be given the entire row's data as the parameter. |
-| options.sortable | `Boolean` | Optional flag to set/disable sortable column on this column. By default columns are sortable, so set as falsy or *null* to disable. |
-
-Alternatively, the `group`, `title`, and `key` parameters may be split out and provided as individual parameters.
-
-<a name="CommonTable-addColumn-2" href="CommonTable-addColumn-2">#</a>
+*CommonTable*.prototype.**addColumn**(*options*)<br />
+<a href="CommonTable-addColumn">#</a>
 *CommonTable*.prototype.**addColumn**(*group*, *title*, *key*[, *options*])
 
-See above.
+Add a column to the table.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| group | `String` | The header group. If not *null*, used to group two or more headers as subheaders under a banner header (via colspan). |
-| title | `String` | The title to display the header as. |
-| key | `String` | The key used to retrieve data from this header. |
-| options | `Object` | |
-| options.format | `Callback` | Optional function such that `format(value)`, returns the formatted value for the table cell. Run in try-catch block, so if it fails, simply continues with raw value. |
-| options.hdrStyles | `String` \| `Object` | Optional styles to apply to the header. Overrides any colStyles properties. |
-| options.colStyles | `String` \| `Object` | Optional styles to apply to every row in this column (including header). If you only want to apply to non-header cells, must override values in hdrStyles. |
-| options.onClick | `Callback` | Optional onClick listener to add to each cell (excluding header). Callback will be given the entire row's data as the parameter. |
-| options.sortable | `Boolean` | Optional flag to set/disable sortable column on this column. By default columns are sortable, so set as falsy or *null* to disable. |
+| `group` | *String* | The header group. If not *null*, used to group two or more headers as subheaders under a banner header (via colspan). |
+| `title` | *String* | The title to display the header as. |
+| `key` | *String* | The key used to retrieve data from this header. |
+| `options` | *Object* | |
+| `options.group` | *String* | The `group` may be specified in the options instead. |
+| `options.title` | *String* | The `title` may be specified in the options instead. |
+| `options.key` | *String* | The `key` may be specified in the options instead. |
+| `options.format` | *Callback* | Optional function such that `format(value)`, returns the formatted value for the table cell. Run in try-catch block, so if it fails, simply continues with raw value. |
+| `options.hdrStyles` | *String* \| *Object* | Optional styles to apply to the header. Overrides any colStyles properties. |
+| `options.colStyles` | *String* \| *Object* | Optional styles to apply to every row in this column (including header). If you only want to apply to non-header cells, must override values in hdrStyles. |
+| `options.onClick` | *Callback* | Optional onClick listener to add to each cell (excluding header). Callback will be given the entire row's data as the parameter. |
+| `options.sortable` | *Boolean* | Optional flag to set/disable sortable column on this column. By default columns are sortable, so set as falsy or *null* to disable. |
 
 <a name="CommonTable-createHeaders" href="CommonTable-createHeaders">#</a>
 *CommonTable*.prototype.**createHeaders**([*options*])
@@ -858,9 +844,9 @@ See above.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| options | `Object` | |
-| options.sortOnKey | `String` | Optional key to sort on. |
-| options.ascending | `Boolean` | If sorting, whether ascending or descending order. |
+| `options` | *Object* | |
+| `options.sortOnKey` | *String* | Optional key to sort on. |
+| `options.ascending` | *Boolean* | If sorting, whether ascending or descending order. |
 
 Alternatively, parameters may be expanded out as individual arguments.
 
@@ -869,8 +855,8 @@ Alternatively, parameters may be expanded out as individual arguments.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| sortOnKey | `String` | Optional key to sort on. |
-| ascending | `Boolean` | If sorting, whether ascending or descending order. |
+| `sortOnKey` | *String* | Optional key to sort on. |
+| `ascending` | *Boolean* | If sorting, whether ascending or descending order. |
 
 See above.
 
@@ -881,10 +867,10 @@ Populate and [re]draw table.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| options | `Object` | |
-| options.tableData | `Object[]` | Array of objects, representing data by row. Data is not stored to object or dynamically bound in any way. To update table, must be redrawn, passing the updated data array. |
-| options.sortOnKey | `String` | Optional key to sort on. |
-| options.ascending | `Boolean` | If sorting, whether ascending or descending order. |
+| `options` | *Object* | |
+| options.tableData | *Object*[] | Array of objects, representing data by row. Data is not stored to object or dynamically bound in any way. To update table, must be redrawn, passing the updated data array. |
+| `options.sortOnKey` | *String* | Optional key to sort on. |
+| `options.ascending` | *Boolean* | If sorting, whether ascending or descending order. |
 
 Alternatively, parameters may be expanded out as individual arguments.
 
@@ -895,9 +881,9 @@ See above.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| tableData | `Object[]` | Array of objects, representing data by row. Data is not stored to object or dynamically bound in any way. To update table, must be redrawn, passing the updated data array. |
-| sortOnKey | `String` | Optional key to sort on. |
-| ascending | `Boolean` | If sorting, whether ascending or descending order. |
+| `tableData` | *Object*[] | Array of objects, representing data by row. Data is not stored to object or dynamically bound in any way. To update table, must be redrawn, passing the updated data array. |
+| `sortOnKey` | *String* | Optional key to sort on. |
+| `ascending` | *Boolean* | If sorting, whether ascending or descending order. |
 
 &nbsp;
 
