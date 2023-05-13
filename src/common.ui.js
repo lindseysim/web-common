@@ -16,14 +16,15 @@ export default {
     }, 
     
     createDropdown(element, menu) {
-        var addDropdown = (outer, menuObj) => {
+        var addDropdown = (outer, menuObj, first) => {
             let inner = document.createElement("div");
             inner.className = 'cm-dropdown-menu';
             outer.append(inner);
+            // if(first) inner.classList.add("entry");
             for(var j = 0; j < menuObj.length; j++) {
                 var m = menuObj[j], 
                     menuItem = document.createElement("div");
-                menuItem.setAttribute("id", m.id ? m.id : '');
+                m.id && menuItem.setAttribute("id", m.id);
                 menuItem.className = 'cm-dropdown-menu-item';
                 inner.append(menuItem);
                 if(m.class) menuItem.classList.add(m.class);
@@ -32,12 +33,14 @@ export default {
                     let a = document.createElement("a");
                     a.setAttributes({
                         href: m.href, 
-                        target: m.target ? m.target : '',
-                        text: m.text
+                        target: m.target ? m.target : ''
                     });
+                    m.html && (a.innerHTML = m.html);
+                    m.text && (a.innerText = m.text);
                     menuItem.append(a);
                 } else {
-                    menuItem.innerHTML = m.text;
+                    m.html && (menuItem.innerHTML = m.html);
+                    m.text && (menuItem.innerText = m.text);
                 }
                 if(m.onClick) {
                     menuItem.addEventListener('click', m.onClick);
@@ -50,7 +53,7 @@ export default {
         };
         this.getElementList(element).forEach(el => {
             el.classList.add("cm-dropdown");
-            this.addDropdown(el, menu);
+            addDropdown(el, menu, true);
         });
     }, 
     

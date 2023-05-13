@@ -231,7 +231,7 @@ if(!Number.prototype.addCommas) {
  */
 if(!Number.prototype.addCommasSmart) {
     Object.defineProperty(Number.prototype, 'addCommasSmart', {
-        value(minimum) {
+        value(minimum, zeroFormat) {
             if(this === 0.0) return "0.0";
             let n = Math.abs(this);
             minimum = minimum || 0.001;
