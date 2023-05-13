@@ -187,7 +187,7 @@ See [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Ob
 
 ### Promises ###
 
-Internally, [taylorhakes/promise-polyfill](https://github.com/taylorhakes/promise-polyfill) is called, if necessary, to polyfill for [Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise). However, it is only used locally and not added to the global namespace. As it's very lightweight (and I don't want to simply wrap/repackage Taylor's work), I recommend installing his library directly to your projects if you need a polyfill for Promises. Thus, if you think you will need to polyfill for Promises, bring in this library to your dependencies or else a error will occur when using [*common*.**ajax**()](#common-ajax) or [*common*.**animate**()](#common-animate) in a browser without support for Promises.
+Internally, [taylorhakes/promise-polyfill](https://github.com/taylorhakes/promise-polyfill) is called, if necessary, to polyfill for [Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise). However, it is only used locally and not added to the global namespace. As it's very lightweight (and I don't want to simply wrap/repackage Taylor's work), I recommend installing his library directly to your projects if you need a polyfill for Promises. Thus, if you think you will need to polyfill for Promises, bring in this library to your dependencies or else a error will occur when using *common*.[**ajax**()](#common-ajax) or *common*.[**animate**()](#common-animate) in a browser without support for Promises.
 
 &nbsp;
 
@@ -433,6 +433,7 @@ Given an input, returns an [*Element*](https://developer.mozilla.org/en-US/docs/
 Specifics on function behavior is based on the type of `element`:
 
 * If a single *Element* is provided, simply returns it. 
+* If a *jQuery* object is provided, returns first *Element* given by calling [`get()`](https://api.jquery.com/get/) on it. 
 * If an array is provided, returns the first item this is an *Element* or *undefined*. 
 * If a *NodeList* or other iterable is provided, returns value of `next()` or *null* if done. If a jQuery object is provided, returns the first result in [`get()`](https://api.jquery.com/get/), or *null* if no results. If string is provided, returns result of [`document.querySelector()`](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector) using the string as the selector. If none of the above apply, returns *null*.
 
@@ -450,7 +451,7 @@ Given an input, converts it into an array of [Elements](https://developer.mozill
 Specifics on function behavior is based on the type of `input`:
 
 * If a *NodeList*, array, or other iterable is provided, converts to an array via `Array.from()`, then filters for elements that are derived from the *Element* prototype. 
-* If a `jQuery` object is provided, returns array given by calling [`get()`](https://api.jquery.com/get/) on it. 
+* If a *jQuery* object is provided, returns array given by calling [`get()`](https://api.jquery.com/get/) on it. 
 * If a string is provided, returns result of [`document.querySelectorAll()`](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelectorAll), using the string as the selector, converted into an array. 
 * Otherwise, wraps the input in an array, then filters for elements that are derived from the *Element* prototype.
 
@@ -514,7 +515,7 @@ Creates a new, centered window.
 <a name="common-ajax" href="#common-ajax">#</a>
 *common*.**ajax**(*params*) ⇒ `XMLHttpRequest` | `Promise`
 
-Mimics [jQuery.ajax()](http://api.jquery.com/jQuery.ajax/) function call with `XMLHttpRequest`.
+Mimics jQuery.[ajax()](http://api.jquery.com/jQuery.ajax/) function call with `XMLHttpRequest`.
 
 However, if the project allows, I'd nowadays recommend using the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) instead (if needed, a [polyfill](https://github.com/github/fetch) is also available as `whatwg-fetch` in NPM).
 
@@ -524,13 +525,13 @@ However, if the project allows, I'd nowadays recommend using the [Fetch API](htt
 | params.async | `Boolean` | `true` | Asynchronous. Defaults to *true*. |
 | params.method | `String` | `"GET"` | Method for passing data. |
 | params.data | `Object` |  | Optional dictionary of data to send with request. |
-| params.dataType | `String` |  | Type of returned data. See [XMLHttpRequest.responseType](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/responseType). |
+| params.dataType | `String` |  | Type of returned data given by [`XMLHttpRequest.responseType`](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/responseType). |
 | params.success | `Callback` |  | Callback on success. Passes parameters of `XMLHttpRequest.responseText`, `XMLHttpRequest.statusText`, and the `XMLHttpRequest` instance itself. |
 | params.error | `Callback` |  | Callback on error. Passes parameters the `XMLHttpRequest` instance, `XMLHttpRequest.statusText`, and `XMLHttpRequest.responseText`. |
 | params.complete | `Callback` |  | Callback on completion (whether success or error). Passes parameters the `XMLHttpRequest` instance and `XMLHttpRequest.statusText`. |
 | params.user | `String` |  | Optional username, if necessitated. |
 | params.password | `String` |  | Optional password, if necessitated. |
-| params.promise | `Boolean` |  | Optionally return as Promise that resolves when the request resolves. |
+| params.promise | `Boolean` |  | Optionally return as *Promise* that resolves when the request resolves. |
 
 &nbsp; &nbsp; **Returns:** *XMLHttpRequest* or *Promise* on completion for the request.
 
@@ -544,7 +545,7 @@ However, if the project allows, I'd nowadays recommend using the [Fetch API](htt
 *common*.**animate**(*element*, *properties*, *duration*[, *options*]) ⇒ `Promise`
 
 
-Mimics [jQuery.animate()](http://api.jquery.com/jQuery.animate/) function using CSS transitions by first applying a [transition](https://developer.mozilla.org/en-US/docs/Web/CSS/transition) property for the requisite CSS properties to be applied, then, after a short delay (5 ms), applying the properties. All this is done as modifications to the element's inline styles, and will thus overwrite any existing inline styles and will be subject to any CSS rule overrides (such as an existing, applicable CSS rule with the `!imporant` property).
+Mimics jQuery.[animate()](http://api.jquery.com/jQuery.animate/) function using CSS transitions by first applying a [transition](https://developer.mozilla.org/en-US/docs/Web/CSS/transition) property for the requisite CSS properties to be applied, then, after a short delay (5 ms), applying the properties. All this is done as modifications to the element's inline styles, and will thus overwrite any existing inline styles and will be subject to any CSS rule overrides (such as an existing, applicable CSS rule with the `!imporant` property).
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
@@ -560,7 +561,7 @@ Mimics [jQuery.animate()](http://api.jquery.com/jQuery.animate/) function using 
 | options.timingFunction | `String` | Same as above. |
 | options.complete | `Callback` | Optional callback to run on completion. |
 
-&nbsp; &nbsp; **Returns:** A `Promise` tied to the animation duration, if the Promise API is available. Otherwise returns nothing.
+&nbsp; &nbsp; **Returns:** A *Promise* tied to the animation duration, if the Promise API is available.
 
 &nbsp;
 
@@ -575,13 +576,13 @@ For modal dialog usage, ensure your dependency-manager/import-function is cachin
 <a name="common-addGrabCursorFunctionality" href="#common-addGrabCursorFunctionality">#</a>
 *common*.*ui*.**addGrabCursorFunctionality**(*element*)
 
-Adds grab cursor functionality to draggable element. Element may be single element, a NodeList/Array of elements, or a jQuery selection.
+Adds grab cursor functionality to draggable element. The input may be a single *Element*, a *NodeList* or array of *Elements*, or a *jQuery* selection.
 
 Adds class "grab" to element, and class "grabbing" when being dragged.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to add functionality to. See [`common.getElementList()`](#common-getElementList) for evaluation of this parameter. |
+| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to add functionality to. See *common*.[**getElementList**()](#common-getElementList) for evaluation of this parameter. |
 
 <a name="common-createDropdown" href="#common-createDropdown">#</a>
 *common*.*ui*.**createDropdown**(*element*, *menu*)
@@ -592,7 +593,7 @@ Elements with be created with classes prefixed by "cm-dropdown".
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to add dropdown to. See [`common.getElementList()`](#common-getElementList) for evaluation of this parameter. |
+| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to add dropdown to. See *common*.[**getElementList**()](#common-getElementList) for evaluation of this parameter. |
 | menu | `Object[]` | JSON map of menu |
 
 *Example usage:*
@@ -627,7 +628,7 @@ Remove dropdown menu functionality from an element.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to remove dropdown from. See [`common.getElementList()`](#common-getElementList) for evaluation of this parameter. |
+| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to remove dropdown from. See *common*.[**getElementList**()](#common-getElementList) for evaluation of this parameter. |
 
 &nbsp;  
 
@@ -646,11 +647,11 @@ To add a tooltip manually, add the class *cm-tooltip-left*, *cm-tooltip-top*, *c
 
 Add hover tooltip to element(s).
 
-Elements with be created with classes prefixed by *cm-tooltip*.
+Elements will be created with classes prefixed by *cm-tooltip*.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to add tooltip to. See [`common.getElementList()`](#common-getElementList) for evaluation of this parameter. |
+| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to add tooltip to. See *common*.[**getElementList**()](#common-getElementList) for evaluation of this parameter. |
 | options | `Object` | Options object, or options may be specified in flat series of parameters. |
 | options.message | `String` | Tooltip message/HTML. |
 | options.direction | `String` | Direction of tooltip (defaults to top). |
@@ -663,7 +664,7 @@ Remove hover tooltip from element(s).
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to remove tooltip from. See [`common.getElementList()`](#common-getElementList) for evaluation of this parameter. |
+| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to remove tooltip from. See *common*.[**getElementList**()](#common-getElementList) for evaluation of this parameter. |
 
 <a name="common-appendHelpIcon" href="#common-appendHelpIcon">#</a>
 *common*.*ui*.**appendHelpIcon**(*element*, *options*)<br />
@@ -676,7 +677,7 @@ Icon element will be created with class *cm-icon*.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to add help icon too. See [`common.getElementList()`](#common-getElementList) for evaluation of this parameter. |
+| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to add help icon too. See *common*.[**getElementList**()](#common-getElementList) for evaluation of this parameter. |
 | options | `Object` | Options object, or options may be specified in flat series of parameters. |
 | options.message | `String` | Tooltip message/HTML. |
 | options.direction | `String` | Direction of tooltip (defaults to top). |
@@ -690,14 +691,14 @@ Remove help icon from element(s).
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to remove help icon from. See [`common.getElementList()`](#common-getElementList) for evaluation of this parameter. |
+| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to remove help icon from. See *common*.[**getElementList**()](#common-getElementList) for evaluation of this parameter. |
 
 &nbsp;  
 
 #### Modal dialogs ####
 
 For modal dialog usage, ensure your dependency-manager/import-function is caching requires/imports of the `common` object, or that you are passing the object by reference. Calling multiple instances of `common.ui` in the same window can result in odd behavior for modal management.
-
+*common*.[**getElementList**()](#common-getElementList)
 ![Common UI Modal](./misc/cmmodal.png)
 
 Model elements will be created with classes prefixed by *.cm-modal*.
@@ -734,7 +735,7 @@ Creates a new modal dialog (or closes, if `visible` is falsy). Function `openMod
 <a name="common-setModalAsLoading" href="#common-setModalAsLoading">#</a>
 *common*.*ui*.**setModalAsLoading**([*content*[, *options*]]) ⇒ `Element`
 
-Creates a new modal dialog with default values prepped for loading. `content` is optional and defaults to `"Loading.."`. In addition to same `options` available for [`common.setModal()`](#common-setModal), extended `options` are:
+Creates a new modal dialog with default values prepped for loading. `content` is optional and defaults to `"Loading.."`. In addition to same `options` available for *common*.[**setModal**()](#common-setModal), extended `options` are:
 
 | Param | Type | Default | Description |
 | :--- | :---: | :---: | :--- |
