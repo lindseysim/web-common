@@ -24,9 +24,13 @@ export default {
         }
         if(element[Symbol.iterator] === "function") {
             if(Array.isArray(element)) {
-                return element.length && element[0] || undefined;
+                return element.find(i => i instanceof Element);
             }
             let next = element.next();
+            while(!next.done) {
+                if(next.value instanceof Element) return next.value;
+                next = element.next();
+            }
             return next.done ? undefined : next.value;
         }
         return element instanceof Element ? element : null;

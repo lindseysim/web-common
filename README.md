@@ -334,7 +334,7 @@ Each string is broken into chunks of parsable number and non-numeric chunks. Eac
 "a10bc40".semanticCompare("a10b50c");  // 1
 ```
 
-By default, negative numbers and decimals are not handled as dashes and periods may not be considered part of the number, depending on the string. This can be switched by setting true either/both the optional parameters `options.handleNegative` and/or `options.handleDeciaml`. If enabling decimals in particular, ensure numbers are properly formatted. E.g. a value of "3.2.1" would result in a numeric parsing two separate values of "3.2" and "0.1".
+By default, negative numbers and decimals are not handled as dashes and periods may not be considered part of the number, depending on the string. This can be switched by setting as truthy either/both the optional parameters `options.handleNegative` and/or `options.handleDeciaml`. If enabling decimals in particular, ensure numbers are properly formatted. E.g. a value of "3.2.1" would result in a numeric parsing two separate values of "3.2" and "0.1".
 
 ```javascript
 "x-2".semanticCompare("x-1");  // 1
@@ -424,15 +424,19 @@ Returned as object if instantiated via CommonJS or AMD import. Otherwise appende
 <a name="common-getElement" href="#common-getElement">#</a>
 *common*.**getElement**(*element*) ⇒ `Element`
 
-Given an input, returns an [Element](https://developer.mozilla.org/en-US/docs/Web/API/Element) (or object derived from the Element prototype) as best determined from what is provided.
+Given an input, returns an [*Element*](https://developer.mozilla.org/en-US/docs/Web/API/Element) (or object derived from the *Element* prototype) as best determined from what is provided.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| element | `Element` \| `jQuery` \| `String` | Object to convert to `Element`. |
+| element | `Element` \| `jQuery` \| `String` | Object to convert to *Element*. |
 
-If a single Element is provided, simply returns it. If an array is provided, returns the first item (or `undefined` if empty). If a NodeList or other iterable is provided, returns value of `next()` or `null` if done. If a jQuery object is provided, returns the first result in [`get()`](https://api.jquery.com/get/), or `null` if no results. If string is provided, returns result of [`document.querySelector()`](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector) using the string as the selector. If none of the above apply, returns `null`.
+Specifics on function behavior is based on the type of `element`:
 
-&nbsp; &nbsp; **Returns:** The `Element` instance found by the function, or null.
+* If a single *Element* is provided, simply returns it. 
+* If an array is provided, returns the first item this is an *Element* or *undefined*. 
+* If a *NodeList* or other iterable is provided, returns value of `next()` or *null* if done. If a jQuery object is provided, returns the first result in [`get()`](https://api.jquery.com/get/), or *null* if no results. If string is provided, returns result of [`document.querySelector()`](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector) using the string as the selector. If none of the above apply, returns *null*.
+
+&nbsp; &nbsp; **Returns:** The *Element* instance found by the function, or *null*.
 
 <a name="common-getElementList" href="#common-getElementList">#</a>
 *common*.**getElementList**(*input*) ⇒ `Element[]`
@@ -441,23 +445,23 @@ Given an input, converts it into an array of [Elements](https://developer.mozill
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| input | `Element` \| `NodeList` \| `jQuery` \| `String` | Object to convert to array or `NodeList`. |
+| input | `Element` \| `NodeList` \| `jQuery` \| `String` | Object to convert to array or *NodeList*. |
 
-Specifics on function behavior is based on the type of `input`.
+Specifics on function behavior is based on the type of `input`:
 
-* If a NodeList, array, or other iterable is provided, converts to an array via `Array.from()`, then filters for elements that are derived from the Element prototype. 
+* If a *NodeList*, array, or other iterable is provided, converts to an array via `Array.from()`, then filters for elements that are derived from the *Element* prototype. 
 * If a `jQuery` object is provided, returns array given by calling [`get()`](https://api.jquery.com/get/) on it. 
 * If a string is provided, returns result of [`document.querySelectorAll()`](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelectorAll), using the string as the selector, converted into an array. 
-* Otherwise, wraps the input in an array, then filters for elements that are derived from the Element prototype.
+* Otherwise, wraps the input in an array, then filters for elements that are derived from the *Element* prototype.
 
-&nbsp; &nbsp; **Returns:** An `Array` of `Element` instances found by the function.
+&nbsp; &nbsp; **Returns:** An array of *Element* instances found by the function.
 
 <a name="common-extend" href="#common-extend">#</a>
 *common*.**extend**(*obj*, *extend*[, *options*]) ⇒ `Object`<br />
 <a href="#common-extend">#</a>
 *common*.**extend**(*obj*, *extend*[, *overwrite*[, *deep*[, *modify*]]]) ⇒ `Object`
 
-Copy given object and extended with new values. The passed objects are not modified in any way unless `modify` is set true.
+Copy given object and extended with new values. The passed objects are not modified in any way unless `modify` is set as truthy.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
@@ -471,13 +475,13 @@ Copy given object and extended with new values. The passed objects are not modif
 | options.modify | `Boolean` | If true, the input base object (`obj`) is modified directly, instead of cloning. |
 | options.modifyObj | `Boolean` | Same as above. |
 
-If either `extend` or `obj` is null or undefined (or evaluates as such, e.g. false or zeros values), a copy of whatever remaining object is returned. Otherwise, values in `obj` and `extend` are copied to a cloned object by passing the value. Thus primitive types are copied by value, but objects will be copied by reference, unless `deepCopy` is true.
+If either `extend` or `obj` is *null* or *undefined* (or evaluates as falsy), a copy of whatever remaining object is returned. Otherwise, values in `obj` and `extend` are copied to a cloned object by passing the value. Thus primitive types are copied by value, but objects will be copied by reference, unless `deepCopy` is true.
 
 In the case that the value being copied from and the value being copied over are both object literals, the copying will be recursed into the next level for each the origin and extending object.
 
 Deep copy is done via [`structuredClone()`](https://developer.mozilla.org/en-US/docs/Web/API/structuredClone), if available, or fallbacks to the `JSON.parse(JSON.stringify())` method. Note that the former method may throw an `DataCloneError` exception and the latter will results in some values (such as dates, functions, or circular references) not being correctly carried over.
 
-&nbsp; &nbsp; **Returns:** The new, extended object (or, if `modify` is true, a reference to the same original object, which has been changed).
+&nbsp; &nbsp; **Returns:** The new, extended object (or, if `modify` is truthy, a reference to the same original object, which has been changed).
 
 <a name="common-getUrlGetVars" href="#common-getUrlGetVars">#</a>
 *common*.**getUrlGetVars**() ⇒ `Object`
@@ -501,11 +505,11 @@ Creates a new, centered window.
 | options.name | `String` | New window name may also be specified in the options. |
 | options.width | `Number` | Width in pixels. If not specified, defaults to 600. |
 | options.height | `Number` | Height in pixels. If not specified, defaults to 400. |
-| options.minimal | `Boolean` | Optional. If true forces hiding of menubar, statusbar, and location – although with many modern browsers this has no effect as it is not allowed. |
+| options.minimal | `Boolean` | Optional. If truthy, forces hiding of menubar, statusbar, and location – although with many modern browsers this has no effect as it is not allowed. |
 | options.options | `Object` | Optional. Additional window options (passed as `windowFeatures` parameter). Specify as key-value pairing. Will overwrite any options set by function or other parameters. |
-| options.error | `Callback` | Optional. Callback to run when the new window is detected to have been immediately closed (likely due to pop-up blocking). Given the `WindowProxy` object returned by `window.open()`. |
+| options.error | `Callback` | Optional. Callback to run when the new window is detected to have been immediately closed (likely due to pop-up blocking). Given the *WindowProxy* returned by `window.open()`. |
 
-&nbsp; &nbsp; **Returns:** The [`WindowProxy`](https://developer.mozilla.org/en-US/docs/Glossary/WindowProxy) object returned by `window.open()`.
+&nbsp; &nbsp; **Returns:** The [*WindowProxy*](https://developer.mozilla.org/en-US/docs/Glossary/WindowProxy) returned by `window.open()`.
 
 <a name="common-ajax" href="#common-ajax">#</a>
 *common*.**ajax**(*params*) ⇒ `XMLHttpRequest` | `Promise`
@@ -517,7 +521,7 @@ However, if the project allows, I'd nowadays recommend using the [Fetch API](htt
 | Param | Type | Default | Description |
 | :--- | :---: | :---: | :--- |
 | params.url | `String` |  | The URL of the request. |
-| params.async | `Boolean` | `true` | Asynchronous. Defaults to true. |
+| params.async | `Boolean` | `true` | Asynchronous. Defaults to *true*. |
 | params.method | `String` | `"GET"` | Method for passing data. |
 | params.data | `Object` |  | Optional dictionary of data to send with request. |
 | params.dataType | `String` |  | Type of returned data. See [XMLHttpRequest.responseType](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/responseType). |
@@ -528,7 +532,7 @@ However, if the project allows, I'd nowadays recommend using the [Fetch API](htt
 | params.password | `String` |  | Optional password, if necessitated. |
 | params.promise | `Boolean` |  | Optionally return as Promise that resolves when the request resolves. |
 
-&nbsp; &nbsp; **Returns:** `XMLHttpRequest` or `Promise` on completion for the request.
+&nbsp; &nbsp; **Returns:** *XMLHttpRequest* or *Promise* on completion for the request.
 
 <a name="common-animate" href="#common-animate">#</a>
 *common*.**animate**(*options*) ⇒ `Promise`<br />
@@ -582,7 +586,7 @@ Adds class "grab" to element, and class "grabbing" when being dragged.
 <a name="common-createDropdown" href="#common-createDropdown">#</a>
 *common*.*ui*.**createDropdown**(*element*, *menu*)
 
-Create a dropdown menu on an element. *menu* parameter is an array of object literals defining the menu. The parameters 'id', 'class', 'style', and 'html'/text', if they exist, are applied. For functionality, either add 'href' and optionally 'target' parameters or supply a callback to an 'onClick' parameter. To create a submenu, simply add a 'menu' parameter with the same nested structure. 
+Create a dropdown menu on an element. *menu* parameter is an array of object literals defining the menu. The parameters `id`, `class`, `style`, and `html`/`text`, if they exist, are applied. For functionality, either add `href` and optionally `target` parameters or supply a callback to an `onClick` parameter. To create a submenu, simply add a `menu` parameter with the same nested structure. 
 
 Elements with be created with classes prefixed by "cm-dropdown".
 
@@ -633,7 +637,7 @@ The tooltips and help icons functionality can be applied via the functions (desc
 
 ![Common UI Help Icon](./misc/cmhelpicon.png)
 
-To add a tooltip manually, add the class `cm-tooltip-left`, `cm-tooltip-top`, `cm-tooltip-right`, or `cm-tooltip-bottom` and the attribute `cm-tooltip-msg` with the tooltip message. To create a help icon, simply create the element `<i>?</i>`, with class `cm-icon`.
+To add a tooltip manually, add the class *cm-tooltip-left*, *cm-tooltip-top*, *cm-tooltip-right*, or *cm-tooltip-bottom* and the attribute *cm-tooltip-msg* with the tooltip message. To create a help icon, simply create the element `<i>?</i>`, with class *cm-icon*.
 
 <a name="common-addTooltip" href="#common-addTooltip">#</a>
 *common*.*ui*.**addTooltip**(*element*, *options*)<br />
@@ -642,7 +646,7 @@ To add a tooltip manually, add the class `cm-tooltip-left`, `cm-tooltip-top`, `c
 
 Add hover tooltip to element(s).
 
-Elements with be created with classes prefixed by "cm-tooltip".
+Elements with be created with classes prefixed by *cm-tooltip*.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
@@ -650,7 +654,7 @@ Elements with be created with classes prefixed by "cm-tooltip".
 | options | `Object` | Options object, or options may be specified in flat series of parameters. |
 | options.message | `String` | Tooltip message/HTML. |
 | options.direction | `String` | Direction of tooltip (defaults to top). |
-| options.force | `Boolean` | If true, forces tooltip visible. |
+| options.force | `Boolean` | If truthy, forces tooltip visible. |
 
 <a name="common-removeTooltip" href="#common-removeTooltip">#</a>
 *common*.*ui*.**removeTooltip**(*element*)
@@ -668,7 +672,7 @@ Remove hover tooltip from element(s).
 
 Add help icon to element(s) as (?) styled icon with tooltip.
 
-Icon element will be created with class "cm-icon".
+Icon element will be created with class *cm-icon*.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
@@ -677,7 +681,7 @@ Icon element will be created with class "cm-icon".
 | options.message | `String` | Tooltip message/HTML. |
 | options.direction | `String` | Direction of tooltip (defaults to top). |
 | options.style | `Object` | Dictionary of inline style key-values for icon. |
-| options.force | `Boolean` | If true, forces tooltip visible. |
+| options.force | `Boolean` | If truthy, forces tooltip visible. |
  
 <a name="common-removeHelpIcon" href="#common-removeHelpIcon">#</a>
 *common*.*ui*.**removeHelpIcon**(*element*)
@@ -696,9 +700,9 @@ For modal dialog usage, ensure your dependency-manager/import-function is cachin
 
 ![Common UI Modal](./misc/cmmodal.png)
 
-Model elements will be created with classes prefixed by "cm-modal".
+Model elements will be created with classes prefixed by *.cm-modal*.
 
-When a modal function is first called, this library appends a hidden div to `body` to handle modals/dialogs. This includes a container div (`#cm-modal-container`), an outer modal div (`#cm-modal-outer`) with absolute positioning, and an inner div (`.cm-modal-inner`) which represents the actual dialog. You may (and are in fact recommended to) tweak the CSS rules attached to these as necessary.
+When a modal function is first called, this library appends a hidden div to `body` to handle modals/dialogs. This includes a container div (*#cm-modal-container*), an outer modal div (*#cm-modal-outer*) with absolute positioning, and an inner div (*.cm-modal-inner*) which represents the actual dialog. You may (and are in fact recommended to) tweak the CSS rules attached to these as necessary.
 
 Only one modal may be open at a time. Opening another modal will replace the current one.
 
@@ -712,7 +716,7 @@ Check whether modal is open.
 <a name="common-setModal" href="#common-setModal">#</a>
 *common*.*ui*.**openModal**(*content*[, *options*]) ⇒ `Element`
 
-Creates a new modal dialog (or closes, if visible=false). Function `openModal()` is the same with `visible` defaulted to `true`.
+Creates a new modal dialog (or closes, if `visible` is falsy). Function `openModal()` is the same with `visible` defaulted to *true*.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
@@ -720,12 +724,12 @@ Creates a new modal dialog (or closes, if visible=false). Function `openModal()`
 | content | `String` | Modal content HTML |
 | options | `Object` |  |
 | options.id | `String` | Id of inner modal dialog element. |
-| options.showBackground | `Boolean` | If true, creates a semi-transparent background over window. |
-| options.notExitable | `Boolean` | Normally modal closes on clicking anywhere outside modal dialog element. If true, this prevents this functionality. |
-| options.hideCloser | `Boolean` | If true, does not apply the automatically placed "X" to close dialog on upper-right. |
+| options.showBackground | `Boolean` | If truthy, creates a semi-transparent background over window. |
+| options.notExitable | `Boolean` | Normally modal closes on clicking anywhere outside modal dialog element. If truthy, this prevents this functionality. |
+| options.hideCloser | `Boolean` | If truthy, does not apply the automatically placed "X" to close dialog on upper-right. |
 | options.onClose | `Callback` | Callback to run on modal being closed.  |
 
-&nbsp; &nbsp; **Returns:** `Element` of modal content div (`.cm-modal-inner`).
+&nbsp; &nbsp; **Returns:** *Element* of modal content div (*.cm-modal-inner*).
 
 <a name="common-setModalAsLoading" href="#common-setModalAsLoading">#</a>
 *common*.*ui*.**setModalAsLoading**([*content*[, *options*]]) ⇒ `Element`
@@ -737,13 +741,13 @@ Creates a new modal dialog with default values prepped for loading. `content` is
 | content | `String` | `"Loading.."` | Modal content HTML |
 | options | `Object` |  |
 | options.id | `String` | `"modal-loading-dialog"` | Id of inner modal dialog element. |
-| options.showBackground | `true` | `Boolean` | If true, creates a semi-transparent background over window. |
-| options.notExitable | `Boolean` | `true` | Normally modal closes on clicking anywhere outside modal dialog element. If true, this prevents this functionality. |
-| options.hideCloser | `Boolean` | `true` | If true, does not apply the automatically placed "X" to close dialog on upper-right. |
-| options.addDetails | `Boolean` | `true` | If true, adds smaller subtext below the main modal content. |
-| options.addDetailsText | `String` | `"Please wait.."` | The content for subtext below the main modal content, if `addDetails` is set true. |
+| options.showBackground | `true` | `Boolean` | If truthy, creates a semi-transparent background over window. |
+| options.notExitable | `Boolean` | `true` | Normally modal closes on clicking anywhere outside modal dialog element. If truthy, this prevents this functionality. |
+| options.hideCloser | `Boolean` | `true` | If truthy, does not apply the automatically placed "X" to close dialog on upper-right. |
+| options.addDetails | `Boolean` | `true` | If truthy, adds smaller subtext below the main modal content. |
+| options.addDetailsText | `String` | `"Please wait.."` | The content for subtext below the main modal content, if `addDetails` is truthy. |
 
-&nbsp; &nbsp; **Returns:** `Element` of modal content div (`.cm-modal-inner`).
+&nbsp; &nbsp; **Returns:** *Element* of modal content div (*.cm-modal-inner*).
  
 <a name="common-changeModal" href="#common-changeModal">#</a>
 *common*.*ui*.**changeModal**(*content*[, *prepContentCallback*[, *hideCloser*]]) ⇒ `Element`
@@ -754,7 +758,7 @@ Change modal dialog content while leaving all other options the same. Keeps the 
 | :--- | :---: | :--- |
 | content | `String` | Modal content HTML |
 | prepContentCallback | `Callback` | If some prep work is needed before determining the new dimensions of the modal for size change animation. |
-| hideCloser | `Boolean` | Due to HTML refresh, closer will be readded unless this is set to true. |
+| hideCloser | `Boolean` | Due to HTML refresh, closer will be readded unless this is set as truthy. |
 
 &nbsp; &nbsp; **Returns:** `Element` of modal content div (`.cm-modal-inner`).
 
@@ -767,7 +771,7 @@ Hide any currently visible modal.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| suppressOnClose | `Boolean` | If true, suppresses `onClose` event callback, if one is attached. |
+| suppressOnClose | `Boolean` | If truthy, suppresses `onClose` event callback, if one is attached. |
 
 &nbsp;
 
@@ -786,7 +790,7 @@ To use, begin by creating instance and adding columns with `addColumn()`. The `k
 <a name="CommonTable" href="CommonTable">#</a>
 **CommonTable**([*tableId*[, *tableClass*[, *container*]]])
 
-Creates new CommonTable. The table will be given the class of "cm-table", more classes can be appended through the options.
+Creates new CommonTable. The table will be given the class of *cm-table*, more classes can be appended through the options.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
@@ -820,14 +824,14 @@ See above.
 | Param | Type | Description |
 | :--- | :---: | :--- |
 | options | `Object` | |
-| options.group | `String` | The header group. If not null, used to group two or more headers as subheaders under a banner header (via colspan). |
+| options.group | `String` | The header group. If not *null*, used to group two or more headers as subheaders under a banner header (via colspan). |
 | options.title | `String` | The title to display the header as. |
 | options.key | `String` | The key used to retrieve data from this header. |
 | options.format | `Function` | Optional function such that `format(value)`, returns the formatted value for the table cell. Run in try-catch block, so if it fails, simply continues with raw value. |
 | options.hdrStyles | `String` \| `Object` | Optional styles to apply to the header. Overrides any colStyles properties. |
 | options.colStyles | `String` \| `Object` | Optional styles to apply to every row in this column (including header). If you only want to apply to non-header cells, must override values in hdrStyles. |
 | options.onClick | `Function` | Optional onClick listener to add to each cell (excluding header). Callback will be given the entire row's data as the parameter. |
-| options.sortable | `Boolean` | Optional flag to set/disable sortable column on this column. By default columns are sortable, so set as false or null to disable. |
+| options.sortable | `Boolean` | Optional flag to set/disable sortable column on this column. By default columns are sortable, so set as falsy or *null* to disable. |
 
 Alternatively, the `group`, `title`, and `key` parameters may be split out and provided as individual parameters.
 
@@ -838,7 +842,7 @@ See above.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| group | `String` | The header group. If not null, used to group two or more headers as subheaders under a banner header (via colspan). |
+| group | `String` | The header group. If not *null*, used to group two or more headers as subheaders under a banner header (via colspan). |
 | title | `String` | The title to display the header as. |
 | key | `String` | The key used to retrieve data from this header. |
 | options | `Object` | |
@@ -846,7 +850,7 @@ See above.
 | options.hdrStyles | `String` \| `Object` | Optional styles to apply to the header. Overrides any colStyles properties. |
 | options.colStyles | `String` \| `Object` | Optional styles to apply to every row in this column (including header). If you only want to apply to non-header cells, must override values in hdrStyles. |
 | options.onClick | `Function` | Optional onClick listener to add to each cell (excluding header). Callback will be given the entire row's data as the parameter. |
-| options.sortable | `Boolean` | Optional flag to set/disable sortable column on this column. By default columns are sortable, so set as false or null to disable. |
+| options.sortable | `Boolean` | Optional flag to set/disable sortable column on this column. By default columns are sortable, so set as falsy or *null* to disable. |
 
 <a name="CommonTable-createHeaders" href="CommonTable-createHeaders">#</a>
 *CommonTable*.prototype.**createHeaders**([*options*])
