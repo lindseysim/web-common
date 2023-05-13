@@ -428,16 +428,16 @@ Given an input, returns an [*Element*](https://developer.mozilla.org/en-US/docs/
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| element | `Element` \| `jQuery` \| `String` | Object to convert to *Element*. |
+| element | -- | Input to filter for and/or convert to *Element*. |
 
-Specifics on function behavior is based on the type of `element`:
+&nbsp; &nbsp; **Returns:** 
 
 * If a single *Element* is provided, simply returns it. 
 * If a *jQuery* object is provided, returns first *Element* given by calling [`get()`](https://api.jquery.com/get/) on it. 
 * If an array is provided, returns the first item this is an *Element* or *undefined*. 
-* If a *NodeList* or other iterable is provided, returns value of `next()` or *null* if done. If a jQuery object is provided, returns the first result in [`get()`](https://api.jquery.com/get/), or *null* if no results. If string is provided, returns result of [`document.querySelector()`](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector) using the string as the selector. If none of the above apply, returns *null*.
-
-&nbsp; &nbsp; **Returns:** The *Element* instance found by the function, or *null*.
+* If a *NodeList* or other iterable is provided, returns value of `next()` or *null* if done.
+* If string is provided, returns result of [`document.querySelector()`](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector) using the string as the selector. 
+* If none of the above apply, returns *undefined*.
 
 <a name="common-getElementList" href="#common-getElementList">#</a>
 *common*.**getElementList**(*input*) ⇒ `Element[]`
@@ -446,16 +446,14 @@ Given an input, converts it into an array of [Elements](https://developer.mozill
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| input | `Element` \| `NodeList` \| `jQuery` \| `String` | Object to convert to array or *NodeList*. |
+| input | -- | Input to filter for and/or convert to an array of *Elements*. |
 
-Specifics on function behavior is based on the type of `input`:
+&nbsp; &nbsp; **Returns:** 
 
 * If a *NodeList*, array, or other iterable is provided, converts to an array via `Array.from()`, then filters for elements that are derived from the *Element* prototype. 
 * If a *jQuery* object is provided, returns array given by calling [`get()`](https://api.jquery.com/get/) on it. 
 * If a string is provided, returns result of [`document.querySelectorAll()`](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelectorAll), using the string as the selector, converted into an array. 
 * Otherwise, wraps the input in an array, then filters for elements that are derived from the *Element* prototype.
-
-&nbsp; &nbsp; **Returns:** An array of *Element* instances found by the function.
 
 <a name="common-extend" href="#common-extend">#</a>
 *common*.**extend**(*obj*, *extend*[, *options*]) ⇒ `Object`<br />
@@ -482,7 +480,7 @@ In the case that the value being copied from and the value being copied over are
 
 Deep copy is done via [`structuredClone()`](https://developer.mozilla.org/en-US/docs/Web/API/structuredClone), if available, or fallbacks to the `JSON.parse(JSON.stringify())` method. Note that the former method may throw an `DataCloneError` exception and the latter will results in some values (such as dates, functions, or circular references) not being correctly carried over.
 
-&nbsp; &nbsp; **Returns:** The new, extended object (or, if `modify` is truthy, a reference to the same original object, which has been changed).
+&nbsp; &nbsp; **Returns:** The object with extended values (if `modify` is falsy, this is a new object).
 
 <a name="common-getUrlGetVars" href="#common-getUrlGetVars">#</a>
 *common*.**getUrlGetVars**() ⇒ `Object`
@@ -582,7 +580,7 @@ Adds class "grab" to element, and class "grabbing" when being dragged.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to add functionality to. See *common*.[**getElementList**()](#common-getElementList) for evaluation of this parameter. |
+| element | -- | Element(s) to add functionality to. See *common*.[**getElementList**()](#common-getElementList) for evaluation of this parameter. |
 
 <a name="common-createDropdown" href="#common-createDropdown">#</a>
 *common*.*ui*.**createDropdown**(*element*, *menu*)
@@ -593,7 +591,7 @@ Elements with be created with classes prefixed by "cm-dropdown".
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to add dropdown to. See *common*.[**getElementList**()](#common-getElementList) for evaluation of this parameter. |
+| element | -- | Element(s) to add dropdown to. See *common*.[**getElementList**()](#common-getElementList) for evaluation of this parameter. |
 | menu | `Object[]` | JSON map of menu |
 
 *Example usage:*
@@ -628,7 +626,7 @@ Remove dropdown menu functionality from an element.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to remove dropdown from. See *common*.[**getElementList**()](#common-getElementList) for evaluation of this parameter. |
+| element | -- | Element(s) to remove dropdown from. See *common*.[**getElementList**()](#common-getElementList) for evaluation of this parameter. |
 
 &nbsp;  
 
@@ -651,7 +649,7 @@ Elements will be created with classes prefixed by *cm-tooltip*.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to add tooltip to. See *common*.[**getElementList**()](#common-getElementList) for evaluation of this parameter. |
+| element | -- | Element(s) to add tooltip to. See *common*.[**getElementList**()](#common-getElementList) for evaluation of this parameter. |
 | options | `Object` | Options object, or options may be specified in flat series of parameters. |
 | options.message | `String` | Tooltip message/HTML. |
 | options.direction | `String` | Direction of tooltip (defaults to top). |
@@ -664,7 +662,7 @@ Remove hover tooltip from element(s).
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to remove tooltip from. See *common*.[**getElementList**()](#common-getElementList) for evaluation of this parameter. |
+| element | -- | Element(s) to remove tooltip from. See *common*.[**getElementList**()](#common-getElementList) for evaluation of this parameter. |
 
 <a name="common-appendHelpIcon" href="#common-appendHelpIcon">#</a>
 *common*.*ui*.**appendHelpIcon**(*element*, *options*)<br />
@@ -677,7 +675,7 @@ Icon element will be created with class *cm-icon*.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to add help icon too. See *common*.[**getElementList**()](#common-getElementList) for evaluation of this parameter. |
+| element | -- | Element(s) to add help icon too. See *common*.[**getElementList**()](#common-getElementList) for evaluation of this parameter. |
 | options | `Object` | Options object, or options may be specified in flat series of parameters. |
 | options.message | `String` | Tooltip message/HTML. |
 | options.direction | `String` | Direction of tooltip (defaults to top). |
@@ -691,7 +689,7 @@ Remove help icon from element(s).
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Element to remove help icon from. See *common*.[**getElementList**()](#common-getElementList) for evaluation of this parameter. |
+| element | -- | Element(s) to remove help icon from. See *common*.[**getElementList**()](#common-getElementList) for evaluation of this parameter. |
 
 &nbsp;  
 
@@ -797,7 +795,7 @@ Creates new CommonTable. The table will be given the class of *cm-table*, more c
 | :--- | :---: | :--- |
 | tableId | `String` | Table ID |
 | tableClass | `String|String[]` | Table classname (use array to add multiple) |
-| container | `Element` | Element to append table to |
+| container | `Element` | *Element* to append table to |
 
 <a name="CommonTable-appendTo" href="CommonTable-appendTo">#</a>
 *CommonTable*.prototype.**appendTo**(*container*)
@@ -806,7 +804,7 @@ Appends table to element.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| container | `Element` | Element to append table in |
+| container | `Element` | *Element* to append table in |
 
 <a name="CommonTable-prependTo" href="CommonTable-prependTo">#</a>
 *CommonTable*.prototype.**prependTo**(*container*)
@@ -815,7 +813,7 @@ Prepends table to element.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| container | `Element` | Element to prepend table in |
+| container | `Element` | *Element* to prepend table in |
 
 <a name="CommonTable-addColumn" href="CommonTable-addColumn">#</a>
 *CommonTable*.prototype.**addColumn**(*options*)
@@ -828,10 +826,10 @@ See above.
 | options.group | `String` | The header group. If not *null*, used to group two or more headers as subheaders under a banner header (via colspan). |
 | options.title | `String` | The title to display the header as. |
 | options.key | `String` | The key used to retrieve data from this header. |
-| options.format | `Function` | Optional function such that `format(value)`, returns the formatted value for the table cell. Run in try-catch block, so if it fails, simply continues with raw value. |
+| options.format | `Callback` | Optional function such that `format(value)`, returns the formatted value for the table cell. Run in try-catch block, so if it fails, simply continues with raw value. |
 | options.hdrStyles | `String` \| `Object` | Optional styles to apply to the header. Overrides any colStyles properties. |
 | options.colStyles | `String` \| `Object` | Optional styles to apply to every row in this column (including header). If you only want to apply to non-header cells, must override values in hdrStyles. |
-| options.onClick | `Function` | Optional onClick listener to add to each cell (excluding header). Callback will be given the entire row's data as the parameter. |
+| options.onClick | `Callback` | Optional onClick listener to add to each cell (excluding header). Callback will be given the entire row's data as the parameter. |
 | options.sortable | `Boolean` | Optional flag to set/disable sortable column on this column. By default columns are sortable, so set as falsy or *null* to disable. |
 
 Alternatively, the `group`, `title`, and `key` parameters may be split out and provided as individual parameters.
@@ -847,10 +845,10 @@ See above.
 | title | `String` | The title to display the header as. |
 | key | `String` | The key used to retrieve data from this header. |
 | options | `Object` | |
-| options.format | `Function` | Optional function such that `format(value)`, returns the formatted value for the table cell. Run in try-catch block, so if it fails, simply continues with raw value. |
+| options.format | `Callback` | Optional function such that `format(value)`, returns the formatted value for the table cell. Run in try-catch block, so if it fails, simply continues with raw value. |
 | options.hdrStyles | `String` \| `Object` | Optional styles to apply to the header. Overrides any colStyles properties. |
 | options.colStyles | `String` \| `Object` | Optional styles to apply to every row in this column (including header). If you only want to apply to non-header cells, must override values in hdrStyles. |
-| options.onClick | `Function` | Optional onClick listener to add to each cell (excluding header). Callback will be given the entire row's data as the parameter. |
+| options.onClick | `Callback` | Optional onClick listener to add to each cell (excluding header). Callback will be given the entire row's data as the parameter. |
 | options.sortable | `Boolean` | Optional flag to set/disable sortable column on this column. By default columns are sortable, so set as falsy or *null* to disable. |
 
 <a name="CommonTable-createHeaders" href="CommonTable-createHeaders">#</a>
