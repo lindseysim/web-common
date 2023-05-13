@@ -47,12 +47,12 @@ If using script imports in HTML, import the paths to 'common.js', 'style.css', a
 
 &nbsp;
 
-## v5 Breaking Changes ##
+#### Version 5 Breaking Changes ####
 
-* *String*.prototype.**heuristicCompare**() is removed. Use [*String*.prototype.**semanticCompare**()](#common-stringSemanticCompare) instead.
-* [*common*.**extend**()](#common-extend), parameters are renamed `overwrite`, `deep`, and `modify` from `allowOverwrite`, `deepCopy`, and `modifyObj`. While detection is still left in for older names for backwards compatibility, it may be deprecated at some point.
-* [*common*.**newWindow**()](#common-newWindow) no longer accepts flat parameters. All parameters except for the url must be specified in an options object.
-* [*common*.**animate**()](#common-animate), parameters are renamed `duration` and `timing` from `durationMs`, and `timingFunction`. While detection is still left in for older names for backwards compatibility, it may be deprecated at some point.
+* *String*.prototype.**heuristicCompare**() is removed. Use *String*.prototype.[**semanticCompare**()](#common-stringSemanticCompare) instead.
+* *common*.[**extend**()](#common-extend), parameters are renamed `overwrite`, `deep`, and `modify` from `allowOverwrite`, `deepCopy`, and `modifyObj`. While detection is still left in for older names for backwards compatibility, it may be deprecated at some point.
+* *common*.[**newWindow**()](#common-newWindow) no longer accepts flat parameters. All parameters except for `url` (and optoinally `name`) must be specified in an options object.
+* *common*.[**animate**()](#common-animate), parameters are renamed `duration` and `timing` from `durationMs`, and `timingFunction`. While detection is still left in for older names for backwards compatibility, it may be deprecated at some point.
 
 &nbsp;
 
@@ -432,19 +432,29 @@ Given an input, returns an [Element](https://developer.mozilla.org/en-US/docs/We
 
 If a single Element is provided, simply returns it. If an array is provided, returns the first item (or `undefined` if empty). If a NodeList or other iterable is provided, returns value of `next()` or `null` if done. If a jQuery object is provided, returns the first result in [`get()`](https://api.jquery.com/get/), or `null` if no results. If string is provided, returns result of [`document.querySelector()`](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector) using the string as the selector. If none of the above apply, returns `null`.
 
+&nbsp; &nbsp; **Returns:** The `Element` instance found by the function, or null.
+
 <a name="common-getElementList" href="#common-getElementList">#</a>
-*common*.**getElementList**(*element*) ⇒ `Element[]`
+*common*.**getElementList**(*input*) ⇒ `Element[]`
 
 Given an input, converts it into an array of [Elements](https://developer.mozilla.org/en-US/docs/Web/API/Element) (or objects derived from the Element prototype).
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| element | `Element` \| `NodeList` \| `jQuery` \| `String` | Object to convert to array or `NodeList`. |
+| input | `Element` \| `NodeList` \| `jQuery` \| `String` | Object to convert to array or `NodeList`. |
 
-If a NodeList, array, or other iterable is provided, converts to an array via `Array.from()`, then filtering on only elements that are derived from the Element prototype. If a `jQuery` object is provided, returns array given by calling [`get()`](https://api.jquery.com/get/) on it. If a string is provided, returns result of [`document.querySelectorAll()`](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelectorAll), using the string as the selector, converted into an array. Otherwise, wraps it in an array if derived from the Element prototype, or returns an empty array.
+Specifics on function behavior is based on the type of `input`.
+
+* If a NodeList, array, or other iterable is provided, converts to an array via `Array.from()`, then filters for elements that are derived from the Element prototype. 
+* If a `jQuery` object is provided, returns array given by calling [`get()`](https://api.jquery.com/get/) on it. 
+* If a string is provided, returns result of [`document.querySelectorAll()`](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelectorAll), using the string as the selector, converted into an array. 
+* Otherwise, wraps the input in an array, then filters for elements that are derived from the Element prototype.
+
+&nbsp; &nbsp; **Returns:** An `Array` of `Element` instances found by the function.
 
 <a name="common-extend" href="#common-extend">#</a>
 *common*.**extend**(*obj*, *extend*[, *options*]) ⇒ `Object`<br />
+<a href="#common-extend">#</a>
 *common*.**extend**(*obj*, *extend*[, *overwrite*[, *deep*[, *modify*]]]) ⇒ `Object`
 
 Copy given object and extended with new values. The passed objects are not modified in any way unless `modify` is set true.
@@ -467,13 +477,18 @@ In the case that the value being copied from and the value being copied over are
 
 Deep copy is done via [`structuredClone()`](https://developer.mozilla.org/en-US/docs/Web/API/structuredClone), if available, or fallbacks to the `JSON.parse(JSON.stringify())` method. Note that the former method may throw an `DataCloneError` exception and the latter will results in some values (such as dates, functions, or circular references) not being correctly carried over.
 
+&nbsp; &nbsp; **Returns:** The new, extended object (or, if `modify` is true, a reference to the same original object, which has been changed).
+
 <a name="common-getUrlGetVars" href="#common-getUrlGetVars">#</a>
 *common*.**getUrlGetVars**() ⇒ `Object`
 
 Retrieve GET parameters in current URL as an object literal (dictionary format).
 
+&nbsp; &nbsp; **Returns:** Object literal of GET parameters found in URL.
+
 <a name="common-newWindow" href="#common-newWindow">#</a>
 *common*.**newWindow**(*url*[, *options*]) ⇒ `WindowProxy`<br />
+<a href="#common-newWindow">#</a>
 *common*.**newWindow**(*url*, *name*[, *options*]) ⇒ `WindowProxy`
 
 Creates a new, centered window.
@@ -490,7 +505,7 @@ Creates a new, centered window.
 | options.options | `Object` | Optional. Additional window options (passed as `windowFeatures` parameter). Specify as key-value pairing. Will overwrite any options set by function or other parameters. |
 | options.error | `Callback` | Optional. Callback to run when the new window is detected to have been immediately closed (likely due to pop-up blocking). Given the `WindowProxy` object returned by `window.open()`. |
 
-Returns the [`WindowProxy`](https://developer.mozilla.org/en-US/docs/Glossary/WindowProxy) object returned by `window.open()`.
+&nbsp; &nbsp; **Returns:** The [`WindowProxy`](https://developer.mozilla.org/en-US/docs/Glossary/WindowProxy) object returned by `window.open()`.
 
 <a name="common-ajax" href="#common-ajax">#</a>
 *common*.**ajax**(*params*) ⇒ `XMLHttpRequest` | `Promise`
@@ -513,10 +528,15 @@ However, if the project allows, I'd nowadays recommend using the [Fetch API](htt
 | params.password | `String` |  | Optional password, if necessitated. |
 | params.promise | `Boolean` |  | Optionally return as Promise that resolves when the request resolves. |
 
+&nbsp; &nbsp; **Returns:** `XMLHttpRequest` or `Promise` on completion for the request.
+
 <a name="common-animate" href="#common-animate">#</a>
 *common*.**animate**(*options*) ⇒ `Promise`<br />
+<a href="#common-animate">#</a>
 *common*.**animate**(*element*, *options*) ⇒ `Promise`<br />
+<a href="#common-animate">#</a>
 *common*.**animate**(*element*, *properties*[, *options*]) ⇒ `Promise`<br />
+<a href="#common-animate">#</a>
 *common*.**animate**(*element*, *properties*, *duration*[, *options*]) ⇒ `Promise`
 
 
@@ -536,7 +556,7 @@ Mimics [jQuery.animate()](http://api.jquery.com/jQuery.animate/) function using 
 | options.timingFunction | `String` | Same as above. |
 | options.complete | `Callback` | Optional callback to run on completion. |
 
-Returns a `Promise`, if the Promise API is available. Otherwise returns nothing.
+&nbsp; &nbsp; **Returns:** A `Promise` tied to the animation duration, if the Promise API is available. Otherwise returns nothing.
 
 &nbsp;
 
@@ -609,14 +629,15 @@ Remove dropdown menu functionality from an element.
 
 #### Tooltips & help icons ####
 
-![Common UI Help Icon](./misc/cmhelpicon.png)
-
 The tooltips and help icons functionality can be applied via the functions (described below) or manually.
+
+![Common UI Help Icon](./misc/cmhelpicon.png)
 
 To add a tooltip manually, add the class `cm-tooltip-left`, `cm-tooltip-top`, `cm-tooltip-right`, or `cm-tooltip-bottom` and the attribute `cm-tooltip-msg` with the tooltip message. To create a help icon, simply create the element `<i>?</i>`, with class `cm-icon`.
 
 <a name="common-addTooltip" href="#common-addTooltip">#</a>
 *common*.*ui*.**addTooltip**(*element*, *options*)<br />
+<a href="#common-addTooltip">#</a>
 *common*.*ui*.**addTooltip**(*element*, *message*[, *direction*[, *force*]])
 
 Add hover tooltip to element(s).
@@ -642,6 +663,7 @@ Remove hover tooltip from element(s).
 
 <a name="common-appendHelpIcon" href="#common-appendHelpIcon">#</a>
 *common*.*ui*.**appendHelpIcon**(*element*, *options*)<br />
+<a href="#common-appendHelpIcon">#</a>
 *common*.*ui*.**appendHelpIcon**(*element*, *message*[, *direction*[, *style*[, *force*]]])
 
 Add help icon to element(s) as (?) styled icon with tooltip.
@@ -670,9 +692,9 @@ Remove help icon from element(s).
 
 #### Modal dialogs ####
 
-![Common UI Modal](./misc/cmmodal.png)
-
 For modal dialog usage, ensure your dependency-manager/import-function is caching requires/imports of the `common` object, or that you are passing the object by reference. Calling multiple instances of `common.ui` in the same window can result in odd behavior for modal management.
+
+![Common UI Modal](./misc/cmmodal.png)
 
 Model elements will be created with classes prefixed by "cm-modal".
 
@@ -686,9 +708,9 @@ Only one modal may be open at a time. Opening another modal will replace the cur
 Check whether modal is open.
 
 <a name="common-setModal" href="#common-setModal">#</a>
-*common*.*ui*.**setModal**(*visible*, *content*[, *options*])<br />
+*common*.*ui*.**setModal**(*visible*, *content*[, *options*]) ⇒ `Element`<br />
 <a name="common-setModal" href="#common-setModal">#</a>
-*common*.*ui*.**openModal**(*content*[, *options*])
+*common*.*ui*.**openModal**(*content*[, *options*]) ⇒ `Element`
 
 Creates a new modal dialog (or closes, if visible=false). Function `openModal()` is the same with `visible` defaulted to `true`.
 
@@ -706,7 +728,7 @@ Creates a new modal dialog (or closes, if visible=false). Function `openModal()`
 &nbsp; &nbsp; **Returns:** `Element` of modal content div (`.cm-modal-inner`).
 
 <a name="common-setModalAsLoading" href="#common-setModalAsLoading">#</a>
-*common*.*ui*.**setModalAsLoading**([*content*[, *options*]])
+*common*.*ui*.**setModalAsLoading**([*content*[, *options*]]) ⇒ `Element`
 
 Creates a new modal dialog with default values prepped for loading. `content` is optional and defaults to `"Loading.."`. In addition to same `options` available for [`common.setModal()`](#common-setModal), extended `options` are:
 
@@ -724,7 +746,7 @@ Creates a new modal dialog with default values prepped for loading. `content` is
 &nbsp; &nbsp; **Returns:** `Element` of modal content div (`.cm-modal-inner`).
  
 <a name="common-changeModal" href="#common-changeModal">#</a>
-*common*.*ui*.**changeModal**(*content*[, *prepContentCallback*[, *hideCloser*]]) ⇒ `Element` of modal content div (`.cm-modal-inner`)
+*common*.*ui*.**changeModal**(*content*[, *prepContentCallback*[, *hideCloser*]]) ⇒ `Element`
 
 Change modal dialog content while leaving all other options the same. Keeps the content-size changes from being too jarring when swapping content by adding small CSS animation to fit new size. If there was a custom width/height defined in the modal's style, these will be lost.
 
@@ -733,6 +755,8 @@ Change modal dialog content while leaving all other options the same. Keeps the 
 | content | `String` | Modal content HTML |
 | prepContentCallback | `Callback` | If some prep work is needed before determining the new dimensions of the modal for size change animation. |
 | hideCloser | `Boolean` | Due to HTML refresh, closer will be readded unless this is set to true. |
+
+&nbsp; &nbsp; **Returns:** `Element` of modal content div (`.cm-modal-inner`).
 
 <a name="common-closeModal" href="#common-closeModal">#</a>
 *common*.*ui*.**closeModal**([*suppressOnClose*])<br />
@@ -753,11 +777,11 @@ Table handling object which handles data formatting, grouped columns, column sor
 
 ![CommonTable example](./misc/cmtable.png)
 
+And example usage script that would result in the table shown above is given at the end of this section
+
 Must be separately imported. Returned as object if instantiated via CommonJS or AMD import. Otherwise appended to root as CommonTable class. Require base Common module to have been imported, as it depends on some the prototype modifications defined there.
 
 To use, begin by creating instance and adding columns with `addColumn()`. The `key` parameter defines how to assign the data to each column. Other parameters allow various style and formatting methods. Once all columns are added, add data and draw the table with `populateTable()`. The data, sent as an array of object literals/dictionaries, is mapped to the columns automatically with the `key` defined for each column.
-
-And example usage script provided at bottom.  
 
 <a name="CommonTable" href="CommonTable">#</a>
 **CommonTable**([*tableId*[, *tableClass*[, *container*]]])
@@ -931,8 +955,6 @@ tbl.populateTable({
   ascending: false  // sort by wins descending
 });
 ```
-
-![CommonTable example](./misc/cmtable.png)
 
 ----------
 

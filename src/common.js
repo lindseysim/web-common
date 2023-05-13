@@ -32,19 +32,19 @@ export default {
         return element instanceof Element ? element : null;
     }, 
 
-    getElementList(element) {
-        if(!element) return [];
-        if(typeof element === "string") {
-            return Array.from(document.querySelectorAll(element));
+    getElementList(input) {
+        if(!input) return [];
+        if(typeof input === "string") {
+            return Array.from(document.querySelectorAll(input));
         }
-        if(element[Symbol.iterator] === "function") {
-            return (Array.isArray(element) ? element : Array.from(element))
+        if(input[Symbol.iterator] === "function") {
+            return (Array.isArray(input) ? input : Array.from(input))
                 filter(o => o instanceof Element);
         }
-        if(typeof jQuery !== "undefined" && element instanceof jQuery) {
-            return element.get();
+        if(typeof jQuery !== "undefined" && input instanceof jQuery) {
+            return input.get();
         }
-        return element instanceof Element ? [element] : [];
+        return input instanceof Element ? [input] : [];
     }, 
 
     extend(obj, extend, overwrite, deep, modify) {
