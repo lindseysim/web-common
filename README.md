@@ -276,7 +276,9 @@ Will center an element on screen using absolute positioning.
 Will convert a given number to a string, using the supplied precision, with commas.
 
 <a name="common-numberStringFormat" href="#common-numberStringFormat">#</a>
-*Number*.prototype.**addStringFormat**([*minimum=0.001*, [*zeroFormat="0.0"*]) ⇒ `string`
+*Number*.prototype.**addStringFormat**([*minimum=0.001*, [*zeroFormat="0.0"*]) ⇒ `string`<br />
+<a name="common-numberAddCommasSmart" href="#common-numberAddCommasSmart">#</a>
+*Number*.prototype.**addCommasSmart**([*minimum=0.001*, [*zeroFormat="0.0"*]) ⇒ `string`
 
 Basically wraps `Number.prototype.addCommas()` with heuristic guessing on precision to use. The `minimum` parameter rounds any value whose absolute value is less than this to zero. The `zeroFormat` parameter can be used to customize how zero values are printed. By default it is "0.0".
 
@@ -290,8 +292,6 @@ Current heuristics are:
 * \<100 as number with one decimal place
 * ≥100 as number with no decimal places
 
-<a name="common-numberAddCommasSmart" href="#common-numberAddCommasSmart">#</a>
-*Number*.prototype.**addCommasSmart**([*minimum=0.001*, [*zeroFormat="0.0"*]) ⇒ `string`
 
 An alias for [`Number.prototype.addStringFormat()`](#common-numberStringFormat). Considered deprecated, but left for backwards compatibility.
 
@@ -317,7 +317,9 @@ Will capitalize the each word in the string (using whitespace to delineate words
 Additional break characters can be provided as either an array of characters or a string of all characters in the optional parameter `breaks`. E.g., to include hyphens, `"up-to-date".capitalize("-")` will output `Up-To-Date`.
 
 <a name="common-stringSemanticCompare" href="#common-stringSemanticCompare">#</a>
-*String*.prototype.**semanticCompare**(*compareString*[, *options*]) ⇒ `number`
+*String*.prototype.**semanticCompare**(*compareString*[, *options*]) ⇒ `number`<br /
+<a name="common-stringHeuristicCompare" href="#common-stringHeuristicCompare">#</a>
+*String*.prototype.**heuristicCompare**(*compareString*[, *options*]) ⇒ `number`>
 
 A semantic comparison of strings with numeric values within them. Compare the numbers in a string such that a "number" is not compared alphabetically by character but as the entire numeric value. 
 
