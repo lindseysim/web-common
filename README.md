@@ -279,7 +279,7 @@ Will convert a given number to a string, using the supplied precision, with comm
 <a name="common-numberStringFormat" href="#common-numberStringFormat">#</a>
 *Number*.prototype.**stringFormat**([*minimum=0.001*, [*zeroFormat="0.0"*]) ⇒ `string`
 
-Basically wraps `Number.prototype.addCommas()` with heuristic guessing on precision to use. The `minimum` parameter rounds any value whose absolute value is less than this to zero. The `zeroFormat` parameter can be used to customize how zero values are printed. By default it is "0.0".
+Basically wraps *Number*.prototype.[**addCommas**()](#common-numberAddCommas) with heuristic guessing on precision to use. The `minimum` parameter rounds any value whose absolute value is less than this to zero. The `zeroFormat` parameter can be used to customize how zero values are printed. By default it is "0.0".
 
 Current heuristics are: 
 
@@ -514,7 +514,7 @@ Creates a new, centered window.
 <a name="common-ajax" href="#common-ajax">#</a>
 *common*.**ajax**(*params*) ⇒ `XMLHttpRequest` | `Promise`
 
-Mimics jQuery.[ajax()](http://api.jquery.com/jQuery.ajax/) function call with `XMLHttpRequest`.
+Mimics *jQuery*.[ajax()](http://api.jquery.com/jQuery.ajax/) function call with `XMLHttpRequest`.
 
 However, if the project allows, I'd nowadays recommend using the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) instead (if needed, a [polyfill](https://github.com/github/fetch) is also available as `whatwg-fetch` in NPM).
 
@@ -544,7 +544,7 @@ However, if the project allows, I'd nowadays recommend using the [Fetch API](htt
 *common*.**animate**(*element*, *properties*, *duration*[, *options*]) ⇒ `Promise`
 
 
-Mimics *jQuery*.[**animate**()](http://api.jquery.com/jQuery.animate/) function using CSS transitions by first applying a [transition](https://developer.mozilla.org/en-US/docs/Web/CSS/transition) property for the requisite CSS properties to be applied, then, after a short delay (5 ms), applying the properties. All this is done as modifications to the element's inline styles, and will thus overwrite any existing inline styles and will be subject to any CSS rule overrides (such as an existing, applicable CSS rule with the `!imporant` property).
+Mimics *jQuery*.[**animate**()](http://api.jquery.com/jQuery.animate/) function using CSS transitions by first applying a [transition](https://developer.mozilla.org/en-US/docs/Web/CSS/transition) property for the requisite CSS properties to be applied, then, after a short delay (5 ms), applying the properties. All this is done as modifications to the element's inline styles, and will thus overwrite any existing inline styles and will be subject to any CSS rule overrides (such as an existing, applicable CSS rule with the `!imporant` flag).
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
@@ -779,10 +779,6 @@ Hide any currently visible modal.
 
 Table handling object which handles data formatting, grouped columns, column sorting, and basic styling.
 
-![CommonTable example](./misc/cmtable.png)
-
-And example usage script that would result in the table shown above is given at the end of this section
-
 Must be separately imported. Returned as object if instantiated via CommonJS or AMD import. Otherwise appended to root as CommonTable class. Require base Common module to have been imported, as it depends on some the prototype modifications defined there.
 
 To use, begin by creating instance and adding columns with *CommonTable*.prototype.**addColumn**(). The `key` parameter defines how to assign the data to each column. Other parameters allow various style and formatting methods. Once all columns are added, add data and draw the table with *CommonTable*.prototype.**populateTable**(). The data, sent as an array of object literals/dictionaries, is mapped to the columns automatically with the `key` defined for each column.
@@ -945,6 +941,8 @@ tbl.populateTable({
   ascending: false  // sort by wins descending
 });
 ```
+
+![CommonTable example](./misc/cmtable.png)
 
 ----------
 
