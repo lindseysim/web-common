@@ -319,7 +319,7 @@ A semantic comparison of strings with numeric values within them. Compare the nu
 
 E.g., a typical string comparisons would result in '20' coming before '5', because it was compare character by character, first comparing the '2' and '5' characters. This ensures, the entire '20' is considered as one number.
 
-Returns numeric indicating whether `this` string comes before (-1), after (1), or is equal (0) to compared string. As such, can be inserted into most sort functions such as [Array.prototype.sort()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort) within the compare function.
+Returns numeric indicating whether `this` string comes before (-1), after (1), or is equal (0) to compared string. As such, can be inserted into most sort functions such as *Array*.prototype.[**sort**()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort) within the compare function.
 
 
 ```javascript
@@ -409,7 +409,7 @@ Returns new date with days added (or removed if negative).
 <a name="common-dateMonthOfYear" href="#common-dateMonthOfYear">#</a>
 *Date*.prototype.**monthOfYear**() ⇒ `number`
 
-Returns the month of the year as 1-12 number (as opposed to 0-11 for `getMonth()`).
+Returns the month of the year as 1-12 number (as opposed to 0-11 for **getMonth**()).
 
 <a name="common-dateDaysInMonth" href="#common-dateDaysInMonth">#</a>
 *Date*.prototype.**daysInMonth**() ⇒ `number`
@@ -434,10 +434,10 @@ Given an input, returns an [*Element*](https://developer.mozilla.org/en-US/docs/
 &nbsp; &nbsp; **Returns:** 
 
 * If a single *Element* is provided, simply returns it. 
-* If a *jQuery* object is provided, returns first *Element* given by calling [`get()`](https://api.jquery.com/get/) on it. 
+* If a *jQuery* object is provided, returns first *Element* given by calling [**get**()](https://api.jquery.com/get/) on it. 
 * If an array is provided, returns the first item this is an *Element* or *undefined*. 
-* If a *NodeList* or other iterable is provided, returns value of `next()` or *null* if done.
-* If string is provided, returns result of [`document.querySelector()`](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector) using the string as the selector. 
+* If a *NodeList* or other iterable is provided, returns value of **next**() or *null* if done.
+* If string is provided, returns result of *document*.[**querySelector**()](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector) using the string as the selector. 
 * If none of the above apply, returns *undefined*.
 
 <a name="common-getElementList" href="#common-getElementList">#</a>
@@ -451,9 +451,9 @@ Given an input, converts it into an array of [Elements](https://developer.mozill
 
 &nbsp; &nbsp; **Returns:** 
 
-* If a *NodeList*, array, or other iterable is provided, converts to an array via `Array.from()`, then filters for elements that are derived from the *Element* prototype. 
-* If a *jQuery* object is provided, returns array given by calling [`get()`](https://api.jquery.com/get/) on it. 
-* If a string is provided, returns result of [`document.querySelectorAll()`](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelectorAll), using the string as the selector, converted into an array. 
+* If a *NodeList*, array, or other iterable is provided, converts to an array via *Array*.**from**(), then filters for elements that are derived from the *Element* prototype. 
+* If a *jQuery* object is provided, returns array given by calling [**get**()](https://api.jquery.com/get/) on it. 
+* If a string is provided, returns result of *document*.[**querySelectorAll**()](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelectorAll), using the string as the selector, converted into an array. 
 * Otherwise, wraps the input in an array, then filters for elements that are derived from the *Element* prototype.
 
 <a name="common-extend" href="#common-extend">#</a>
@@ -479,7 +479,7 @@ If either `extend` or `obj` is *null* or *undefined* (or evaluates as falsy), a 
 
 In the case that the value being copied from and the value being copied over are both object literals, the copying will be recursed into the next level for each the origin and extending object.
 
-Deep copy is done via [`structuredClone()`](https://developer.mozilla.org/en-US/docs/Web/API/structuredClone), if available, or fallbacks to the `JSON.parse(JSON.stringify())` method. Note that the former method may throw an `DataCloneError` exception and the latter will results in some values (such as dates, functions, or circular references) not being correctly carried over.
+Deep copy is done via [**structuredClone**()](https://developer.mozilla.org/en-US/docs/Web/API/structuredClone), if available, or fallbacks to the `JSON.parse(JSON.stringify())` method. Note that the former method may throw a *DataCloneError* exception and the latter will results in some values (such as dates, functions, or circular references) not being correctly carried over.
 
 &nbsp; &nbsp; **Returns:** The object with extended values (if `modify` is falsy, this is a new object).
 
@@ -509,7 +509,7 @@ Creates a new, centered window.
 | `options.options` | *Object* | Optional. Additional window options (passed as `windowFeatures` parameter). Specify as key-value pairing. Will overwrite any options set by function or other parameters. |
 | `options.error` | *Callback* | Optional. Callback to run when the new window is detected to have been immediately closed (likely due to pop-up blocking). Given the *WindowProxy* returned by `window.open()`. |
 
-&nbsp; &nbsp; **Returns:** The [*WindowProxy*](https://developer.mozilla.org/en-US/docs/Glossary/WindowProxy) returned by `window.open()`.
+&nbsp; &nbsp; **Returns:** The [*WindowProxy*](https://developer.mozilla.org/en-US/docs/Glossary/WindowProxy) returned by *window*.**open**().
 
 <a name="common-ajax" href="#common-ajax">#</a>
 *common*.**ajax**(*params*) ⇒ `XMLHttpRequest` | `Promise`
@@ -544,7 +544,7 @@ However, if the project allows, I'd nowadays recommend using the [Fetch API](htt
 *common*.**animate**(*element*, *properties*, *duration*[, *options*]) ⇒ `Promise`
 
 
-Mimics jQuery.[animate()](http://api.jquery.com/jQuery.animate/) function using CSS transitions by first applying a [transition](https://developer.mozilla.org/en-US/docs/Web/CSS/transition) property for the requisite CSS properties to be applied, then, after a short delay (5 ms), applying the properties. All this is done as modifications to the element's inline styles, and will thus overwrite any existing inline styles and will be subject to any CSS rule overrides (such as an existing, applicable CSS rule with the `!imporant` property).
+Mimics *jQuery*.[**animate**()](http://api.jquery.com/jQuery.animate/) function using CSS transitions by first applying a [transition](https://developer.mozilla.org/en-US/docs/Web/CSS/transition) property for the requisite CSS properties to be applied, then, after a short delay (5 ms), applying the properties. All this is done as modifications to the element's inline styles, and will thus overwrite any existing inline styles and will be subject to any CSS rule overrides (such as an existing, applicable CSS rule with the `!imporant` property).
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
@@ -716,7 +716,7 @@ Check whether modal is open.
 <a name="common-setModal" href="#common-setModal">#</a>
 *common*.*ui*.**openModal**(*content*[, *options*]) ⇒ `Element`
 
-Creates a new modal dialog (or closes, if `visible` is falsy). Function `openModal()` is the same with `visible` defaulted to *true*.
+Creates a new modal dialog (or closes, if `visible` is falsy). Function **openModal**() is the same with `visible` defaulted to *true*.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
@@ -760,7 +760,7 @@ Change modal dialog content while leaving all other options the same. Keeps the 
 | `prepContentCallback` | *Callback* | If some prep work is needed before determining the new dimensions of the modal for size change animation. |
 | `hideCloser` | *Boolean* | Due to HTML refresh, closer will be readded unless this is set as truthy. |
 
-&nbsp; &nbsp; **Returns:** `Element` of modal content div (`.cm-modal-inner`).
+&nbsp; &nbsp; **Returns:** *Element* of modal content div (`.cm-modal-inner`).
 
 <a name="common-closeModal" href="#common-closeModal">#</a>
 *common*.*ui*.**closeModal**([*suppressOnClose*])<br />
@@ -785,7 +785,7 @@ And example usage script that would result in the table shown above is given at 
 
 Must be separately imported. Returned as object if instantiated via CommonJS or AMD import. Otherwise appended to root as CommonTable class. Require base Common module to have been imported, as it depends on some the prototype modifications defined there.
 
-To use, begin by creating instance and adding columns with `addColumn()`. The `key` parameter defines how to assign the data to each column. Other parameters allow various style and formatting methods. Once all columns are added, add data and draw the table with `populateTable()`. The data, sent as an array of object literals/dictionaries, is mapped to the columns automatically with the `key` defined for each column.
+To use, begin by creating instance and adding columns with *CommonTable*.prototype.**addColumn**(). The `key` parameter defines how to assign the data to each column. Other parameters allow various style and formatting methods. Once all columns are added, add data and draw the table with *CommonTable*.prototype.**populateTable**(). The data, sent as an array of object literals/dictionaries, is mapped to the columns automatically with the `key` defined for each column.
 
 <a name="CommonTable" href="CommonTable">#</a>
 **CommonTable**([*tableId*[, *tableClass*[, *container*]]])
