@@ -200,7 +200,7 @@ Two variables are added to the `window` namespace (if it exists) that stores bro
 | `browser` | Stores information on browser type and version. |
 | `browserType` |  Alias for `browser`, left for backwards compatibility. |
 
-Note there are two formats in which data exists as browser information. One is a simple string parse of the UserAgent and version as key name and value. For certain user agents this may return multiple results. However there may exist a secondary `is-` variable, which is heuristically determined, that will give the specific browser.
+Note there are two formats in which data exists as browser information. One is a simple string parse of the UserAgent and version as key name and value. For certain user agents this may return multiple results. However there may exist a secondary `is-` variable, which is heuristically determined, that will give the specific browser it is most likely determined to be.
 
 E.g. for Opera browsers, with an example user agent of `"Mozilla/5.0 (Windows NT 10.0; WOW64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36 OPR/74.0.3911.75"`, the `browser` object will show three separate browser versions and an `isOpera` variable:
 
@@ -215,11 +215,11 @@ E.g. for Opera browsers, with an example user agent of `"Mozilla/5.0 (Windows NT
 
 Similarly, the variable might be `isChrome` or `isFirefox` or `isEdge`, as the case dictates.
 
-Currently, this checks for the following known browsers: Chrome, Firefox, Edge, IE, Safari, Opera, Brave, Samsung Internet, UCBrowser, Yandex, 360 Secure Browser, QQBrowser, Instabridge, Vivaldi, Cốc Cốc, Naver Whale, Puffin, Sleipnir, Amazon Silk, and QtWebEngine. 
+Currently, this checks for the following known browsers: `isChrome`, `isFirefox`, `isEdge`, `isIE`, `isSafari`, `isOpera`, `isBrave`, `isSamsungInternet`, `isUCBrowser`, `isYandex`, `is360SecureBrowser`, `isQQBrowser`, `isInstabridge`, `isVivaldi`, `isCocCoc` (Cốc Cốc), `isWhale` (Navar Whale), `isPuffin`, `isSleipnir`, `isAmazonSilk`, and `isQtWebEngine`. 
 
-For browsers on iOS – which Apple forces to be basically skins of Safari Mobile – these may not always be identified correctly as Safari some browser don't change the user agent name. For what it's worth, Chrome, Firefox, and Edge flavors will have versions under `crios`, `fiox`, and `edgios` while correctly identifying it as a Safari Browser.
+For browsers on iOS – which Apple forces to be basically skins of Safari Mobile – these may not always be identified correctly as Safari through the user agent name. For what it's worth, Chrome, Firefox, and Edge flavors will have versions under `crios`, `fiox`, and `edgios` while correctly identifying it as a Safari Browser.
 
-Note that this method of parsing the UserAgent string is somewhat brittle and can be unreliable, especially for those lesser-seen browsers or those specific to devices (like tablets, smart TVs, or gaming consoles). If this is critical, it is generally preferred to use feature detection instead.
+Note that this method of parsing the UserAgent string is somewhat brittle and can be unreliable, especially for those lesser-seen browsers or those specific to devices (like tablets, smart TVs, or gaming consoles). Where browser detection critical, it is generally preferred to use feature detection instead.
 
 &nbsp;
 
@@ -270,13 +270,13 @@ Much like the JQuery css() function, sets inline style, either as style name and
 
 Will center an element on screen using absolute positioning.
 
-<a name="common-elementAddCommas" href="#common-elementAddCommas">#</a>
+<a name="common-numberAddCommas" href="#common-numberAddCommas">#</a>
 *Number*.prototype.**addCommas**(*precision*) ⇒ `string`
 
 Will convert a given number to a string, using the supplied precision, with commas.
 
-<a name="common-elementAddCommasSmart" href="#common-elementAddCommasSmart">#</a>
-*Number*.prototype.**addCommasSmart**([*minimum=0.001*, [*zeroFormat="0.0"*]) ⇒ `string`
+<a name="common-numberStringFormat" href="#common-numberStringFormat">#</a>
+*Number*.prototype.**addStringFormat**([*minimum=0.001*, [*zeroFormat="0.0"*]) ⇒ `string`
 
 Basically wraps `Number.prototype.addCommas()` with heuristic guessing on precision to use. The `minimum` parameter rounds any value whose absolute value is less than this to zero. The `zeroFormat` parameter can be used to customize how zero values are printed. By default it is "0.0".
 
@@ -289,6 +289,11 @@ Current heuristics are:
 * \<1.0 as number with two decimal places
 * \<100 as number with one decimal place
 * ≥100 as number with no decimal places
+
+<a name="common-numberAddCommasSmart" href="#common-numberAddCommasSmart">#</a>
+*Number*.prototype.**addCommasSmart**([*minimum=0.001*, [*zeroFormat="0.0"*]) ⇒ `string`
+
+An alias for [`Number.prototype.addStringFormat()`](#common-numberStringFormat). Considered deprecated, but left for backwards compatibility.
 
 <a name="common-objectIsObject" href="#common-objectIsObject">#</a>
 *Object*.**isObject**(*obj*) ⇒ `boolean`
@@ -519,7 +524,7 @@ However, if the project allows, I'd nowadays recommend using the [Fetch API](htt
 
 | Param | Type | Default | Description |
 | :--- | :---: | :---: | :--- |
-|` params.url` | *String* |  | The URL of the request. |
+| `params.url` | *String* |  | The URL of the request. |
 | `params.async` | *Boolean* | `true` | Asynchronous. Defaults to *true*. |
 | `params.method` | *String* | `"GET"` | Method for passing data. |
 | `params.data` | *Object* |  | Optional dictionary of data to send with request. |
@@ -547,7 +552,7 @@ Mimics jQuery.[animate()](http://api.jquery.com/jQuery.animate/) function using 
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| `element` | *Element* | The Element to animate |
+| `element` | *Element* | The *Element* to animate |
 | `properties` | *Object* | CSS properties to animate to. Note that [not all properties are can be animated](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_animated_properties). |
 | `duration` | *Number* | Duration of animation, in milliseconds. Optional, but if not supplied, the animation is somewhat pointless as the transition is instant. |
 | `options` | *Object* | |
@@ -733,7 +738,7 @@ Creates a new modal dialog (or closes, if `visible` is falsy). Function `openMod
 <a name="common-setModalAsLoading" href="#common-setModalAsLoading">#</a>
 *common*.*ui*.**setModalAsLoading**([*content*[, *options*]]) ⇒ `Element`
 
-Creates a new modal dialog with default values prepped for loading. `content` is optional and defaults to `"Loading.."`. In addition to same `options` available for *common*.[**setModal**()](#common-setModal), extended `options` are:
+Opens a modal dialog with default values prepped for loading. As such, no options are required, but can be provided to overwrite defaults.
 
 | Param | Type | Default | Description |
 | :--- | :---: | :---: | :--- |
@@ -824,13 +829,13 @@ Add a column to the table.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| `group` | *String* | The header group. If not *null*, used to group two or more headers as subheaders under a banner header (via colspan). |
+| `group` | *String* | The header group. If not *null*, used to group two or more headers as subheaders under a banner header (via `colspan`). |
 | `title` | *String* | The title to display the header as. |
 | `key` | *String* | The key used to retrieve data from this header. |
 | `options` | *Object* | |
-| `options.group` | *String* | The `group` may be specified in the options instead. |
-| `options.title` | *String* | The `title` may be specified in the options instead. |
-| `options.key` | *String* | The `key` may be specified in the options instead. |
+| `options.group` | *String* | `group` may be specified in the options instead. |
+| `options.title` | *String* | `title` may be specified in the options instead. |
+| `options.key` | *String* | `key` may be specified in the options instead. |
 | `options.format` | *Callback* | Optional function such that `format(value)`, returns the formatted value for the table cell. Run in try-catch block, so if it fails, simply continues with raw value. |
 | `options.hdrStyles` | *String* \| *Object* | Optional styles to apply to the header. Overrides any colStyles properties. |
 | `options.colStyles` | *String* \| *Object* | Optional styles to apply to every row in this column (including header). If you only want to apply to non-header cells, must override values in hdrStyles. |

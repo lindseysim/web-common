@@ -225,32 +225,38 @@ if(!Number.prototype.addCommas) {
  * Return string value of this number with commas added. Precision is handled dynamically based on my
  * abitrary rules but generally maintains at least two significant digits. Values less than 0.1 are 
  * presented in scientific notation.
- * @param {Number} [minimum=0.001] - Minimum number (absoltue value), on which anything less than 
+ * @param {Number} [minimum=0.001] - Minimum number (absolute value), on which anything less than 
  *        becomes zero.
+ * @param {String} [zeroFormat="0.0"] - Format to print values evaluating to zero.
  * @returns {String}
  */
-if(!Number.prototype.addCommasSmart) {
-    Object.defineProperty(Number.prototype, 'addCommasSmart', {
-        value(minimum, zeroFormat) {
-            if(this === 0.0) return "0.0";
-            let n = Math.abs(this);
-            minimum = minimum || 0.001;
-            if(n < minimum) {
-                return "0.0";
-            } else if(n < 0.01) {
-                return this.toExponential(3);
-            } else if(n < 0.1) {
-                return this.toExponential(2);
-            } else if(n < 0.3) {
-                return this.addCommas(3);
-            } else if(n < 1.0) {
-                return this.addCommas(2);
-            } else if(n < 100.0) {
-                return this.addCommas(1);
-            }
-            return this.addCommas(0);
+if(!Number.prototype.stringFormat || !Number.prototype.addCommasSmart) {
+    var numberFormat(minimum, zeroFormat) {
+        if(!zeroFormat && zeroFormat !== 0) zeroFormat = "0.0";
+        if(this === 0.0) return zeroFormat;
+        let n = Math.abs(this);
+        minimum = minimum || 0.001;
+        if(n < minimum) {
+            return zeroFormat;
+        } else if(n < 0.01) {
+            return this.toExponential(3);
+        } else if(n < 0.1) {
+            return this.toExponential(2);
+        } else if(n < 0.3) {
+            return this.addCommas(3);
+        } else if(n < 1.0) {
+            return this.addCommas(2);
+        } else if(n < 100.0) {
+            return this.addCommas(1);
         }
-    });
+        return this.addCommas(0);
+    }
+    if(!Number.prototype.stringFormat) {
+        Object.defineProperty(Number.prototype, 'stringFormat', {value: stringFormat});
+    }
+    if(!Number.prototype.addCommasSmart) {
+        Object.defineProperty(Number.prototype, 'addCommasSmart', {value: stringFormat});
+    }
 }
 
 /**
