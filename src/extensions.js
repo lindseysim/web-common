@@ -230,8 +230,9 @@ if(!Number.prototype.addCommas) {
  * @param {String} [zeroFormat="0.0"] - Format to print values evaluating to zero.
  * @returns {String}
  */
-if(!Number.prototype.stringFormat || !Number.prototype.addCommasSmart) {
-    var numberFormat(minimum, zeroFormat) {
+if(!Number.prototype.stringFormat) {
+    Object.defineProperty(Number.prototype, 'stringFormat', {
+        value(minimum, zeroFormat) {
         if(!zeroFormat && zeroFormat !== 0) zeroFormat = "0.0";
         if(this === 0.0) return zeroFormat;
         let n = Math.abs(this);
@@ -250,13 +251,7 @@ if(!Number.prototype.stringFormat || !Number.prototype.addCommasSmart) {
             return this.addCommas(1);
         }
         return this.addCommas(0);
-    }
-    if(!Number.prototype.stringFormat) {
-        Object.defineProperty(Number.prototype, 'stringFormat', {value: stringFormat});
-    }
-    if(!Number.prototype.addCommasSmart) {
-        Object.defineProperty(Number.prototype, 'addCommasSmart', {value: stringFormat});
-    }
+    }});
 }
 
 /**

@@ -43,12 +43,13 @@ import CommonTable from '@lawrencesim/web-common/CommonTable';
 
 The first import will bring in the common module, including polyfills/extensions, and the UI submodule. If using the UI submodule or CommonTable module, you will also need to load the styles (second line), but otherwise, this can be left out. Note that depending on build configuration (e.g. Webpack) you may need proper style handlers to load the CSS styles. The final line loads the optional CommonTable class.
 
-If using script imports in HTML, import the paths to 'common.js', 'style.css', and/or 'CommonTable.js' as needed in the main directory. The main module will be added as `common` and CommonTable as `CommonTable` to the global namespace.
+If using script imports in HTML, import the paths to *common.js*, *style.css*, and/or *CommonTable.js* as needed in the main directory. The main module will be added as `common` and CommonTable as `CommonTable` to the global namespace.
 
 &nbsp;
 
 #### Version 5 Breaking Changes ####
 
+* *Number*.prototype.**addCommasSmart**() is removed. Use *Number*.prototype.[**stringFormat**()](#common-numberStringFormat) instead.
 * *String*.prototype.**heuristicCompare**() is removed. Use *String*.prototype.[**semanticCompare**()](#common-stringSemanticCompare) instead.
 * *common*.[**extend**()](#common-extend), parameters are renamed `overwrite`, `deep`, and `modify` from `allowOverwrite`, `deepCopy`, and `modifyObj`. While detection is still left in for older names for backwards compatibility, it may be deprecated at some point.
 * *common*.[**newWindow**()](#common-newWindow) no longer accepts flat parameters. All parameters except for `url` (and optoinally `name`) must be specified in an options object.
@@ -263,7 +264,7 @@ Sets multiple attributes (given as a dictionary-like object of key-value pairs) 
 <a name="common-elementCss" href="#common-elementCss">#</a>
 *Element*.prototype.**css**(*style*[, *value*])
 
-Much like the JQuery css() function, sets inline style, either as style name and value provided as strings, or as a dictionary-like object of style names and values and key-value pairs. 
+Much like the JQuery **css**() function, sets inline style, either as style name and value provided as strings, or as a dictionary-like object of style names and values and key-value pairs. 
 
 <a name="common-elementCenter" href="#common-elementCenter">#</a>
 *Element*.prototype.**center**()
@@ -276,9 +277,7 @@ Will center an element on screen using absolute positioning.
 Will convert a given number to a string, using the supplied precision, with commas.
 
 <a name="common-numberStringFormat" href="#common-numberStringFormat">#</a>
-*Number*.prototype.**addStringFormat**([*minimum=0.001*, [*zeroFormat="0.0"*]) ⇒ `string`<br />
-<a name="common-numberAddCommasSmart" href="#common-numberAddCommasSmart">#</a>
-*Number*.prototype.**addCommasSmart**([*minimum=0.001*, [*zeroFormat="0.0"*]) ⇒ `string`
+*Number*.prototype.**stringFormat**([*minimum=0.001*, [*zeroFormat="0.0"*]) ⇒ `string`
 
 Basically wraps `Number.prototype.addCommas()` with heuristic guessing on precision to use. The `minimum` parameter rounds any value whose absolute value is less than this to zero. The `zeroFormat` parameter can be used to customize how zero values are printed. By default it is "0.0".
 
@@ -292,9 +291,6 @@ Current heuristics are:
 * \<100 as number with one decimal place
 * ≥100 as number with no decimal places
 
-
-An alias for [`Number.prototype.addStringFormat()`](#common-numberStringFormat). Considered deprecated, but left for backwards compatibility.
-
 <a name="common-objectIsObject" href="#common-objectIsObject">#</a>
 *Object*.**isObject**(*obj*) ⇒ `boolean`
 
@@ -307,7 +303,7 @@ Uses [`typeof`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Referenc
 
 Check is given object is an object literal-type. That is, not a primitive, string, array, or even any inheritance of the Object prototype. Must be a base object created either as an object literal  or via `new Object()`. Useful for when parameters must be ensured as an object-literal/dictionary.
 
-Uses [`Object.getPrototypeOf()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getPrototypeOf) check.
+Uses *Object*.[**getPrototypeOf**()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getPrototypeOf) check.
 
 <a name="common-stringCapitalize" href="#common-stringCapitalize">#</a>
 *String*.prototype.**capitalize**([*breaks*]) ⇒ `string`
@@ -317,9 +313,7 @@ Will capitalize the each word in the string (using whitespace to delineate words
 Additional break characters can be provided as either an array of characters or a string of all characters in the optional parameter `breaks`. E.g., to include hyphens, `"up-to-date".capitalize("-")` will output `Up-To-Date`.
 
 <a name="common-stringSemanticCompare" href="#common-stringSemanticCompare">#</a>
-*String*.prototype.**semanticCompare**(*compareString*[, *options*]) ⇒ `number`<br /
-<a name="common-stringHeuristicCompare" href="#common-stringHeuristicCompare">#</a>
-*String*.prototype.**heuristicCompare**(*compareString*[, *options*]) ⇒ `number`>
+*String*.prototype.**semanticCompare**(*compareString*[, *options*]) ⇒ `number`
 
 A semantic comparison of strings with numeric values within them. Compare the numbers in a string such that a "number" is not compared alphabetically by character but as the entire numeric value. 
 
