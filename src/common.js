@@ -1,11 +1,11 @@
-function _copy_(obj, extend, allowOverwrite, copyFunc) {
+function _copy_(obj, extend, overwrite, fcopy) {
     for(let key in extend) {
         if(!(key in obj)) {
-            obj[key] = copyFunc(extend[key]);
+            obj[key] = fcopy(extend[key]);
         } else if(Object.isObjectLiteral(obj[key]) && Object.isObjectLiteral(extend[key])) {
-            _copy_(obj[key], extend[key], allowOverwrite, copyFunc);
-        } else if(allowOverwrite) {
-            obj[key] = copyFunc(extend[key]);
+            _copy_(obj[key], extend[key], overwrite, fcopy);
+        } else if(overwrite) {
+            obj[key] = fcopy(extend[key]);
         }
     }
     return obj;
@@ -24,47 +24,51 @@ export default {
         }
         if(element[Symbol.iterator] === "function") {
             if(Array.isArray(element)) {
-                return element.length && element[0] || undefined;
+                return element.find(i => i instanceof Element);
             }
             let next = element.next();
+            while(!next.done) {
+                if(next.value instanceof Element) return next.value;
+                next = element.next();
+            }
             return next.done ? undefined : next.value;
         }
         return element instanceof Element ? element : null;
     }, 
 
-    getElementList(element) {
-        if(!element) return [];
-        if(typeof element === "string") {
-            return Array.from(document.querySelectorAll(element));
+    getElementList(input) {
+        if(!input) return [];
+        if(typeof input === "string") {
+            return Array.from(document.querySelectorAll(input));
         }
-        if(element[Symbol.iterator] === "function") {
-            return (Array.isArray(element) ? element : Array.from(element))
+        if(input[Symbol.iterator] === "function") {
+            return (Array.isArray(input) ? input : Array.from(input))
                 filter(o => o instanceof Element);
         }
-        if(typeof jQuery !== "undefined" && element instanceof jQuery) {
-            return element.get();
+        if(typeof jQuery !== "undefined" && input instanceof jQuery) {
+            return input.get();
         }
-        return element instanceof Element ? [element] : [];
+        return input instanceof Element ? [input] : [];
     }, 
 
-    extend(obj, extend, allowOverwrite, deepCopy, modifyObj) {
-        if(Object.isObjectLiteral(allowOverwrite)) {
-            if(typeof deepCopy === "undefined") deepCopy = allowOverwrite.deepCopy;
-            if(typeof modifyObj === "undefined") modifyObj = allowOverwrite.modifyObj;
-            allowOverwrite = allowOverwrite.allowOverwrite;
+    extend(obj, extend, overwrite, deep, modify) {
+        if(Object.isObjectLiteral(overwrite)) {
+            if(typeof deep === "undefined") deep = overwrite.deep || overwrite.deepCopy;
+            if(typeof modify === "undefined") modify = overwrite.modify || overwrite.modifyObj;
+            overwrite = overwrite.overwrite || overwrite.allowOverwrite;
         }
-        let copyFunc;
-        if(!deepCopy) {
-            copyFunc = input => input;
+        let fcopy;
+        if(!deep) {
+            fcopy = input => input;
         } else if(structuredClone && typeof structuredClone === "function") {
-            copyFunc = structuredClone;
+            fcopy = structuredClone;
         } else {
-            copyFunc = input => JSON.parse(JSON.stringify(input));
+            fcopy = input => JSON.parse(JSON.stringify(input));
         }
-        if(!extend) return modifyObj ? obj : copyFunc(obj);
-        if(!obj) return copyFunc(extend);
-        let clone = modifyObj ? obj : _copy_({}, obj, true, copyFunc);
-        return _copy_(clone, extend, allowOverwrite, copyFunc);
+        if(!extend) return modify ? obj : fcopy(obj);
+        if(!obj) return fcopy(extend);
+        let clone = modify ? obj : _copy_({}, obj, true, fcopy);
+        return _copy_(modify, extend, overwrite, fcopy);
     }, 
     
     getUrlGetVars() {
@@ -76,30 +80,40 @@ export default {
         return vars;
     }, 
 
-    newWindow(url, name, width, height, minimal) {
-        if(Object.isObjectLiteral(name)) {
-            if(typeof width === "undefined") width = name.width;
-            if(typeof height === "undefined") height = name.height;
-            if(typeof minimal === "undefined") minimal = name.minimal;
-            name = name.name;
+    newWindow(url, options) {
+        if(!options || !Object.isObject(options)) {
+            throw "Invalid parameters. May be using deprecated version of this function. See https://github.com/lawrencesim/web-common#common-newWindow";
         }
+        // defaults
+        options.width  = options.width || 600;
+        options.height = options.height || 400;
+        options.name   = options.name || "NewWindow";
         // center window, from http://www.xtf.dk/2011/08/center-new-popup-window-even-on.html
         // Fixes dual-screen position                          Most browsers       Firefox
         let dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : screen.left, 
             dualScreenTop  = window.screenTop  !== undefined ? window.screenTop  : screen.top, 
             winWidth  = window.innerWidth  ? window.innerWidth  : document.documentElement.clientWidth  ? document.documentElement.clientWidth  : screen.width, 
             winHeight = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height, 
-            left = dualScreenLeft + 0.5*(winWidth - width), 
-            top  = dualScreenTop  + 0.5*(winHeight - height), 
-            options = "width=" + width + ", height=" + height + ", left=" + left + ", top=" + top;
-        if(minimal) options += ", toolbar=no, menubar=no, status=no, location=no";
-        var newWin = window.open(url, '', options);
-        if(!newWin || newWin.closed || typeof newWin.closed === 'undefined') {
-            alert("Could not open new window, to view '" + name + "' allow an exception for this domain in your pop-up blocker's settings.");
-        } else {
-            if(newWin) newWin.focus();
-            return newWin;
+            left = dualScreenLeft + 0.5*(winWidth - options.width), 
+            top  = dualScreenTop  + 0.5*(winHeight - options.height), 
+            winoptions = {width: options.width, height: options.height, left: left, top: top};
+        if(minimal) winoptions.popup = 1;
+        winoptions =  options.options && this.extend(winoptions, options.options, {overwrite: true, modify: true});
+        let winoptionsArr = [];
+        for(let key in winoptions) {
+            winoptionsArr.push(`${key}=${winoptions[key]}`);
         }
+        var newWin = window.open(
+            url, 
+            String(options.name).replace(/\s/g,''), 
+            winoptionsArr.join(", ")
+        );
+        if(!newWin || newWin.closed || typeof newWin.closed === 'undefined') {
+            options.error && typeof options.error === "function" && options.error(newWin);
+        } else {
+            newWin && newWin.focus();
+        }
+        return newWin;
     }, 
 
     // note, we could update this to use fetch() API, but at that point, easier to just use fetch API
@@ -181,48 +195,89 @@ export default {
         return xhr;
     }, 
 
-    animate(element, properties, durationMs, timingFunction, complete) {
-        if(Object.isObjectLiteral(element)) {
-            if(typeof properties === "undefined") properties = element.properties;
-            if(typeof durationMs === "undefined") durationMs = element.durationMs || element.duration;
-            if(typeof timingFunction === "undefined") timingFunction = element.timingFunction || element.timing;
-            if(typeof complete === "undefined") complete = element.complete;
-            element = element.element;
+    animate(element, properties, duration, options) {
+        let el = this.getElement(element);
+        if(el) {
+            element = el;
+            if(options && Object.isObject(options)) {
+                // f(element, properties, duration, options)
+                options.duration = duration;
+            } else if(duration && Object.isObject(duration)) {
+                // f(element, properties, options)
+                options = duration;
+            } else if(typeof duration === "number") {
+                // f(element, properties, duration)
+                options = {duration: duration};
+            } else if(Object.isObject(properties) && properties.properties) {
+                // f(element, options)
+                options = properties;
+                properties = options.properties;
+            } else if(!options && !duration) {
+                // f(element, properties)
+                options = {};
+            } else {
+                throw "Invalid parameters. May be using deprecated version of this function. See https://github.com/lawrencesim/web-common#common-animate";
+            }
+        } else if(Object.isObject(element) && element.element) {
+            // f(options)
+            options = element;
+            properties = options.properties;
+            element = this.getElement(options.element);
+            if(!element) return;
         }
-        if(!element) return;
-
+        if(!Object.isObject(properties)) {
+            throw "Invalid parameters. May be using deprecated version of this function. See https://github.com/lawrencesim/web-common#common-animate";
+        }
+        let timingFunction = options.timing || options.timingFunction || "ease", 
+            durationMs = options.duration;
+        if(!durationMs && durationMs !== 0) durationMs = options.durationMs;
+        if(!durationMs) durationMs = 0;
         if(typeof durationMs !== "number") throw "Duration must be specified as numeric type in milliseconds.";
         let durationSecs = durationMs*0.001 + "s", 
             transition = "";
         for(let key in properties) {
             if(transition) transition += ", ";
-            transition += `${key} ${durationMs*0.001}s ${timingFunction || "ease"}`;
+            transition += `${key} ${durationMs*0.001}s ${timingFunction}`;
         }
         element.css({
             '-webkit-transition': transition, 
             '-moz-transition': transition, 
-            'transition': transition
+            transition: transition
         });
-        var PO = Promise || require('promise-polyfill').default, 
-            delayMs = 5;
+        let start = () => element.css(properties), 
+            finish = () => {
+                element.css({
+                    '-webkit-transition': "", 
+                    '-moz-transition': "", 
+                    transition: ""
+                });
+                options.complete && options.complete();
+            }, 
+            delayMs = 5,  // to allow animation threads to async run
+            PO;
+        try {
+            PO = Promise || require('promise-polyfill').default;
+        } catch { /* nothing */ }
+        if(!PO) {
+            window.setTimeout(
+                () => start() && window.setTimeout(finish, durationMs+delayMs), 
+                delayMs
+            );
+        }
         return new PO(resolve => {
-            window.setTimeout(() => {
-                element.css(properties);
-                resolve();
-            }, delayMs);
-        }).then(() => {
-            return new PO(resolve => {
-                window.setTimeout(() => {
-                    element.css({
-                        '-webkit-transition': "", 
-                        '-moz-transition': "", 
-                        'transition': ""
-                    });
-                    if(complete) complete();
-                    resolve();
-                }, durationMs+delayMs);
+                window.setTimeout(
+                    () => start() && resolve(), 
+                    delayMs
+                );
+            })
+            .then(() => {
+                return new PO(resolve => {
+                    window.setTimeout(
+                        () => finish() && resolve(), 
+                        durationMs+delayMs
+                    );
+                });
             });
-        });
     }
     
 };
