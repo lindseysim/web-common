@@ -4,13 +4,7 @@ Web Common is a collection of polyfills, extensions, and modules I repeatedly fo
 
 Lawrence Sim © 2023
 
-## License ##
-
-*Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:*
-
-*The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.*
-
-*THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*
+This library is licensed under the MIT License. See *LICENSE* file for full text.
 
 ## Content ##
 
@@ -47,7 +41,7 @@ If using script imports in HTML, import the paths to *common.js*, *style.css*, a
 
 &nbsp;
 
-#### Version 5 Breaking Changes ####
+#### Version 5 breaking changes ####
 
 * *Number*.prototype.**addCommasSmart**() is removed. Use *Number*.prototype.[**stringFormat**()](#common-numberStringFormat) instead.
 * *String*.prototype.**heuristicCompare**() is removed. Use *String*.prototype.[**semanticCompare**()](#common-stringSemanticCompare) instead.
@@ -888,6 +882,8 @@ See above.
 
 *Example usage:*
 
+![CommonTable example](./misc/cmtable.png)
+
 ```javascript
 var tbl = new CommonTable("my-table-id", "my-table-class");
 tbl.appendTo(document.body);
@@ -942,10 +938,8 @@ tbl.populateTable({
 });
 ```
 
-![CommonTable example](./misc/cmtable.png)
-
 ----------
 
 ### Acknowledgments ###
 
-A huge bulk of this library was built on solutions found through the Mozilla Developers Network, StackOverflow, and many other smart folks. I would also like to thank SFEI, Bill Burr, and coffee. 
+A huge bulk of this library was built on solutions found through the Mozilla Developers Network, StackOverflow, and many other smart folks. I would also like to thank SFEI, podcasts, and coffee. 
