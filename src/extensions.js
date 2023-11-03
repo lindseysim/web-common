@@ -262,8 +262,8 @@ if(!Number.prototype.stringFormat) {
 if(!Element.prototype.isVisible) {
     Object.defineProperty(Element.prototype, 'isVisible', {
         value() {
-            if(this.style.visibility && this.style.visibility.toLowerCase() !== "hidden") return false;
-            if(this.style.display && this.style.display.toLowerCase() !== "none") return false;
+            if(this.style.visibility && this.style.visibility.toLowerCase() === "hidden") return false;
+            if(this.style.display && this.style.display.toLowerCase() === "none") return false;
             var rect = this.getBoundingClientRect();
             return (
                 rect.top >= 0 && rect.left >= 0
