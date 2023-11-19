@@ -311,7 +311,7 @@ Additional break characters can be provided as either an array of characters or 
 
 A semantic comparison of strings with numeric values within them. Compare the numbers in a string such that a "number" is not compared alphabetically by character but as the entire numeric value. 
 
-E.g., a typical string comparisons would result in '20' coming before '5', because it was compare character by character, first comparing the '2' and '5' characters. This ensures, the entire '20' is considered as one number.
+E.g., a typical string comparisons would result in '20' coming before '5', because string comparisons evaluate character by character, first looking at the '2' and '5' characters. This function ensures the entire '20' is considered as one number.
 
 Returns numeric indicating whether `this` string comes before (-1), after (1), or is equal (0) to compared string. As such, can be inserted into most sort functions such as *Array*.prototype.[**sort**()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort) within the compare function.
 
@@ -323,7 +323,7 @@ Returns numeric indicating whether `this` string comes before (-1), after (1), o
 "b1".semanticCompare("a2");        //  1 comes after
 ```
 
-Each string is broken into chunks of parsable number and non-numeric chunks. Each chunk is compared in similar sequences. When both compared chunks are parsable numbers, they will be compared numerically. If either is not, they will be compared as strings. E.g. "a10bc40" and "a10b50c" would be broken up into `['a', '10', 'bc', '40']` and `['a', '10', 'b', '50', 'c']` respectively. The crux of the comparison would happen at the chunks "bc" vs "b" (wherein "b" comes before "bc"), and the comparison of chunks "40" and "50" would be irrelevant.
+Each string is broken into chunks of parsable numeric and non-numeric chunks. Each chunk is compared in similar sequences. When both compared chunks are parsable numbers, they will be compared numerically. If either is not, they will be compared as strings. E.g. "a10bc40" and "a10b50c" would be broken up into `['a', '10', 'bc', '40']` and `['a', '10', 'b', '50', 'c']` respectively. The crux of the comparison would happen at the chunks "bc" vs "b" (wherein "b" comes before "bc"), and the comparison of chunks "40" and "50" would be irrelevant.
 
 ```javascript
 "a10bc40".semanticCompare("a10b50c");  // 1
@@ -692,6 +692,7 @@ Remove help icon from element(s).
 
 For modal dialog usage, ensure your dependency-manager/import-function is caching requires/imports of the `common` object, or that you are passing the object by reference. Calling multiple instances of `common.ui` in the same window can result in odd behavior for modal management.
 *common*.[**getElementList**()](#common-getElementList)
+
 ![Common UI Modal](./misc/cmmodal.png)
 
 Model elements will be created with classes prefixed by *.cm-modal*.
