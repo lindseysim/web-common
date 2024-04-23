@@ -71,16 +71,14 @@ if(navigator && window) {
             browser.isVivaldi = true;
         } else if(browser.qtwebengine) {
             browser.isQtWebEngine = true;
-        // the new internet explorer
-        } else if(browser.safari) {
-            browser.isSafari = true;
-        // major browsers
+        // enter most major browsers
         } else if(browser.opera || browser.opr) {
             if(!browser.opera) {
                 browser.opera = browser.opr;
                 delete browser.opr;
             }
             browser.isOpera = true;
+        // the new internet explorer
         } else if(browser.edg || browser.edge || browser.edga) {
             if(!browser.edge) {
                 browser.edge = browser.edg || browser.edga;
@@ -94,6 +92,9 @@ if(navigator && window) {
             browser.isBrave = true;
         } else if(browser.chrome) {
             browser.isChrome = true;
+        // safari shows up in chrome/edge useragent now so has to be last
+        } else if(browser.safari) {
+            browser.isSafari = true;
         }
     }
     window.browser = window.browserType = browser;
