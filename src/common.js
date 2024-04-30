@@ -57,18 +57,14 @@ export default {
             if(typeof modify === "undefined") modify = overwrite.modify || overwrite.modifyObj;
             overwrite = overwrite.overwrite || overwrite.allowOverwrite;
         }
-        let fcopy;
-        if(!deep) {
-            fcopy = input => input;
-        } else if(structuredClone && typeof structuredClone === "function") {
-            fcopy = structuredClone;
-        } else {
-            fcopy = input => JSON.parse(JSON.stringify(input));
-        }
-        if(!extend) return modify ? obj : fcopy(obj);
-        if(!obj) return fcopy(extend);
-        let clone = modify ? obj : _copy_({}, obj, true, fcopy);
-        return _copy_(modify, extend, overwrite, fcopy);
+        let hasStructuredClone = structuredClone && typeof structuredClone === "function", 
+            deepcopy = hasStructuredClone ? structuredClone : input => JSON.parse(JSON.stringify(input)), 
+            fcopy = !deep ? input => input : deepcopy;
+        if(!extend) return modify ? obj : (!obj ? obj : fcopy(obj));
+        if(!obj)    return !extend ? extend : fcopy(extend);
+        if(modify)  return _copy_(obj, extend, overwrite, fcopy);
+        let clone = _copy_({}, obj, true, deepcopy);
+        return _copy_(clone, extend, overwrite, fcopy);
     }, 
     
     getUrlGetVars() {
