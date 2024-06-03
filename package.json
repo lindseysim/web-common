@@ -1,8 +1,9 @@
 {
   "name": "@lawrencesim/web-common",
-  "version": "5.0.3",
+  "version": "5.0.4",
   "description": "Web Common is a collection of polyfills, extensions, and modules I repeatedly found myself reapplying on new projects.",
   "main": "common.js",
+  "module": "src/entry.js", 
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lawrencesim/web-common.git"
