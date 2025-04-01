@@ -835,11 +835,11 @@ Must be separately imported. Returned as object if instantiated via CommonJS or 
 
 To use, begin by creating instance and adding columns with *CommonTable*.prototype.**addColumn**(). The `key` parameter defines how to assign the data to each column. Other parameters allow various style and formatting methods. Once all columns are added, add data and draw the table with *CommonTable*.prototype.**populateTable**(). The data, sent as an array of object literals/dictionaries, is mapped to the columns automatically with the `key` defined for each column.
 
-All CommonTable functions returns self for ease of chaining functions.
-
 &nbsp;
 
 <a name="CommonTable" href="CommonTable">#</a>
+**CommonTable**([options])<br />
+<a href="CommonTable">#</a>
 **CommonTable**([*tableId*[, *tableClass*[, *container*]]])
 
 Creates new CommonTable. The table will be given the class of *cm-table*, more classes can be appended through the options.
@@ -848,7 +848,11 @@ Creates new CommonTable. The table will be given the class of *cm-table*, more c
 | :--- | :---: | :--- |
 | `tableId` | *String* | Table ID |
 | `tableClass` | *String* \| *String*[] | Table classname (use array to add multiple) |
-| `container` | *Element* | *Element* to append table to |
+| `container` | *Element* \| *String* | *Element* or element query selector to append table to |
+| `options` | *Object* | |
+| `options.tableId` | *String* | `tableId` may be specified in the options instead. |
+| `options.tableClass` | *String* \| *String*[] | `tableClass` may be specified in the options instead. |
+| `options.container` | *Element* \| *String* | `container` may be specified in the options instead. |
 
 &nbsp;
 
@@ -861,6 +865,8 @@ Appends table to element.
 | :--- | :---: | :--- |
 | `container` | *Element* | *Element* to append table in |
 
+&nbsp; &nbsp; **Returns:** *self* for chaining functions.
+
 &nbsp;
 
 <a name="CommonTable-prependTo" href="CommonTable-prependTo">#</a>
@@ -871,6 +877,8 @@ Prepends table to element.
 | Param | Type | Description |
 | :--- | :---: | :--- |
 | `container` | *Element* | *Element* to prepend table in |
+
+&nbsp; &nbsp; **Returns:** *self* for chaining functions.
 
 &nbsp;
 
@@ -896,61 +904,48 @@ Add a column to the table.
 | `options.onClick` | *Callback* | Optional onClick listener to add to each cell (excluding header). Callback will be given the entire row's data as the parameter. |
 | `options.sortable` | *Boolean* | Optional flag to set/disable sortable column on this column. By default columns are sortable, so set as falsy or *null* to disable. |
 
+&nbsp; &nbsp; **Returns:** *self* for chaining functions.
+
 &nbsp;
 
 <a name="CommonTable-createHeaders" href="CommonTable-createHeaders">#</a>
-*CommonTable*.prototype.**createHeaders**([*options*])
+*CommonTable*.prototype.**createHeaders**([*options*])<br />
+<a href="CommonTable-createHeaders">#</a>
+*CommonTable*.prototype.**createHeaders**([*sortOnKey*[, *ascending*]])
 
 [Re]draw table. Unlike `populateTable()`, this only redraws the headers (rest of the rows are lost).
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| `options` | *Object* | |
-| `options.sortOnKey` | *String* | Optional key to sort on. |
-| `options.ascending` | *Boolean* | If sorting, whether ascending or descending order. |
-
-Alternatively, parameters may be expanded out as individual arguments.
-
-&nbsp;
-
-<a name="CommonTable-createHeaders-2" href="CommonTable-createHeaders-2">#</a>
-*CommonTable*.prototype.**createHeaders**([*sortOnKey*[, *ascending*]])
-
-| Param | Type | Description |
-| :--- | :---: | :--- |
 | `sortOnKey` | *String* | Optional key to sort on. |
 | `ascending` | *Boolean* | If sorting, whether ascending or descending order. |
+| `options` | *Object* | |
+| `options.sortOnKey` | *String* | `sortOnKey` may be specified in the options instead. |
+| `options.ascending` | *Boolean* | `ascending` may be specified in the options instead. |
 
-See above.
+&nbsp; &nbsp; **Returns:** *self* for chaining functions.
 
 &nbsp;
 
 <a name="CommonTable-populateTable" href="CommonTable-populateTable">#</a>
-*CommonTable*.prototype.**populateTable**(*options*)
+*CommonTable*.prototype.**populateTable**(*options*)<br />
+<a href="CommonTable-populateTable">#</a>
+*CommonTable*.prototype.**populateTable**(*tableData*[, *sortOnKey*[, *ascending*]]])
 
 Populate and [re]draw table.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
 | `options` | *Object* | |
-| options.tableData | *Object*[] | Array of objects, representing data by row. Data is not stored to object or dynamically bound in any way. To update table, must be redrawn, passing the updated data array. |
-| `options.sortOnKey` | *String* | Optional key to sort on. |
-| `options.ascending` | *Boolean* | If sorting, whether ascending or descending order. |
-
-Alternatively, parameters may be expanded out as individual arguments.
-
-&nbsp;
-
-<a name="CommonTable-populateTable-2" href="CommonTable-populateTable-2">#</a>
-*CommonTable*.prototype.**populateTable**(*tableData*[, *sortOnKey*[, *ascending*]]])
-
-See above.
-
-| Param | Type | Description |
-| :--- | :---: | :--- |
 | `tableData` | *Object*[] | Array of objects, representing data by row. Data is not stored to object or dynamically bound in any way. To update table, must be redrawn, passing the updated data array. |
 | `sortOnKey` | *String* | Optional key to sort on. |
 | `ascending` | *Boolean* | If sorting, whether ascending or descending order. |
+| `options` | *Object* | |
+| `options.tableData` | *Object*[] | `tableData` may be specified in the options instead. |
+| `options.sortOnKey` | *String* | `sortOnKey` may be specified in the options instead. |
+| `options.ascending` | *Boolean* | `ascending` may be specified in the options instead. |
+
+&nbsp; &nbsp; **Returns:** *self* for chaining functions.
 
 &nbsp;
 

@@ -11,6 +11,12 @@ class CommonTable {
         this.tableElement.append(this.tbodyElement);
         this.tableElement.className = 'cm-table';
         
+        if(Object.isObjectLiteral(tableId)) {
+            let options = tableId;
+            tableId     = options.tableId;
+            tableClass  = options.tableClass;
+            container   = options.container;
+        }
         tableId && this.tableElement.setAttribute("id", tableId);
         if(tableClass) {
             if(Array.isArray(tableClass)) {
@@ -19,8 +25,12 @@ class CommonTable {
                 this.tableElement.classList.add(tableClass);
             }
         }
-        container && container.append(this.tableElement);
-        return this;
+        if(container) {
+            if(typeof container === "string") {
+                container = document.querySelector(container);
+            }
+            container && container.append(this.tableElement);
+        }
     }
 
     appendTo(container) {
