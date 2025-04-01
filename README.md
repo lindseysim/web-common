@@ -43,7 +43,7 @@ If using script imports in HTML, import the paths to *common.js*, *style.css*, a
 
 #### Version 6 breaking changes ####
 
-* Polyfills are getting deprecated so now must be explicitly called via `common.polyfills()` if required.
+* Polyfills are getting deprecated so now must be explicitly called via *common*.[**polyfills()**](#common-polyfills) if required.
 
 #### Version 5 breaking changes ####
 
@@ -66,123 +66,89 @@ Note that this is just a personal list of functions I tended to require (combine
 <a name="common-arrayFrom" href="#common-arrayFrom">#</a>
 *Array*.**from**(*arrayLike*[, *mapFn*[, *thisArg*]])
 
-Create array from array-like or iterable.
-
-See [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from)
+Create array from array-like or iterable. [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from).
 
 <a name="common-arrayFind" href="#common-arrayFind">#</a>
 *Array*.prototype.**find**(*callback*[, *thisArg*])
 
-Find item in an array. 
-
-See [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find)
+Find item in an array.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find).
 
 <a name="common-arrayFindIndex" href="#common-arrayFindIndex">#</a>
 *Array*.prototype.**findIndex**(*callback*[, *thisArg*])
 
-Find index of an item in an array. 
-
-See [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex)
+Find index of an item in an array.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex).
 
 <a name="common-arrayFindLast" href="#common-arrayFindLast">#</a>
 *Array*.prototype.**findLast**(*callback*[, *thisArg*])
 
-Find item in an array, searching in reverse.
-
-See [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findLast](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findLast)
+Find item in an array, searching in reverse. [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findLast).
 
 <a name="common-arrayFindLastIndex" href="#common-arrayFindLastIndex">#</a>
 *Array*.prototype.**findLastIndex**(*callback*[, *thisArg*])
 
-Find index of an item in an array, searching in reverse.
-
-See [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findLastIndex](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findLastIndex)
+Find index of an item in an array, searching in reverse. [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findLastIndex).
 
 <a name="common-arrayFlat" href="#common-arrayFlat">#</a>
 *Array*.prototype.**flat**([*depth*])
 
-Flatten an array to a desired depth (or default single-depth).
-
-See [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat)
+Flatten an array to a desired depth (or default single-depth). [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat).
 
 <a name="common-arrayIncludes" href="#common-arrayIncludes">#</a>
 *Array*.prototype.**includes**(*searchElement*[, *fromIndex*])
 
-Find if an item exists in an array. 
-
-See [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes)
+Find if an item exists in an array.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes).
 
 <a name="common-elementRemove" href="#common-elementRemove">#</a>
 *Element*.prototype.**remove**()
 
-Remove element. 
-
-See [https://developer.mozilla.org/en-US/docs/Web/API/ChildNode/remove](https://developer.mozilla.org/en-US/docs/Web/API/ChildNode/remove)
+Remove element.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/ChildNode/remove).
 
 <a name="common-elementAppend" href="#common-elementAppend">#</a>
 *Element*.prototype.**append**(*nodes*)
 
-Append to element. 
-
-See [https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/append](https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/append)
+Append to element.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/append).
 
 <a name="common-elementPrepend" href="#common-elementPrepend">#</a>
 *Element*.prototype.**prepend**(*nodes*)
 
-Prepend to element. 
-
-See [https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/prepend](https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/prepend)
+Prepend to element.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/prepend).
 
 <a name="common-elementMatches" href="#common-elementMatches">#</a>
 *Element*.prototype.**matches**(*selectors*)
 
-Check if element matches selector. 
-
-See [https://developer.mozilla.org/en-US/docs/Web/API/Element/matches](https://developer.mozilla.org/en-US/docs/Web/API/Element/matches)
+Check if element matches selector.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/Element/matches).
 
 <a name="common-elementCloset" href="#common-elementCloset">#</a>
 *Element*.prototype.**closest**(*selectors*)
 
-Find closest element matching selector. 
-
-See [https://developer.mozilla.org/en-US/docs/Web/API/Element/closest](https://developer.mozilla.org/en-US/docs/Web/API/Element/closest)
+Find closest element matching selector.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/Element/closest).
 
 <a name="common-elementClassList" href="#common-elementClassList">#</a>
 *Element*.**classList** 
 
-Ensures existence of `contains()`, `add()`, `remove()`, `toggle()`, and `replace()` functions in element's `classList` property. 
-
-See [https://developer.mozilla.org/en-US/docs/Web/API/Element/classList](https://developer.mozilla.org/en-US/docs/Web/API/Element/classList)  
+Ensures existence of `contains()`, `add()`, `remove()`, `toggle()`, and `replace()` functions in element's `classList` property.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/Element/classList).
 
 Note that IE and Edge cannot support `classList` on SVG elements (no polyfill available).
 
 <a name="common-nodeListForEach" href="#common-nodeListForEach">#</a>
 *NodeList*.prototype.**forEach**(*callback*[, *thisArg]*)
 
-Functionally iterate through a `NodeList`. 
-
-See [https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach](https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach)
+Functionally iterate through a `NodeList`.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach).
 
 <a name="common-stringStartsWith" href="#common-stringStartsWith">#</a>
 *String*.prototype.**startsWith**(*searchString*[, *position*])
 
-Check string starts with sequence. 
-
-See [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith)
+Check string starts with sequence.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith).
 
 <a name="common-stringEndsWith" href="#common-stringEndsWith">#</a>
 *String*.prototype.**endsWith**(*searchString*[, *length*])
 
-Check string ends with sequence. 
-
-See [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith)
+Check string ends with sequence.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith).
 
 <a name="common-stringRepeat" href="#common-stringRepeat">#</a>
 *String*.prototype.**repeat**(*count*)
 
-Repeat string content. 
-
-See [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/repeat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/repeat)
+Repeat string content.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/repeat).
 
 &nbsp;
 
@@ -240,6 +206,8 @@ Get overlapping values with second array. Can be called from array instance or `
 Array.getOverlaps([2, 4, 6, 8], [1, 2, 3, 5, 8]);  // [2, 8]
 ```
 
+&nbsp;
+
 <a name="common-arrayOverlaps" href="#common-arrayOverlaps">#</a>
 *Array*.**overlaps**(*a*, *b*) ⇒ `boolean`<br />
 <a name="common-arrayOverlaps" href="#common-arrayOverlaps">#</a>
@@ -251,6 +219,8 @@ Check if at least one value overlaps with second array. Can be called from array
 [1, 2, 3].overlaps([4, 5, 6]);                  // false
 Array.overlaps([2, 4, 6, 8], [1, 2, 3, 5, 8]);  // true
 ```
+
+&nbsp;
 
 <a name="common-arrayRemove" href="#common-arrayRemove">#</a>
 *Array*.prototype.**remove**(*value*[, *index*[, *limit*]]) ⇒ `Array`
@@ -268,30 +238,42 @@ a.remove(1, 2);        // [0, 1, 2, 3, 5]
 a.remove(1, null, 1);  // [0, 1, 2, 3, 5]
 ```
 
+&nbsp;
+
 <a name="common-elementIsVisible" href="#common-elementIsVisible">#</a>
 *Element*.prototype.**isVisible**() ⇒ `boolean`
 
 Check is element is visible. Uses `getBoundingClientRect` method, which is more reliable than the old `offsetParent` trick.
+
+&nbsp;
 
 <a name="common-elementSetAttributes" href="#common-elementSetAttributes">#</a>
 *Element*.prototype.**setAttributes**(*attrs*)
 
 Sets multiple attributes (given as a dictionary-like object of key-value pairs) at once.
 
+&nbsp;
+
 <a name="common-elementCss" href="#common-elementCss">#</a>
 *Element*.prototype.**css**(*style*[, *value*])
 
 Much like the JQuery **css**() function, sets inline style, either as style name and value provided as strings, or as a dictionary-like object of style names and values and key-value pairs. 
+
+&nbsp;
 
 <a name="common-elementCenter" href="#common-elementCenter">#</a>
 *Element*.prototype.**center**()
 
 Will center an element on screen using absolute positioning.
 
+&nbsp;
+
 <a name="common-numberAddCommas" href="#common-numberAddCommas">#</a>
 *Number*.prototype.**addCommas**(*precision*) ⇒ `string`
 
 Will convert a given number to a string, using the supplied precision, with commas.
+
+&nbsp;
 
 <a name="common-numberStringFormat" href="#common-numberStringFormat">#</a>
 *Number*.prototype.**stringFormat**([*minimum=0.001*, [*zeroFormat="0.0"*]) ⇒ `string`
@@ -308,6 +290,8 @@ Current heuristics are:
 * \<100 as number with one decimal place
 * ≥100 as number with no decimal places
 
+&nbsp;
+
 <a name="common-objectIsObject" href="#common-objectIsObject">#</a>
 *Object*.**isObject**(*obj*) ⇒ `boolean`
 
@@ -321,6 +305,8 @@ Object.isObject([]);          // false
 Object.isObject(new Date());  // true
 Object.isObject({});          // true
 ```
+
+&nbsp;
 
 <a name="common-objectIsObjectLiteral" href="#common-objectIsObjectLiteral">#</a>
 *Object*.**isObjectLiteral**(*obj*) ⇒ `boolean`
@@ -337,6 +323,8 @@ Object.isObjectLiteral({});            // true
 Object.isObjectLiteral(new Object());  // true
 ```
 
+&nbsp;
+
 <a name="common-stringCapitalize" href="#common-stringCapitalize">#</a>
 *String*.prototype.**capitalize**([*breaks*]) ⇒ `string`
 
@@ -349,6 +337,8 @@ Additional break characters can be provided as either an array of characters or 
 "@lawrencesim/web-common".capitalize()       // "@lawrencesim/web-common"
 "@lawrencesim/web-common".capitalize("@/-")  // "@Lawrencesim/Web-Common"
 ```
+
+&nbsp;
 
 <a name="common-stringSemanticCompare" href="#common-stringSemanticCompare">#</a>
 *String*.prototype.**semanticCompare**(*compareString*[, *options*]) ⇒ `number`
