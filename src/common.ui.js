@@ -1,8 +1,7 @@
 export default {
 
     addGrabCursorFunctionality(element) {
-        var elList = this.getElementList(element);
-        elList.forEach(e => {
+        this.getElementList(element).forEach(e => {
             e.classList.add("grab");
             e.addEventListener('mousedown', function() {
                 this.classList.remove("grab");
@@ -65,7 +64,7 @@ export default {
     }, 
 
     addTooltip(element, message, direction, force) {
-        var dirs = ["right", "left", "top", "bottom"];
+        let dirs = ["right", "left", "top", "bottom"];
         if(Object.isObjectLiteral(message)) {
             if(typeof direction === "undefined") direction = message.direction;
             if(typeof force === "undefined") force = message.force;

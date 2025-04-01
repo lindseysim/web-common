@@ -61,7 +61,7 @@ Polyfills are no longer checked by default and instead must be manually called t
 
 Ensures the below functions exists, many of which are missing in Internet Explorer (pre-Edge) and Opera Mini.
 
-Note that this is just a personal list of functions I tended to require (combined with a history of having to work with gov't clients that were still stuck in IE land). These days, probably less necessary, and if so, better to use a more complete polyfill library like [core-js](https://www.npmjs.com/package/core-js).
+Note that this is just a personal list of functions I tended to require (combined with a history of having to work with clients that were still stuck in IE land). These days, probably less necessary, and if so, better to use a more complete polyfill library like [core-js](https://www.npmjs.com/package/core-js).
 
 <a name="common-arrayFrom" href="#common-arrayFrom">#</a>
 *Array*.**from**(*arrayLike*[, *mapFn*[, *thisArg*]]) – Create array from array-like or iterable. [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from).
@@ -100,9 +100,7 @@ Note that this is just a personal list of functions I tended to require (combine
 *Element*.prototype.**closest**(*selectors*) – Find closest element matching selector.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/Element/closest).
 
 <a name="common-elementClassList" href="#common-elementClassList">#</a>
-*Element*.**classList** – Ensures existence of `contains()`, `add()`, `remove()`, `toggle()`, and `replace()` functions in element's `classList` property.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/Element/classList).
-
-Note that IE and Edge cannot support `classList` on SVG elements (no polyfill available).
+*Element*.**classList** – Ensures existence of `contains()`, `add()`, `remove()`, `toggle()`, and `replace()` functions in element's `classList` property. [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/Element/classList).
 
 <a name="common-nodeListForEach" href="#common-nodeListForEach">#</a>
 *NodeList*.prototype.**forEach**(*callback*[, *thisArg]*) – Functionally iterate through a `NodeList`.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach).
@@ -115,8 +113,6 @@ Note that IE and Edge cannot support `classList` on SVG elements (no polyfill av
 
 <a name="common-stringRepeat" href="#common-stringRepeat">#</a>
 *String*.prototype.**repeat**(*count*) – Repeat string content.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/repeat).
-
-&nbsp;
 
 ### Promises ###
 
@@ -839,6 +835,8 @@ Must be separately imported. Returned as object if instantiated via CommonJS or 
 
 To use, begin by creating instance and adding columns with *CommonTable*.prototype.**addColumn**(). The `key` parameter defines how to assign the data to each column. Other parameters allow various style and formatting methods. Once all columns are added, add data and draw the table with *CommonTable*.prototype.**populateTable**(). The data, sent as an array of object literals/dictionaries, is mapped to the columns automatically with the `key` defined for each column.
 
+All CommonTable functions returns self for ease of chaining functions.
+
 &nbsp;
 
 <a name="CommonTable" href="CommonTable">#</a>
@@ -1015,6 +1013,10 @@ tbl.populateTable({
   ascending: false  // sort by wins descending
 });
 ```
+
+&nbsp;
+
+&nbsp;
 
 ----------
 
