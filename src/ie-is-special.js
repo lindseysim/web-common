@@ -1,4 +1,4 @@
-export default (function() {
+export default function() {
 
     // Element.remove()
     if(!Element.prototype.remove) {
@@ -459,4 +459,4 @@ export default (function() {
 
     return true;
 
-})();
+};

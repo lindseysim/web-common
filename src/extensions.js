@@ -121,7 +121,7 @@ if(!String.prototype.capitalize) {
             } else {
                 breaks = [];
             }
-            let re = new RegExp(`(?:^|[${breaks.join('')}\\s])\\S`, "g");
+            let re = new RegExp(`(?:^|[${breaks.join('')}\\s])\\w`, "g");
             return this.replace(re, a => a.toUpperCase());
             //let capped = this.replace(/(?:^|\s)\S/g, a => a.toUpperCase());
         }

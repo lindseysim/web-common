@@ -8,7 +8,7 @@ import ui          from "./common.ui.js";
 //****************************************************************************************************
 if(navigator && window) {
     // note, none of these browser checks are future-proof, periodically update as necessary
-    var browser = {};
+    let browser = {};
     if(!String.prototype.matchAll) {
         // internet explorer, start with feature detection since it doesn't have String.matchAll()
         let match = navigator.userAgent.toLowerCase().match(/(msie|trident(?=\/))\/?\s*(\d+)/);
@@ -99,6 +99,11 @@ if(navigator && window) {
     }
     window.browser = window.browserType = browser;
 }
+
+common.__polyfills = false;
+common.polyfills = () => {
+    common.__polyfills = common.__polyfills || polyfills();
+};
 
 ui.getElementList = common.getElementList;
 common.ui = ui;

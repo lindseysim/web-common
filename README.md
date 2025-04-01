@@ -2,7 +2,7 @@
 
 Web Common is a collection of polyfills, extensions, and modules I repeatedly found myself reapplying on new projects.
 
-Lawrence Sim © 2024
+Lindsey Sim © 2024
 
 This library is licensed under the MIT License. See *LICENSE* file for full text.
 
@@ -41,17 +41,23 @@ If using script imports in HTML, import the paths to *common.js*, *style.css*, a
 
 &nbsp;
 
+#### Version 6 breaking changes ####
+
+* Polyfills are getting deprecated so now must be explicitly called via `common.polyfills()` if required.
+
 #### Version 5 breaking changes ####
 
 * *Number*.prototype.**addCommasSmart**() is removed. Use *Number*.prototype.[**stringFormat**()](#common-numberStringFormat) instead.
 * *String*.prototype.**heuristicCompare**() is removed. Use *String*.prototype.[**semanticCompare**()](#common-stringSemanticCompare) instead.
 * *common*.[**extend**()](#common-extend), parameters are renamed `overwrite`, `deep`, and `modify` from `allowOverwrite`, `deepCopy`, and `modifyObj`. While detection is still left in for older names for backwards compatibility, it may be deprecated at some point.
-* *common*.[**newWindow**()](#common-newWindow) no longer accepts flat parameters. All parameters except for `url` (and optoinally `name`) must be specified in an options object.
+* *common*.[**newWindow**()](#common-newWindow) no longer accepts flat parameters. All parameters except for `url` (and optionally `name`) must be specified in an options object.
 * *common*.[**animate**()](#common-animate), parameters are renamed `duration` and `timing` from `durationMs`, and `timingFunction`. While detection is still left in for older names for backwards compatibility, it may be deprecated at some point.
 
 &nbsp;
 
 ## Polyfills ##
+
+Polyfills are no longer checked by default and instead must be manually called to active via the `common` object under *common*.[**polyfills**()](#common-polyfills).
 
 Ensures the below functions exists, many of which are missing in Internet Explorer (pre-Edge) and Opera Mini.
 
@@ -229,12 +235,22 @@ These useful functions are added to common object prototypes.
 
 Get overlapping values with second array. Can be called from array instance or `Array` global. Uses strict equality.
 
+```javascript
+[1, 2, 3].getOverlaps([4, 5, 6]);                  // []
+Array.getOverlaps([2, 4, 6, 8], [1, 2, 3, 5, 8]);  // [2, 8]
+```
+
 <a name="common-arrayOverlaps" href="#common-arrayOverlaps">#</a>
 *Array*.**overlaps**(*a*, *b*) ⇒ `boolean`<br />
 <a name="common-arrayOverlaps" href="#common-arrayOverlaps">#</a>
 *Array*.prototype.**overlaps**(*arr*) ⇒ `boolean`
 
 Check if at least one value overlaps with second array. Can be called from array instance or `Array` global. Uses strict equality.
+
+```javascript
+[1, 2, 3].overlaps([4, 5, 6]);                  // false
+Array.overlaps([2, 4, 6, 8], [1, 2, 3, 5, 8]);  // true
+```
 
 <a name="common-arrayRemove" href="#common-arrayRemove">#</a>
 *Array*.prototype.**remove**(*value*[, *index*[, *limit*]]) ⇒ `Array`
@@ -244,6 +260,13 @@ Remove all instances of a value from an array. Value matching uses strict equali
 Set `index` to define the index at which to start indexing. Negatives are allowed to find a position from reverse. If the index is greater than or equal to the length of the array, the array is not searched and nothing is removed.
 
 Set `limit` to a positive value to define a limit to the number of times the value will be removed. Otherwise, the removal allowance is unlimited.
+
+```javascript
+let a = [0, 1, 1, 2, 3, 5];
+a.remove(1);           // [0, 2, 3, 5]
+a.remove(1, 2);        // [0, 1, 2, 3, 5]
+a.remove(1, null, 1);  // [0, 1, 2, 3, 5]
+```
 
 <a name="common-elementIsVisible" href="#common-elementIsVisible">#</a>
 *Element*.prototype.**isVisible**() ⇒ `boolean`
@@ -292,6 +315,13 @@ Check is given object is an object-type. That is, not a primitive, string, or ar
 
 Uses [`typeof`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof) check with extra handling to invalidate array types.
 
+```javascript
+Object.isObject('string');    // false
+Object.isObject([]);          // false
+Object.isObject(new Date());  // true
+Object.isObject({});          // true
+```
+
 <a name="common-objectIsObjectLiteral" href="#common-objectIsObjectLiteral">#</a>
 *Object*.**isObjectLiteral**(*obj*) ⇒ `boolean`
 
@@ -299,12 +329,26 @@ Check is given object is an object literal-type. That is, not a primitive, strin
 
 Uses *Object*.[**getPrototypeOf**()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getPrototypeOf) check.
 
+```javascript
+Object.isObjectLiteral('string');      // false
+Object.isObjectLiteral([]);            // false
+Object.isObjectLiteral(new Date());    // false
+Object.isObjectLiteral({});            // true
+Object.isObjectLiteral(new Object());  // true
+```
+
 <a name="common-stringCapitalize" href="#common-stringCapitalize">#</a>
 *String*.prototype.**capitalize**([*breaks*]) ⇒ `string`
 
 Will capitalize the each word in the string (using whitespace to delineate words). 
 
-Additional break characters can be provided as either an array of characters or a string of all characters in the optional parameter `breaks`. E.g., to include hyphens, `"up-to-date".capitalize("-")` will output `Up-To-Date`.
+Additional break characters can be provided as either an array of characters or a string of all characters in the optional parameter `breaks`.
+
+```javascript
+"web common".capitalize();                   // "Web Common"
+"@lawrencesim/web-common".capitalize()       // "@lawrencesim/web-common"
+"@lawrencesim/web-common".capitalize("@/-")  // "@Lawrencesim/Web-Common"
+```
 
 <a name="common-stringSemanticCompare" href="#common-stringSemanticCompare">#</a>
 *String*.prototype.**semanticCompare**(*compareString*[, *options*]) ⇒ `number`
@@ -314,7 +358,6 @@ A semantic comparison of strings with numeric values within them. Compare the nu
 E.g., a typical string comparisons would result in '20' coming before '5', because string comparisons evaluate character by character, first looking at the '2' and '5' characters. This function ensures the entire '20' is considered as one number.
 
 Returns numeric indicating whether `this` string comes before (-1), after (1), or is equal (0) to compared string. As such, can be inserted into most sort functions such as *Array*.prototype.[**sort**()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort) within the compare function.
-
 
 ```javascript
 "x01x02".semanticCompare("x1x2");  //  0 is semantically equal
@@ -415,6 +458,11 @@ Returns number of days in the month for this date.
 ## Common Object ##
 
 Returned as object if instantiated via CommonJS or AMD import. Otherwise appended to root as common (e.g. `window.common`).
+ 
+<a name="common-polyfills" href="#common-polyfills">#</a>
+*common*.**polyfills**()
+
+Checks for and activates [polyfills](#polyfills) as needed.
  
 <a name="common-getElement" href="#common-getElement">#</a>
 *common*.**getElement**(*element*) ⇒ `Element`
