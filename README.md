@@ -64,91 +64,57 @@ Ensures the below functions exists, many of which are missing in Internet Explor
 Note that this is just a personal list of functions I tended to require (combined with a history of having to work with gov't clients that were still stuck in IE land). These days, probably less necessary, and if so, better to use a more complete polyfill library like [core-js](https://www.npmjs.com/package/core-js).
 
 <a name="common-arrayFrom" href="#common-arrayFrom">#</a>
-*Array*.**from**(*arrayLike*[, *mapFn*[, *thisArg*]])
-
-Create array from array-like or iterable. [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from).
+*Array*.**from**(*arrayLike*[, *mapFn*[, *thisArg*]]) – Create array from array-like or iterable. [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from).
 
 <a name="common-arrayFind" href="#common-arrayFind">#</a>
-*Array*.prototype.**find**(*callback*[, *thisArg*])
-
-Find item in an array.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find).
+*Array*.prototype.**find**(*callback*[, *thisArg*]) – Find item in an array.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find).
 
 <a name="common-arrayFindIndex" href="#common-arrayFindIndex">#</a>
-*Array*.prototype.**findIndex**(*callback*[, *thisArg*])
-
-Find index of an item in an array.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex).
+*Array*.prototype.**findIndex**(*callback*[, *thisArg*]) – Find index of an item in an array.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex).
 
 <a name="common-arrayFindLast" href="#common-arrayFindLast">#</a>
-*Array*.prototype.**findLast**(*callback*[, *thisArg*])
-
-Find item in an array, searching in reverse. [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findLast).
+*Array*.prototype.**findLast**(*callback*[, *thisArg*]) – Find item in an array, searching in reverse. [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findLast).
 
 <a name="common-arrayFindLastIndex" href="#common-arrayFindLastIndex">#</a>
-*Array*.prototype.**findLastIndex**(*callback*[, *thisArg*])
-
-Find index of an item in an array, searching in reverse. [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findLastIndex).
+*Array*.prototype.**findLastIndex**(*callback*[, *thisArg*]) – Find index of an item in an array, searching in reverse. [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findLastIndex).
 
 <a name="common-arrayFlat" href="#common-arrayFlat">#</a>
-*Array*.prototype.**flat**([*depth*])
-
-Flatten an array to a desired depth (or default single-depth). [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat).
+*Array*.prototype.**flat**([*depth*]) – Flatten an array to a desired depth (or default single-depth). [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat).
 
 <a name="common-arrayIncludes" href="#common-arrayIncludes">#</a>
-*Array*.prototype.**includes**(*searchElement*[, *fromIndex*])
-
-Find if an item exists in an array.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes).
+*Array*.prototype.**includes**(*searchElement*[, *fromIndex*]) – Find if an item exists in an array.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes).
 
 <a name="common-elementRemove" href="#common-elementRemove">#</a>
-*Element*.prototype.**remove**()
-
-Remove element.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/ChildNode/remove).
+*Element*.prototype.**remove**() – Remove element.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/ChildNode/remove).
 
 <a name="common-elementAppend" href="#common-elementAppend">#</a>
-*Element*.prototype.**append**(*nodes*)
-
-Append to element.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/append).
+*Element*.prototype.**append**(*nodes*) – Append to element.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/append).
 
 <a name="common-elementPrepend" href="#common-elementPrepend">#</a>
-*Element*.prototype.**prepend**(*nodes*)
-
-Prepend to element.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/prepend).
+*Element*.prototype.**prepend**(*nodes*) – Prepend to element.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/prepend).
 
 <a name="common-elementMatches" href="#common-elementMatches">#</a>
-*Element*.prototype.**matches**(*selectors*)
-
-Check if element matches selector.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/Element/matches).
+*Element*.prototype.**matches**(*selectors*) – Check if element matches selector.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/Element/matches).
 
 <a name="common-elementCloset" href="#common-elementCloset">#</a>
-*Element*.prototype.**closest**(*selectors*)
-
-Find closest element matching selector.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/Element/closest).
+*Element*.prototype.**closest**(*selectors*) – Find closest element matching selector.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/Element/closest).
 
 <a name="common-elementClassList" href="#common-elementClassList">#</a>
-*Element*.**classList** 
-
-Ensures existence of `contains()`, `add()`, `remove()`, `toggle()`, and `replace()` functions in element's `classList` property.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/Element/classList).
+*Element*.**classList** – Ensures existence of `contains()`, `add()`, `remove()`, `toggle()`, and `replace()` functions in element's `classList` property.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/Element/classList).
 
 Note that IE and Edge cannot support `classList` on SVG elements (no polyfill available).
 
 <a name="common-nodeListForEach" href="#common-nodeListForEach">#</a>
-*NodeList*.prototype.**forEach**(*callback*[, *thisArg]*)
-
-Functionally iterate through a `NodeList`.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach).
+*NodeList*.prototype.**forEach**(*callback*[, *thisArg]*) – Functionally iterate through a `NodeList`.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach).
 
 <a name="common-stringStartsWith" href="#common-stringStartsWith">#</a>
-*String*.prototype.**startsWith**(*searchString*[, *position*])
-
-Check string starts with sequence.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith).
+*String*.prototype.**startsWith**(*searchString*[, *position*]) – Check string starts with sequence.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith).
 
 <a name="common-stringEndsWith" href="#common-stringEndsWith">#</a>
-*String*.prototype.**endsWith**(*searchString*[, *length*])
-
-Check string ends with sequence.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith).
+*String*.prototype.**endsWith**(*searchString*[, *length*]) – Check string ends with sequence.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith).
 
 <a name="common-stringRepeat" href="#common-stringRepeat">#</a>
-*String*.prototype.**repeat**(*count*)
-
-Repeat string content.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/repeat).
+*String*.prototype.**repeat**(*count*) – Repeat string content.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/repeat).
 
 &nbsp;
 
@@ -193,6 +159,8 @@ Note that this method of parsing the UserAgent string is somewhat brittle and ca
 ## Prototype Modifications ##
 
 These useful functions are added to common object prototypes.
+
+&nbsp;
 
 <a name="common-arrayGetOverlaps" href="#common-arrayGetOverlaps">#</a>
 *Array*.**getOverlaps**(*a*, *b*) ⇒ `Array`<br />
@@ -375,10 +343,14 @@ By default, negative numbers and decimals are not handled as dashes and periods 
 
 Additional functions for handling basic Date objects are added. Specifically to ensure UTC handling.
 
+&nbsp;
+
 <a name="common-DateUTC" href="#common-DateUTC">#</a>
 **DateUTC**(*year*, *month*, *day*[, *hour*[, *min*[, *sec*]]]) ⇒ `Date`
 
 Creates a datetime, forced as UTC. **Month is to be indicated as number from 1-12** (unlike traditional Date constructor as 0-11).
+
+&nbsp;
 
 <a name="common-dateAsUTC" href="#common-dateAsUTC">#</a>
 *Date*.prototype.**asUTC**() ⇒ `Date`
@@ -392,6 +364,8 @@ d.asUTC();                     // Tue Jan 01 2019 12:00:00 GMT-0800 (Pacific Sta
 
 In the above conversion, assumed the date of Jan 1 2019 at 20:00 was meant as UTC and adjust the timezone without converting the time. When printing the date, which in javascript is by default converted to localtime (in this case PST), it 8 hours earlier but corresponds to 20:00 UTC.
 
+&nbsp;
+
 <a name="common-dateToUTC" href="#common-dateToUTC">#</a>
 *Date*.prototype.**toUTC**() ⇒ `Date`
 
@@ -403,6 +377,8 @@ d.toUTC();                     // Tue Jan 01 2019 20:00:00 GMT-0800 (Pacific Sta
 ```
 
 As printing is always done in localtime, conversion is mostly symbolic. This function only left in for completeness, but really doesn't do anything.
+
+&nbsp;
 
 <a name="common-dateAsUTCDate" href="#common-dateAsUTCDate">#</a>
 *Date*.prototype.**asUTCDate**() ⇒ `Date`
@@ -416,6 +392,8 @@ d.asUTCDate();                 // Mon Dec 31 2018 16:00:00 GMT-0800 (Pacific Sta
 
 In the above conversion, converts Jan 1, 2019 (date-only) in UTC time (though constructed with localtime). Drops time information, making it Jan 1, 2019 at 00:00 UTC. Printed, which is in localtime by default in javascript, it shows as 16:00 PST the previous day.
 
+&nbsp;
+
 <a name="common-dateToUTCDate" href="#common-dateToUTCDate">#</a>
 *Date*.prototype.**toUTCDate**() ⇒ `Date`
 
@@ -428,15 +406,21 @@ d.toUTCDate();                 // Tue Jan 01 2019 16:00:00 GMT-0800 (Pacific Sta
 
 In the above conversion, first converts Jan 1, 2019 at 20:00 in PST to 04:00 UTC the following day. Then it drops time information, making it Jan 2, 2019 at 00:00 UTC. Printed, which is in localtime by default in javascript, it shows as 16:00 PST the previous day (which is still Jan 1).
 
+&nbsp;
+
 <a name="common-dateAddDays" href="#common-dateAddDays">#</a>
 *Date*.prototype.**addDays**(*days*) ⇒ `Date`
 
 Returns new date with days added (or removed if negative).
 
+&nbsp;
+
 <a name="common-dateMonthOfYear" href="#common-dateMonthOfYear">#</a>
 *Date*.prototype.**monthOfYear**() ⇒ `number`
 
 Returns the month of the year as 1-12 number (as opposed to 0-11 for **getMonth**()).
+
+&nbsp;
 
 <a name="common-dateDaysInMonth" href="#common-dateDaysInMonth">#</a>
 *Date*.prototype.**daysInMonth**() ⇒ `number`
@@ -448,11 +432,15 @@ Returns number of days in the month for this date.
 ## Common Object ##
 
 Returned as object if instantiated via CommonJS or AMD import. Otherwise appended to root as common (e.g. `window.common`).
+
+&nbsp;
  
 <a name="common-polyfills" href="#common-polyfills">#</a>
 *common*.**polyfills**()
 
 Checks for and activates [polyfills](#polyfills) as needed.
+
+&nbsp;
  
 <a name="common-getElement" href="#common-getElement">#</a>
 *common*.**getElement**(*element*) ⇒ `Element`
@@ -472,6 +460,8 @@ Given an input, returns an [*Element*](https://developer.mozilla.org/en-US/docs/
 * If string is provided, returns result of *document*.[**querySelector**()](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector) using the string as the selector. 
 * If none of the above apply, returns *undefined*.
 
+&nbsp;
+
 <a name="common-getElementList" href="#common-getElementList">#</a>
 *common*.**getElementList**(*input*) ⇒ `Element[]`
 
@@ -487,6 +477,8 @@ Given an input, converts it into an array of [Elements](https://developer.mozill
 * If a *jQuery* object is provided, returns array given by calling [**get**()](https://api.jquery.com/get/) on it. 
 * If a string is provided, returns result of *document*.[**querySelectorAll**()](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelectorAll), using the string as the selector, converted into an array. 
 * Otherwise, wraps the input in an array, then filters for elements that are derived from the *Element* prototype.
+
+&nbsp;
 
 <a name="common-extend" href="#common-extend">#</a>
 *common*.**extend**(*obj*, *extend*[, *options*]) ⇒ `Object`<br />
@@ -515,12 +507,16 @@ Deep copy is done via [**structuredClone**()](https://developer.mozilla.org/en-U
 
 &nbsp; &nbsp; **Returns:** The object with extended values (if `modify` is falsy, this is a new object).
 
+&nbsp;
+
 <a name="common-getUrlGetVars" href="#common-getUrlGetVars">#</a>
 *common*.**getUrlGetVars**() ⇒ `Object`
 
 Retrieve GET parameters in current URL as an object literal (dictionary format).
 
 &nbsp; &nbsp; **Returns:** Object literal of GET parameters found in URL.
+
+&nbsp;
 
 <a name="common-newWindow" href="#common-newWindow">#</a>
 *common*.**newWindow**(*url*[, *options*]) ⇒ `WindowProxy`<br />
@@ -542,6 +538,8 @@ Creates a new, centered window.
 | `options.error` | *Callback* | Optional. Callback to run when the new window is detected to have been immediately closed (likely due to pop-up blocking). Given the *WindowProxy* returned by `window.open()`. |
 
 &nbsp; &nbsp; **Returns:** The [*WindowProxy*](https://developer.mozilla.org/en-US/docs/Glossary/WindowProxy) returned by *window*.**open**().
+
+&nbsp;
 
 <a name="common-ajax" href="#common-ajax">#</a>
 *common*.**ajax**(*params*) ⇒ `XMLHttpRequest` | `Promise`
@@ -566,6 +564,8 @@ However, if the project allows, I'd nowadays recommend using the [Fetch API](htt
 
 &nbsp; &nbsp; **Returns:** *XMLHttpRequest* or *Promise* on completion for the request.
 
+&nbsp;
+
 <a name="common-animate" href="#common-animate">#</a>
 *common*.**animate**(*options*) ⇒ `Promise`<br />
 <a href="#common-animate">#</a>
@@ -574,7 +574,6 @@ However, if the project allows, I'd nowadays recommend using the [Fetch API](htt
 *common*.**animate**(*element*, *properties*[, *options*]) ⇒ `Promise`<br />
 <a href="#common-animate">#</a>
 *common*.**animate**(*element*, *properties*, *duration*[, *options*]) ⇒ `Promise`
-
 
 Mimics *jQuery*.[**animate**()](http://api.jquery.com/jQuery.animate/) function using CSS transitions by first applying a [transition](https://developer.mozilla.org/en-US/docs/Web/CSS/transition) property for the requisite CSS properties to be applied, then, after a short delay (5 ms), applying the properties. All this is done as modifications to the element's inline styles, and will thus overwrite any existing inline styles and will be subject to any CSS rule overrides (such as an existing, applicable CSS rule with the `!imporant` flag).
 
@@ -604,6 +603,8 @@ The Common UI modules allow for some simple, commonly-used UI functionality, mos
 
 For modal dialog usage, ensure your dependency-manager/import-function is caching requires/imports of the `common` object, or that you are passing the object by reference. Calling multiple instances of `common.ui` in the same window can result in odd behavior for modal management.
 
+&nbsp;
+
 <a name="common-addGrabCursorFunctionality" href="#common-addGrabCursorFunctionality">#</a>
 *common*.*ui*.**addGrabCursorFunctionality**(*element*)
 
@@ -614,6 +615,8 @@ Adds class "grab" to element, and class "grabbing" when being dragged.
 | Param | Type | Description |
 | :--- | :---: | :--- |
 | `element` | -- | Element(s) to add functionality to. See *common*.[**getElementList**()](#common-getElementList) for evaluation of this parameter. |
+
+&nbsp;
 
 <a name="common-createDropdown" href="#common-createDropdown">#</a>
 *common*.*ui*.**createDropdown**(*element*, *menu*)
@@ -652,6 +655,8 @@ common.ui.createDropdown("#menu",
 );
 ```
 
+&nbsp;
+
 <a name="common-clearDropdown" href="#common-clearDropdown">#</a>
 *common*.*ui*.**clearDropdown**(*element*)
 
@@ -671,6 +676,8 @@ The tooltips and help icons functionality can be applied via the functions (desc
 
 To add a tooltip manually, add the class *cm-tooltip-left*, *cm-tooltip-top*, *cm-tooltip-right*, or *cm-tooltip-bottom* and the attribute *cm-tooltip-msg* with the tooltip message. To create a help icon, simply create the element `<i>?</i>`, with class *cm-icon*.
 
+&nbsp;
+
 <a name="common-addTooltip" href="#common-addTooltip">#</a>
 *common*.*ui*.**addTooltip**(*element*, *options*)<br />
 <a href="#common-addTooltip">#</a>
@@ -688,6 +695,8 @@ Elements will be created with classes prefixed by *cm-tooltip*.
 | `options.direction` | *String* | Direction of tooltip (defaults to top). |
 | `options.force` | *Boolean* | If truthy, forces tooltip visible. |
 
+&nbsp;
+
 <a name="common-removeTooltip" href="#common-removeTooltip">#</a>
 *common*.*ui*.**removeTooltip**(*element*)
 
@@ -696,6 +705,8 @@ Remove hover tooltip from element(s).
 | Param | Type | Description |
 | :--- | :---: | :--- |
 | `element` | -- | Element(s) to remove tooltip from. See *common*.[**getElementList**()](#common-getElementList) for evaluation of this parameter. |
+
+&nbsp;
 
 <a name="common-appendHelpIcon" href="#common-appendHelpIcon">#</a>
 *common*.*ui*.**appendHelpIcon**(*element*, *options*)<br />
@@ -714,6 +725,8 @@ Icon element will be created with class *cm-icon*.
 | `options.direction` | *String* | Direction of tooltip (defaults to top). |
 | `options.style` | *Object* | Dictionary of inline style key-values for icon. |
 | `options.force` | *Boolean* | If truthy, forces tooltip visible. |
+
+&nbsp;
  
 <a name="common-removeHelpIcon" href="#common-removeHelpIcon">#</a>
 *common*.*ui*.**removeHelpIcon**(*element*)
@@ -739,10 +752,14 @@ When a modal function is first called, this library appends a hidden div to `bod
 
 Only one modal may be open at a time. Opening another modal will replace the current one.
 
+&nbsp;
+
 <a name="common-isModalOpen" href="#common-isModalOpen">#</a>
 *common*.*ui*.**isModalOpen**() ⇒ `boolean`
 
 Check whether modal is open.
+
+&nbsp;
 
 <a name="common-setModal" href="#common-setModal">#</a>
 *common*.*ui*.**setModal**(*visible*, *content*[, *options*]) ⇒ `Element`<br />
@@ -764,6 +781,8 @@ Creates a new modal dialog (or closes, if `visible` is falsy). Function **openMo
 
 &nbsp; &nbsp; **Returns:** *Element* of modal content div (*.cm-modal-inner*).
 
+&nbsp;
+
 <a name="common-setModalAsLoading" href="#common-setModalAsLoading">#</a>
 *common*.*ui*.**setModalAsLoading**([*content*[, *options*]]) ⇒ `Element`
 
@@ -781,6 +800,8 @@ Opens a modal dialog with default values prepped for loading. As such, no option
 | `options.addDetailsText` | *String* | `"Please wait.."` | The content for subtext below the main modal content, if `addDetails` is truthy. |
 
 &nbsp; &nbsp; **Returns:** *Element* of modal content div (*.cm-modal-inner*).
+
+&nbsp;
  
 <a name="common-changeModal" href="#common-changeModal">#</a>
 *common*.*ui*.**changeModal**(*content*[, *prepContentCallback*[, *hideCloser*]]) ⇒ `Element`
@@ -794,6 +815,8 @@ Change modal dialog content while leaving all other options the same. Keeps the 
 | `hideCloser` | *Boolean* | Due to HTML refresh, closer will be readded unless this is set as truthy. |
 
 &nbsp; &nbsp; **Returns:** *Element* of modal content div (`.cm-modal-inner`).
+
+&nbsp;
 
 <a name="common-closeModal" href="#common-closeModal">#</a>
 *common*.*ui*.**closeModal**([*suppressOnClose*])<br />
@@ -816,6 +839,8 @@ Must be separately imported. Returned as object if instantiated via CommonJS or 
 
 To use, begin by creating instance and adding columns with *CommonTable*.prototype.**addColumn**(). The `key` parameter defines how to assign the data to each column. Other parameters allow various style and formatting methods. Once all columns are added, add data and draw the table with *CommonTable*.prototype.**populateTable**(). The data, sent as an array of object literals/dictionaries, is mapped to the columns automatically with the `key` defined for each column.
 
+&nbsp;
+
 <a name="CommonTable" href="CommonTable">#</a>
 **CommonTable**([*tableId*[, *tableClass*[, *container*]]])
 
@@ -827,6 +852,8 @@ Creates new CommonTable. The table will be given the class of *cm-table*, more c
 | `tableClass` | *String* \| *String*[] | Table classname (use array to add multiple) |
 | `container` | *Element* | *Element* to append table to |
 
+&nbsp;
+
 <a name="CommonTable-appendTo" href="CommonTable-appendTo">#</a>
 *CommonTable*.prototype.**appendTo**(*container*)
 
@@ -836,6 +863,8 @@ Appends table to element.
 | :--- | :---: | :--- |
 | `container` | *Element* | *Element* to append table in |
 
+&nbsp;
+
 <a name="CommonTable-prependTo" href="CommonTable-prependTo">#</a>
 *CommonTable*.prototype.**prependTo**(*container*)
 
@@ -844,6 +873,8 @@ Prepends table to element.
 | Param | Type | Description |
 | :--- | :---: | :--- |
 | `container` | *Element* | *Element* to prepend table in |
+
+&nbsp;
 
 <a name="CommonTable-addColumn" href="CommonTable-addColumn">#</a>
 *CommonTable*.prototype.**addColumn**(*options*)<br />
@@ -867,6 +898,8 @@ Add a column to the table.
 | `options.onClick` | *Callback* | Optional onClick listener to add to each cell (excluding header). Callback will be given the entire row's data as the parameter. |
 | `options.sortable` | *Boolean* | Optional flag to set/disable sortable column on this column. By default columns are sortable, so set as falsy or *null* to disable. |
 
+&nbsp;
+
 <a name="CommonTable-createHeaders" href="CommonTable-createHeaders">#</a>
 *CommonTable*.prototype.**createHeaders**([*options*])
 
@@ -880,6 +913,8 @@ Add a column to the table.
 
 Alternatively, parameters may be expanded out as individual arguments.
 
+&nbsp;
+
 <a name="CommonTable-createHeaders-2" href="CommonTable-createHeaders-2">#</a>
 *CommonTable*.prototype.**createHeaders**([*sortOnKey*[, *ascending*]])
 
@@ -889,6 +924,8 @@ Alternatively, parameters may be expanded out as individual arguments.
 | `ascending` | *Boolean* | If sorting, whether ascending or descending order. |
 
 See above.
+
+&nbsp;
 
 <a name="CommonTable-populateTable" href="CommonTable-populateTable">#</a>
 *CommonTable*.prototype.**populateTable**(*options*)
@@ -903,6 +940,8 @@ Populate and [re]draw table.
 | `options.ascending` | *Boolean* | If sorting, whether ascending or descending order. |
 
 Alternatively, parameters may be expanded out as individual arguments.
+
+&nbsp;
 
 <a name="CommonTable-populateTable-2" href="CommonTable-populateTable-2">#</a>
 *CommonTable*.prototype.**populateTable**(*tableData*[, *sortOnKey*[, *ascending*]]])
