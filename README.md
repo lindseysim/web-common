@@ -2,7 +2,7 @@
 
 Web Common is a collection of polyfills, extensions, and modules I repeatedly found myself reapplying on new projects.
 
-Lindsey Sim © 2024
+Lindsey Sim © 2025
 
 This library is licensed under the MIT License. See *LICENSE* file for full text.
 
