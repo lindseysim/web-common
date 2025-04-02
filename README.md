@@ -838,21 +838,17 @@ To use, begin by creating instance and adding columns with *CommonTable*.prototy
 &nbsp;
 
 <a name="CommonTable" href="CommonTable">#</a>
-**CommonTable**([options])<br />
+**CommonTable**([*options*])<br />
 <a href="CommonTable">#</a>
 **CommonTable**([*tableId*[, *tableClass*[, *container*]]])
 
-Creates new CommonTable. The table will be given the class of *cm-table*, more classes can be appended through the options.
+Creates new CommonTable. The table will be given the class of *cm-table*, more classes can be appended through the options. Arguments may be given flat or as key-values within a single object literal argument.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
 | `tableId` | *String* | Table ID |
 | `tableClass` | *String* \| *String*[] | Table classname (use array to add multiple) |
 | `container` | *Element* \| *String* | *Element* or element query selector to append table to |
-| `options` | *Object* | |
-| `options.tableId` | *String* | `tableId` may be specified in the options instead. |
-| `options.tableClass` | *String* \| *String*[] | `tableClass` may be specified in the options instead. |
-| `options.container` | *Element* \| *String* | `container` may be specified in the options instead. |
 
 &nbsp;
 
@@ -887,7 +883,7 @@ Prepends table to element.
 <a href="CommonTable-addColumn">#</a>
 *CommonTable*.prototype.**addColumn**(*group*, *title*, *key*[, *options*])
 
-Add a column to the table.
+Add a column to the table. Arguments may be given flat and/or as key-values within a single object literal argument.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
@@ -903,6 +899,7 @@ Add a column to the table.
 | `options.colStyles` | *String* \| *Object* | Optional styles to apply to every row in this column (including header). If you only want to apply to non-header cells, must override values in hdrStyles. |
 | `options.onClick` | *Callback* | Optional onClick listener to add to each cell (excluding header). Callback will be given the entire row's data as the parameter. |
 | `options.sortable` | *Boolean* | Optional flag to set/disable sortable column on this column. By default columns are sortable, so set as falsy or *null* to disable. |
+| `options.sortFunction` | *Function* | Option custom sorting function. |
 
 &nbsp; &nbsp; **Returns:** *self* for chaining functions.
 
@@ -913,15 +910,12 @@ Add a column to the table.
 <a href="CommonTable-createHeaders">#</a>
 *CommonTable*.prototype.**createHeaders**([*sortOnKey*[, *ascending*]])
 
-[Re]draw table. Unlike `populateTable()`, this only redraws the headers (rest of the rows are lost).
+[Re]draw table. Unlike `populateTable()`, this only redraws the headers (rest of the rows are lost). Arguments may be given flat or as key-values within a single object literal argument.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
 | `sortOnKey` | *String* | Optional key to sort on. |
 | `ascending` | *Boolean* | If sorting, whether ascending or descending order. |
-| `options` | *Object* | |
-| `options.sortOnKey` | *String* | `sortOnKey` may be specified in the options instead. |
-| `options.ascending` | *Boolean* | `ascending` may be specified in the options instead. |
 
 &nbsp; &nbsp; **Returns:** *self* for chaining functions.
 
@@ -932,18 +926,13 @@ Add a column to the table.
 <a href="CommonTable-populateTable">#</a>
 *CommonTable*.prototype.**populateTable**(*tableData*[, *sortOnKey*[, *ascending*]]])
 
-Populate and [re]draw table.
+Populate and [re]draw table. Arguments may be given flat or as key-values within a single object literal argument.
 
 | Param | Type | Description |
 | :--- | :---: | :--- |
-| `options` | *Object* | |
 | `tableData` | *Object*[] | Array of objects, representing data by row. Data is not stored to object or dynamically bound in any way. To update table, must be redrawn, passing the updated data array. |
 | `sortOnKey` | *String* | Optional key to sort on. |
 | `ascending` | *Boolean* | If sorting, whether ascending or descending order. |
-| `options` | *Object* | |
-| `options.tableData` | *Object*[] | `tableData` may be specified in the options instead. |
-| `options.sortOnKey` | *String* | `sortOnKey` may be specified in the options instead. |
-| `options.ascending` | *Boolean* | `ascending` may be specified in the options instead. |
 
 &nbsp; &nbsp; **Returns:** *self* for chaining functions.
 
@@ -956,56 +945,121 @@ Populate and [re]draw table.
 ![CommonTable example](./misc/cmtable.png)
 
 ```javascript
-var tbl = new CommonTable("my-table-id", "my-table-class");
+let tbl = new CommonTable("my-table-id", "my-table-class");
 tbl.appendTo(document.body);
 
+// generic options for text centering style
+let styleCenter = {'text-align': 'center'}, 
+    optsCenter = {hdrStyles: styleCenter, colStyles: styleCenter};
+
 // first three columns under "Name" header group
-tbl.addColumn({group: "Name", title: "First", key: "firstName"});
-tbl.addColumn({group: "Name", title: "Nickname", key: "nickName"});
-tbl.addColumn({group: "Name", title: "Last", key: "lastName"});
-// add generic meta-data (to be used later)
-tbl.addColumn({
-  title:  "Birthday", 
-  key:    "birthDate", 
-  format: function(val) {
-    return (
-      (val.getMonth()+1).toString() + "/" 
-      + val.getDate().toString() + "/" 
-      + val.getFullYear().toString()
-    );
-  }
-});
-// other columns
-tbl.addColumn({title: "Wins", key: "winCount"});
-tbl.addColumn({title: "Losses", key: "lossCount"});
-tbl.addColumn({title: "Draws", key: "drawCount"});
+tbl.addColumn({group: "Name", title: "First", key: "firstName"})
+   .addColumn({group: "Name", title: "Last", key: "lastName"})
+   // add custom sorting by position, ascending from back of field to start of field
+   .addColumn(common.extend(optsCenter, {
+     title:        "Position", 
+     key:          "position", 
+     sortFunction: (a, b) => {
+       if(a == b) return 0;
+       if(a.startsWith("GK")) return -1;
+       if(b.startsWith("GK")) return 1;
+       if(a.startsWith("DF")) return -1;
+       if(b.startsWith("DF")) return 1;
+       if(a.startsWith("FW")) return 1;
+       if(b.startsWith("FW")) return -1;
+     }
+   }))
+   // add formatting for date value to date string
+   .addColumn({
+     title:  "Birthday", 
+     key:    "birthDate", 
+     format: val => `${(val.getMonth()+1).toString()}/${val.getDate().toString()}/${val.getFullYear().toString()}`
+   })
+   .addColumn(common.extend(optsCenter, {title: "Matches", key: "mp"}))
+   .addColumn(common.extend(optsCenter, {title: "Starts", key: "ms"}))
+   .addColumn(common.extend(optsCenter, {title: "Goals", key: "gls"}))
+   .addColumn(common.extend(optsCenter, {title: "Assists", key: "ast"}))
+   .addColumn(common.extend(optsCenter, {
+     group: "Expected", 
+     title: "xG", 
+     key:   "xg", 
+     format: val => val.addCommas(1)
+   }))
+   .addColumn(common.extend(optsCenter, {
+     group: "Expected", 
+     title: "xAG", 
+     key:   "xag", 
+     format: val => val.addCommas(1)
+   }));
 
 var data = [
   {
-    firstName: "Tony", 
-    nickName:  "El Cucuy", 
-    lastName:  "Ferguson", 
-    winCount:  25, 
-    lossCount: 8, 
-    drawCount: 0, 
-    birthDate: new DateUTC(1984, 2, 12)
+    firstName: "Claire", 
+    lastName:  "Emslie", 
+    position:  "FW", 
+    gls:       7, 
+    ast:       2, 
+    mp:        26, 
+    ms:        24, 
+    xg:        7.7, 
+    xag:       3.7,
+    birthDate: new DateUTC(1994, 3, 8)
   }, 
   {
-    firstName: "Khabib", 
-    nickName:  "The Eagle", 
-    lastName:  "Nurmagomedov", 
-    winCount:  29, 
-    lossCount: 0, 
-    drawCount: 0, 
-    birthDate: new DateUTC(1988, 9, 20)
+    firstName: "Kennedy", 
+    lastName:  "Fuller", 
+    position:  "MF", 
+    gls:       1, 
+    ast:       0, 
+    mp:        19, 
+    ms:        10, 
+    xg:        1.7, 
+    xag:       0.9,
+    birthDate: new DateUTC(2007, 3, 9)
+  }, 
+  {
+    firstName: "Sarah", 
+    lastName:  "Gorden", 
+    position:  "DF", 
+    gls:       0, 
+    ast:       0, 
+    mp:        24, 
+    ms:        24, 
+    xg:        0.1, 
+    xag:       0.1,
+    birthDate: new DateUTC(1992, 9, 13)
+  }, 
+  {
+    firstName: "Alyssa", 
+    lastName:  "Thompson", 
+    position:  "FW", 
+    gls:       5, 
+    ast:       7, 
+    mp:        26, 
+    ms:        24, 
+    xg:        5.8, 
+    xag:       4.7,
+    birthDate: new DateUTC(2004, 11, 7)
+  }, 
+  {
+    firstName: "M.A.", 
+    lastName:  "Vignola", 
+    position:  "DF/FW", 
+    gls:       1, 
+    ast:       2, 
+    mp:        17, 
+    ms:        10, 
+    xg:        1.0, 
+    xag:       2.1,
+    birthDate: new DateUTC(1998, 2, 11)
   }, 
   // etc...
 ];
 
 tbl.populateTable({
   tableData: data, 
-  sortOnKey: "winCount", 
-  ascending: false  // sort by wins descending
+  sortOnKey: "position", 
+  ascending: false  // sort by position descending (from front to back)
 });
 ```
 

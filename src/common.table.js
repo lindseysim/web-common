@@ -61,7 +61,8 @@ class CommonTable {
             hdrStyles:  options.hdrStyles, 
             colStyles:  options.colStyles, 
             onClick:    options.onClick, 
-            sortable:   (options.sortable === undefined || options.sortable)
+            sortable:   (options.sortable === undefined || options.sortable), 
+            sortFunc:   options.sortFunction
         });
         return this;
     }
@@ -115,7 +116,10 @@ class CommonTable {
             if(sortOnThis) {
                 let icon = document.createElement("i");
                 icon.className = "icon-" + (ascending ? "ascending" : "descending");
+                hdrElem.classList.add("sorted");
                 hdrElem.append(icon);
+            } else {
+                hdrElem.classList.remove("sorted");
             }
             // sort functionality
             if(hdr.sortable) {
@@ -156,6 +160,8 @@ class CommonTable {
         // sort data
         let sortedData = this.tableData;
         if(sortOnKey && sortedData.length) {
+            let hdrObj = this.headerObjs.find(hdr => hdr.key == sortOnKey), 
+                sortFunc = hdrObj && hdrObj.sortFunc;
             sortedData = this.tableData.slice();
             sortedData.sort((a, b) => {
                 let compared = 0, 
@@ -168,8 +174,11 @@ class CommonTable {
                     // only one is undefined
                     compared = isUndefined[0] ? -1 : 1;
                 } else if(!isUndefined[0]) {
+                    // custom sort function
+                    if(sortFunc) {
+                        compared = sortFunc(values[0], values[1]);
                     // else if both are defined
-                    if(typeof values[0] === "number" && typeof values[1] === "number") {
+                    } else if(typeof values[0] === "number" && typeof values[1] === "number") {
                         // compare numbers
                         compared = values[0] - values[1];
                     } else {
