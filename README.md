@@ -9,8 +9,6 @@ This library is licensed under the MIT License. See *LICENSE* file for full text
 ## Content ##
 
 * [Usage](#usage)
-* [Polyfills](#polyfills)
-    * [Promises](#promises)
 * [Global Browser Variable](#global-browser-variable)
 * [Prototype Modifications](#prototype-modifications)
 * [Date (UTC) Modifications](#date-utc-modifications)
@@ -19,6 +17,8 @@ This library is licensed under the MIT License. See *LICENSE* file for full text
     * [Tooltips and Help Icons](#tooltips--help-icons)
     * [Modal Dialogs](#modal-dialogs)
 * [CommonTable](#commontable-class)
+* [Polyfills](#polyfills)
+    * [Promises](#promises)
 * [Acknowledgments](#acknowledgments)
 
 ## Usage ##
@@ -52,71 +52,6 @@ If using script imports in HTML, import the paths to *common.js*, *style.css*, a
 * *common*.[**extend**()](#common-extend), parameters are renamed `overwrite`, `deep`, and `modify` from `allowOverwrite`, `deepCopy`, and `modifyObj`. While detection is still left in for older names for backwards compatibility, it may be deprecated at some point.
 * *common*.[**newWindow**()](#common-newWindow) no longer accepts flat parameters. All parameters except for `url` (and optionally `name`) must be specified in an options object.
 * *common*.[**animate**()](#common-animate), parameters are renamed `duration` and `timing` from `durationMs`, and `timingFunction`. While detection is still left in for older names for backwards compatibility, it may be deprecated at some point.
-
-&nbsp;
-
-## Polyfills ##
-
-Polyfills are no longer checked by default and instead must be manually called to active via the `common` object under *common*.[**polyfills**()](#common-polyfills).
-
-Ensures the below functions exists, many of which are missing in Internet Explorer (pre-Edge) and Opera Mini.
-
-Note that this is just a personal list of functions I tended to require (combined with a history of having to work with clients that were still stuck in IE land). These days, probably less necessary, and if so, better to use a more complete polyfill library like [core-js](https://www.npmjs.com/package/core-js).
-
-<a name="common-arrayFrom" href="#common-arrayFrom">#</a>
-*Array*.**from**(*arrayLike*[, *mapFn*[, *thisArg*]]) – Create array from array-like or iterable. [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from).
-
-<a name="common-arrayFind" href="#common-arrayFind">#</a>
-*Array*.prototype.**find**(*callback*[, *thisArg*]) – Find item in an array.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find).
-
-<a name="common-arrayFindIndex" href="#common-arrayFindIndex">#</a>
-*Array*.prototype.**findIndex**(*callback*[, *thisArg*]) – Find index of an item in an array.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex).
-
-<a name="common-arrayFindLast" href="#common-arrayFindLast">#</a>
-*Array*.prototype.**findLast**(*callback*[, *thisArg*]) – Find item in an array, searching in reverse. [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findLast).
-
-<a name="common-arrayFindLastIndex" href="#common-arrayFindLastIndex">#</a>
-*Array*.prototype.**findLastIndex**(*callback*[, *thisArg*]) – Find index of an item in an array, searching in reverse. [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findLastIndex).
-
-<a name="common-arrayFlat" href="#common-arrayFlat">#</a>
-*Array*.prototype.**flat**([*depth*]) – Flatten an array to a desired depth (or default single-depth). [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat).
-
-<a name="common-arrayIncludes" href="#common-arrayIncludes">#</a>
-*Array*.prototype.**includes**(*searchElement*[, *fromIndex*]) – Find if an item exists in an array.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes).
-
-<a name="common-elementRemove" href="#common-elementRemove">#</a>
-*Element*.prototype.**remove**() – Remove element.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/ChildNode/remove).
-
-<a name="common-elementAppend" href="#common-elementAppend">#</a>
-*Element*.prototype.**append**(*nodes*) – Append to element.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/append).
-
-<a name="common-elementPrepend" href="#common-elementPrepend">#</a>
-*Element*.prototype.**prepend**(*nodes*) – Prepend to element.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/prepend).
-
-<a name="common-elementMatches" href="#common-elementMatches">#</a>
-*Element*.prototype.**matches**(*selectors*) – Check if element matches selector.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/Element/matches).
-
-<a name="common-elementCloset" href="#common-elementCloset">#</a>
-*Element*.prototype.**closest**(*selectors*) – Find closest element matching selector.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/Element/closest).
-
-<a name="common-elementClassList" href="#common-elementClassList">#</a>
-*Element*.**classList** – Ensures existence of `contains()`, `add()`, `remove()`, `toggle()`, and `replace()` functions in element's `classList` property. [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/Element/classList).
-
-<a name="common-nodeListForEach" href="#common-nodeListForEach">#</a>
-*NodeList*.prototype.**forEach**(*callback*[, *thisArg]*) – Functionally iterate through a `NodeList`.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach).
-
-<a name="common-stringStartsWith" href="#common-stringStartsWith">#</a>
-*String*.prototype.**startsWith**(*searchString*[, *position*]) – Check string starts with sequence.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith).
-
-<a name="common-stringEndsWith" href="#common-stringEndsWith">#</a>
-*String*.prototype.**endsWith**(*searchString*[, *length*]) – Check string ends with sequence.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith).
-
-<a name="common-stringRepeat" href="#common-stringRepeat">#</a>
-*String*.prototype.**repeat**(*count*) – Repeat string content.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/repeat).
-
-### Promises ###
-
-Internally, [taylorhakes/promise-polyfill](https://github.com/taylorhakes/promise-polyfill) is called, if necessary, to polyfill for [Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise). However, it is only used locally and not added to the global namespace. As it's very lightweight (and I don't want to simply wrap/repackage Taylor's work), I recommend installing his library directly to your projects if you need a polyfill for Promises. Thus, if you think you will need to polyfill for Promises, bring in this library to your dependencies or else a error will occur when using *common*.[**ajax**()](#common-ajax) or *common*.[**animate**()](#common-animate) in a browser without support for Promises.
 
 &nbsp;
 
@@ -154,7 +89,7 @@ Note that this method of parsing the UserAgent string is somewhat brittle and ca
 
 ## Prototype Modifications ##
 
-These useful functions are added to common object prototypes.
+These useful functions are added to common type/object prototypes.
 
 &nbsp;
 
@@ -216,6 +151,16 @@ Check is element is visible. Uses `getBoundingClientRect` method, which is more 
 
 Sets multiple attributes (given as a dictionary-like object of key-value pairs) at once.
 
+```javascript
+myInput.setAttributes({
+  type: 'text', 
+  name: 'username', 
+  minlength: 6, 
+  maxlength: 24, 
+  placeholder: 'Select username'
+});
+```
+
 &nbsp;
 
 <a name="common-elementCss" href="#common-elementCss">#</a>
@@ -223,19 +168,45 @@ Sets multiple attributes (given as a dictionary-like object of key-value pairs) 
 
 Much like the JQuery **css**() function, sets inline style, either as style name and value provided as strings, or as a dictionary-like object of style names and values and key-value pairs. 
 
+```javascript
+myElem.css('text-align', 'center');
+myElem.css({
+  'text-align': 'center', 
+  'text-decoration': 'underline'
+});
+```
+
 &nbsp;
 
 <a name="common-elementCenter" href="#common-elementCenter">#</a>
 *Element*.prototype.**center**()
 
-Will center an element on screen using absolute positioning.
+Will center an element on screen using absolute positioning using `window` inner width/heights and offsets, adjusted by the scroll position.
+
+I.e., is roughly equivalent to calling the below (excluding some preventative value corrections and fallbacks):
+
+```javascript
+myElem.css({
+  position: "absolute", 
+  top:  (window.innerHeight - this.offsetHeight) / 2 + window.scrollY,
+  left: (window.innerWidth - this.offsetWidth) / 2 + window.scrollX
+});
+```
 
 &nbsp;
 
 <a name="common-numberAddCommas" href="#common-numberAddCommas">#</a>
 *Number*.prototype.**addCommas**(*precision*) ⇒ `string`
 
-Will convert a given number to a string, using the supplied precision, with commas.
+Will convert a given number to a string, using the supplied precision, with commas. For values with cut-off precision, rounding will occur.
+
+```javascript
+(1.2345e7).addCommas();  // '12,345,000'
+ (1234.56).addCommas();  // '1,235'
+(1234.56).addCommas(1);  // '1,234.5'
+     (0.1).addCommas();  // '0'
+     (0.5).addCommas();  // '1'
+```
 
 &nbsp;
 
@@ -253,6 +224,19 @@ Current heuristics are:
 * \<1.0 as number with two decimal places
 * \<100 as number with one decimal place
 * ≥100 as number with no decimal places
+
+```javascript
+(-1e-4).stringFormat();           // '0.0'
+(-1e-4).stringFormat(null, 0);    // '0'
+(-1e-4).stringFormat(1e-5, '0');  // '-1.000e-4'
+
+(0.0012345).stringFormat();  // '1.234e-3'
+ (0.012345).stringFormat();  // '1.23e-2'
+  (0.12345).stringFormat();  // '0.123'
+    (0.345).stringFormat();  // '0.34'
+   (12.345).stringFormat();  // '12.3'
+   (123.45).stringFormat();  // '123'
+```
 
 &nbsp;
 
@@ -503,6 +487,20 @@ Deep copy is done via [**structuredClone**()](https://developer.mozilla.org/en-U
 
 &nbsp; &nbsp; **Returns:** The object with extended values (if `modify` is falsy, this is a new object).
 
+```javascript
+let a = {x: 1, y: 2};
+// below returns {x: 1, y: 2, p: 10, q: 20}
+common.extend(a, {p: 10, q: 20});
+// the first below will not overwrite values for x and y, to do so, set the overwrite option to true
+common.extend(a, {x: 10, y: 20});
+common.extend(a, {x: 10, y: 20}, {overwrite: true});
+// in none of the above is `a` changed, all return a copy
+console.log(a); // {x: 1, y: 2}
+// but the below will overwrite a in place
+common.extend(a, {x: 10, y: 20}, {overwrite: true, modify: true});
+console.log(a); // {x: 10, y: 20}
+```
+
 &nbsp;
 
 <a name="common-getUrlGetVars" href="#common-getUrlGetVars">#</a>
@@ -643,8 +641,8 @@ common.ui.createDropdown("#menu",
       text:  "Totally Work Related", 
       style: {"font-style": "italic"}, 
       menu: [
-        {text: "Business Stuff", href: "https://facebook.com"},
-        {text: "Web Dev. Stuff", href: "https://reddit.com"} 
+        {text: "Business Stuff", href: "https://youtube.com"},
+        {text: "Project Stuff", href: "https://reddit.com"} 
       ]
     }
   ]
@@ -670,7 +668,7 @@ The tooltips and help icons functionality can be applied via the functions (desc
 
 ![Common UI Help Icon](./misc/cmhelpicon.png)
 
-To add a tooltip manually, add the class *cm-tooltip-left*, *cm-tooltip-top*, *cm-tooltip-right*, or *cm-tooltip-bottom* and the attribute *cm-tooltip-msg* with the tooltip message. To create a help icon, simply create the element `<i>?</i>`, with class *cm-icon*.
+To add a tooltip manually, add the class *cm-tooltip-left*, *cm-tooltip-top*, *cm-tooltip-right*, or *cm-tooltip-bottom* and the attribute *cm-tooltip-msg* with the tooltip message. To create a help icon, simply create the element `<i class="cm-icon">?</i>`.
 
 &nbsp;
 
@@ -738,7 +736,6 @@ Remove help icon from element(s).
 #### Modal dialogs ####
 
 For modal dialog usage, ensure your dependency-manager/import-function is caching requires/imports of the `common` object, or that you are passing the object by reference. Calling multiple instances of `common.ui` in the same window can result in odd behavior for modal management.
-*common*.[**getElementList**()](#common-getElementList)
 
 ![Common UI Modal](./misc/cmmodal.png)
 
@@ -948,122 +945,131 @@ Populate and [re]draw table. Arguments may be given flat or as key-values within
 let tbl = new CommonTable("my-table-id", "my-table-class");
 tbl.appendTo(document.body);
 
-// generic options for text centering style
+// define columns (first define general centering styles to extend/reuse later)
 let styleCenter = {'text-align': 'center'}, 
     optsCenter = {hdrStyles: styleCenter, colStyles: styleCenter};
-
-// first three columns under "Name" header group
+   // first two columns under "Name" header group
 tbl.addColumn({group: "Name", title: "First", key: "firstName"})
-   .addColumn({group: "Name", title: "Last", key: "lastName"})
-   // add custom sorting by position, ascending from back of field to start of field
-   .addColumn(common.extend(optsCenter, {
-     title:        "Position", 
-     key:          "position", 
-     sortFunction: (a, b) => {
-       if(a == b) return 0;
-       if(a.startsWith("GK")) return -1;
-       if(b.startsWith("GK")) return 1;
-       if(a.startsWith("DF")) return -1;
-       if(b.startsWith("DF")) return 1;
-       if(a.startsWith("FW")) return 1;
-       if(b.startsWith("FW")) return -1;
-     }
-   }))
-   // add formatting for date value to date string
-   .addColumn({
-     title:  "Birthday", 
-     key:    "birthDate", 
-     format: val => `${(val.getMonth()+1).toString()}/${val.getDate().toString()}/${val.getFullYear().toString()}`
-   })
-   .addColumn(common.extend(optsCenter, {title: "Matches", key: "mp"}))
-   .addColumn(common.extend(optsCenter, {title: "Starts", key: "ms"}))
-   .addColumn(common.extend(optsCenter, {title: "Goals", key: "gls"}))
-   .addColumn(common.extend(optsCenter, {title: "Assists", key: "ast"}))
-   .addColumn(common.extend(optsCenter, {
-     group: "Expected", 
-     title: "xG", 
-     key:   "xg", 
-     format: val => val.addCommas(1)
-   }))
-   .addColumn(common.extend(optsCenter, {
-     group: "Expected", 
-     title: "xAG", 
-     key:   "xag", 
-     format: val => val.addCommas(1)
-   }));
+    .addColumn({group: "Name", title: "Last", key: "lastName"})
+    // add custom sorting by position, ascending from back of field to start of field
+    .addColumn(common.extend(optsCenter, {
+        title:        "Position", 
+        key:          "position", 
+        sortFunction: (a, b) => {
+            if(a == b) return 0;
+            if(a.startsWith("GK")) return -1;
+            if(b.startsWith("GK")) return 1;
+            if(a.startsWith("DF")) return -1;
+            if(b.startsWith("DF")) return 1;
+            if(a.startsWith("FW")) return 1;
+            i f(b.startsWith("FW")) return -1;
+        }
+    }))
+    // add formatting for date value to date string
+    .addColumn({
+        title:  "Birthday", 
+        key:    "birthDate", 
+        format: val => `${(val.getMonth()+1).toString()}/${val.getDate().toString()}/${val.getFullYear().toString()}`
+    })
+    // general stats
+    .addColumn(common.extend(optsCenter, {title: "Matches", key: "mp"}))
+    .addColumn(common.extend(optsCenter, {title: "Starts", key: "ms"}))
+    .addColumn(common.extend(optsCenter, {title: "Goals", key: "gls"}))
+    .addColumn(common.extend(optsCenter, {title: "Assists", key: "ast"}))
+    // last two columns under the "Expected" header ground (for advanced stats xG and xAG)
+    .addColumn(common.extend(optsCenter, {
+        group: "Expected", 
+        title: "xG", 
+        key:   "xg", 
+        format: val => val.addCommas(1)
+    }))
+    .addColumn(common.extend(optsCenter, {
+        group: "Expected", 
+        title: "xAG", 
+        key:   "xag", 
+        format: val => val.addCommas(1)
+    }));
 
-var data = [
-  {
-    firstName: "Claire", 
-    lastName:  "Emslie", 
-    position:  "FW", 
-    gls:       7, 
-    ast:       2, 
-    mp:        26, 
-    ms:        24, 
-    xg:        7.7, 
-    xag:       3.7,
-    birthDate: new DateUTC(1994, 3, 8)
-  }, 
-  {
-    firstName: "Kennedy", 
-    lastName:  "Fuller", 
-    position:  "MF", 
-    gls:       1, 
-    ast:       0, 
-    mp:        19, 
-    ms:        10, 
-    xg:        1.7, 
-    xag:       0.9,
-    birthDate: new DateUTC(2007, 3, 9)
-  }, 
-  {
-    firstName: "Sarah", 
-    lastName:  "Gorden", 
-    position:  "DF", 
-    gls:       0, 
-    ast:       0, 
-    mp:        24, 
-    ms:        24, 
-    xg:        0.1, 
-    xag:       0.1,
-    birthDate: new DateUTC(1992, 9, 13)
-  }, 
-  {
-    firstName: "Alyssa", 
-    lastName:  "Thompson", 
-    position:  "FW", 
-    gls:       5, 
-    ast:       7, 
-    mp:        26, 
-    ms:        24, 
-    xg:        5.8, 
-    xag:       4.7,
-    birthDate: new DateUTC(2004, 11, 7)
-  }, 
-  {
-    firstName: "M.A.", 
-    lastName:  "Vignola", 
-    position:  "DF/FW", 
-    gls:       1, 
-    ast:       2, 
-    mp:        17, 
-    ms:        10, 
-    xg:        1.0, 
-    xag:       2.1,
-    birthDate: new DateUTC(1998, 2, 11)
-  }, 
-  // etc...
+// add date and render table
+let data = [
+    {firstName: "Claire",  lastName: "Emslie",   position: "FW",    gls: 7, ast: 2, mp: 26, ms: 24, xg: 7.7, xag: 3.7, birthDate: new DateUTC(1994, 3, 8)}, 
+    {firstName: "Kennedy", lastName: "Fuller",   position: "MF",    gls: 1, ast: 0, mp: 19, ms: 10, xg: 1.7, xag: 0.9, birthDate: new DateUTC(2007, 3, 9)}, 
+    {firstName: "Sarah",   lastName: "Gorden",   position: "DF",    gls: 0, ast: 0, mp: 24, ms: 24, xg: 0.1, xag: 0.1, birthDate: new DateUTC(1992, 9, 13)}, 
+    {firstName: "Alyssa",  lastName: "Thompson", position: "FW",    gls: 5, ast: 7, mp: 26, ms: 24, xg: 5.8, xag: 4.7, birthDate: new DateUTC(2004, 11, 7)}, 
+    {firstName: "M.A.",    lastName: "Vignola",  position: "DF/FW", gls: 1, ast: 2, mp: 17, ms: 10, xg: 1.0, xag: 2.1, birthDate: new DateUTC(1998, 2, 11)}, 
+    // etc...
 ];
-
 tbl.populateTable({
-  tableData: data, 
-  sortOnKey: "position", 
-  ascending: false  // sort by position descending (from front to back)
+    tableData: data, 
+    sortOnKey: "position", 
+    ascending: false  // sort by position descending (from front to back)
 });
 ```
 
 &nbsp;
+
+## Polyfills ##
+
+Polyfills are no longer checked by default and instead must be manually called to active via the `common` object under *common*.[**polyfills**()](#common-polyfills).
+
+Ensures the below functions exists, many of which are missing in Internet Explorer (pre-Edge) and Opera Mini.
+
+Note that this is just a personal list of functions I tended to require (combined with a history of having to work with clients that were still stuck in IE land). These days, probably less necessary, and if so, better to use a more complete polyfill library like [core-js](https://www.npmjs.com/package/core-js).
+
+<a name="common-arrayFrom" href="#common-arrayFrom">#</a>
+*Array*.**from**(*arrayLike*[, *mapFn*[, *thisArg*]]) – Create array from array-like or iterable. [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from).
+
+<a name="common-arrayFind" href="#common-arrayFind">#</a>
+*Array*.prototype.**find**(*callback*[, *thisArg*]) – Find item in an array.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find).
+
+<a name="common-arrayFindIndex" href="#common-arrayFindIndex">#</a>
+*Array*.prototype.**findIndex**(*callback*[, *thisArg*]) – Find index of an item in an array.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex).
+
+<a name="common-arrayFindLast" href="#common-arrayFindLast">#</a>
+*Array*.prototype.**findLast**(*callback*[, *thisArg*]) – Find item in an array, searching in reverse. [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findLast).
+
+<a name="common-arrayFindLastIndex" href="#common-arrayFindLastIndex">#</a>
+*Array*.prototype.**findLastIndex**(*callback*[, *thisArg*]) – Find index of an item in an array, searching in reverse. [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findLastIndex).
+
+<a name="common-arrayFlat" href="#common-arrayFlat">#</a>
+*Array*.prototype.**flat**([*depth*]) – Flatten an array to a desired depth (or default single-depth). [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat).
+
+<a name="common-arrayIncludes" href="#common-arrayIncludes">#</a>
+*Array*.prototype.**includes**(*searchElement*[, *fromIndex*]) – Find if an item exists in an array.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes).
+
+<a name="common-elementRemove" href="#common-elementRemove">#</a>
+*Element*.prototype.**remove**() – Remove element.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/ChildNode/remove).
+
+<a name="common-elementAppend" href="#common-elementAppend">#</a>
+*Element*.prototype.**append**(*nodes*) – Append to element.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/append).
+
+<a name="common-elementPrepend" href="#common-elementPrepend">#</a>
+*Element*.prototype.**prepend**(*nodes*) – Prepend to element.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/prepend).
+
+<a name="common-elementMatches" href="#common-elementMatches">#</a>
+*Element*.prototype.**matches**(*selectors*) – Check if element matches selector.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/Element/matches).
+
+<a name="common-elementCloset" href="#common-elementCloset">#</a>
+*Element*.prototype.**closest**(*selectors*) – Find closest element matching selector.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/Element/closest).
+
+<a name="common-elementClassList" href="#common-elementClassList">#</a>
+*Element*.**classList** – Ensures existence of `contains()`, `add()`, `remove()`, `toggle()`, and `replace()` functions in element's `classList` property. [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/Element/classList).
+
+<a name="common-nodeListForEach" href="#common-nodeListForEach">#</a>
+*NodeList*.prototype.**forEach**(*callback*[, *thisArg]*) – Functionally iterate through a `NodeList`.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach).
+
+<a name="common-stringStartsWith" href="#common-stringStartsWith">#</a>
+*String*.prototype.**startsWith**(*searchString*[, *position*]) – Check string starts with sequence.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith).
+
+<a name="common-stringEndsWith" href="#common-stringEndsWith">#</a>
+*String*.prototype.**endsWith**(*searchString*[, *length*]) – Check string ends with sequence.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/endsWith).
+
+<a name="common-stringRepeat" href="#common-stringRepeat">#</a>
+*String*.prototype.**repeat**(*count*) – Repeat string content.  [MDN reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/repeat).
+
+### Promises ###
+
+Internally, [taylorhakes/promise-polyfill](https://github.com/taylorhakes/promise-polyfill) is called, if necessary, to polyfill for [Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise). However, it is only used locally and not added to the global namespace. As it's very lightweight (and I don't want to simply wrap/repackage Taylor's work), I recommend installing his library directly to your projects if you need a polyfill for Promises. Thus, if you think you will need to polyfill for Promises, bring in this library to your dependencies or else a error will occur when using *common*.[**ajax**()](#common-ajax) or *common*.[**animate**()](#common-animate) in a browser without support for Promises.
 
 &nbsp;
 
